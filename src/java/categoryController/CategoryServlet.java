@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package CategoryController;
+package categoryController;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author ADMIN
  */
-public class CategorySevlet extends HttpServlet {
+public class CategoryServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -33,10 +33,10 @@ public class CategorySevlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CategorySevlet</title>");  
+            out.println("<title>Servlet CategoryServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CategorySevlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet CategoryServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -54,7 +54,6 @@ public class CategorySevlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
        request.getRequestDispatcher("productTable.html").forward(request, response);
-
     } 
 
     /** 
