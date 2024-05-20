@@ -65,8 +65,8 @@
                         <jsp:include page="./common/sidebarAdmin.jsp"/>
                         <!--Sidebar end-->
 
-                        <div class="pcoded-content">
-                            <!-- Page-header start -->
+<!--                        <div class="pcoded-content">
+                             Page-header start 
                             <div class="page-header">
                                 <div class="page-block">
                                     <div class="row align-items-center">
@@ -89,17 +89,17 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Page-header end -->
+                             Page-header end 
 
                             <div class="pcoded-inner-content">
-                                <!-- Main-body start -->
+                                 Main-body start 
                                 <div class="main-body">
                                     <div class="page-wrapper">
-                                        <!-- Page-body start -->
+                                         Page-body start 
                                         <div class="page-body">
                                             <div class="card">
 
-                                                <!-- Sub header table start -->
+                                                 Sub header table start 
                                                 <div class="card-header">
                                                     <div class="d-flex justify-content-between align-items-center pt-3">
                                                         <div class="p-15 p-b-0 w-25">
@@ -125,7 +125,7 @@
                                                         </ul>
                                                     </div>
                                                 </div>
-                                                <!-- Sub header table end -->
+                                                 Sub header table end 
 
                                                 <div class="card-block table-border-style">
                                                     <div class="table-responsive">
@@ -158,16 +158,16 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- Hover table card end -->
+                                             Hover table card end 
                                         </div>
-                                        <!-- Page-body end -->
+                                         Page-body end 
                                     </div>
                                 </div>
-                                <!-- Main-body end -->
+                                 Main-body end 
 
                                 <div id="styleSelector"></div>
                             </div>
-                        </div>
+                        </div>-->
                     </div>
                 </div>
             </div>

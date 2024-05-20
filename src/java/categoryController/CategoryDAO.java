@@ -59,10 +59,43 @@ public class CategoryDAO extends DBContext {
         return list;
     }
 
-//    test
+    public void createNewCategory(String categoryName, String detail) {
+        String sql = "INSERT INTO [dbo].[Category]\n"
+                + "           ([CategoryName]\n"
+                + "           ,[Detail])\n"
+                + "     VALUES (?, ?)";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, categoryName);
+            st.setString(2, detail);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    public void updateCategory(int categoryId, String categoryName, String detail) {
+        String sql = "UPDATE [dbo].[Category]\n"
+                + "   SET [CategoryName] = ?\n"
+                + "      ,[Detail] = ?\n"
+                + " WHERE CategoryID = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, categoryName);
+            st.setString(2, detail);
+            st.setInt(3, categoryId);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+//    test data
     public static void main(String[] args) {
         CategoryDAO dao = new CategoryDAO();
-        List<CategoryModel> list = dao.searchCategoryByName("nuoc");
+//        dao.createNewCategory("cafe", "Cà phê là một loại đồ uống phổ biến được làm từ hạt cà phê rang.");
+//        dao.updateCategory(2, "Cafe", "Cà phê là một loại đồ uống phổ biến được làm từ hạt cà phê rang.");
+        List<CategoryModel> list = dao.getAllCategory();
         for (CategoryModel i : list) {
             System.out.println(i.getCategoryName());
         }
