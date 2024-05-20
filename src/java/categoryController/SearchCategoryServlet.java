@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @author ADMIN
  */
-public class CategoryServlet extends HttpServlet {
+public class SearchCategoryServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,10 +35,10 @@ public class CategoryServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CategoryServlet</title>");
+            out.println("<title>Servlet SearchCategoryServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CategoryServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet SearchCategoryServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,8 +58,13 @@ public class CategoryServlet extends HttpServlet {
             throws ServletException, IOException {
         String currentPath = request.getRequestURI();
         request.setAttribute("currentPath", currentPath);
+
+        request.setCharacterEncoding("UTF-8");
+        String text_search = request.getParameter("text_search");
+
         CategoryDAO categoryDAO = new CategoryDAO();
-        List<CategoryModel> cList = categoryDAO.getAllCategory();
+        List<CategoryModel> cList = categoryDAO.searchCategoryByName(text_search);
+//        request.setAttribute("text_search", text_search);
         request.setAttribute("cList", cList);
         request.getRequestDispatcher("category.jsp").forward(request, response);
     }
@@ -88,11 +93,4 @@ public class CategoryServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    public static void main(String[] args) {
-        CategoryDAO dao = new CategoryDAO();
-        List<CategoryModel> list = dao.getAllCategory();
-        for (CategoryModel i : list) {
-            System.out.println(i.getCategoryName());
-        }
-    }
 }

@@ -10,13 +10,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  *
  * @author ADMIN
  */
-public class CategoryServlet extends HttpServlet {
+public class CreateNewCategoryServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,10 +34,10 @@ public class CategoryServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CategoryServlet</title>");
+            out.println("<title>Servlet CreateNewCategoryServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CategoryServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet CreateNewCategoryServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,10 +57,7 @@ public class CategoryServlet extends HttpServlet {
             throws ServletException, IOException {
         String currentPath = request.getRequestURI();
         request.setAttribute("currentPath", currentPath);
-        CategoryDAO categoryDAO = new CategoryDAO();
-        List<CategoryModel> cList = categoryDAO.getAllCategory();
-        request.setAttribute("cList", cList);
-        request.getRequestDispatcher("category.jsp").forward(request, response);
+        request.getRequestDispatcher("createNewCategory.jsp").forward(request, response);
     }
 
     /**
@@ -75,7 +71,31 @@ public class CategoryServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String categoryName = request.getParameter("categoryName");
+        String detail = request.getParameter("detail");
+
+        if (categoryName == null || categoryName.trim().isEmpty()
+                || detail == null || detail.trim().isEmpty()) {
+            request.setAttribute("error", "Category Name and Detail are required.");
+            request.getRequestDispatcher("/category_create.jsp").forward(request, response);
+            return;
+        }
+
+        if (categoryName.length() < 3 || categoryName.length() > 50
+                || detail.length() < 10 || detail.length() > 500) {
+            request.setAttribute("error", "Category Name must be between 3 and 50 characters long. Detail must be between 10 and 500 characters long.");
+            request.getRequestDispatcher("/category_create.jsp").forward(request, response);
+            return;
+        }
+
+        CategoryDAO categoryDAO = new CategoryDAO();
+        try {
+            categoryDAO.createNewCategory(categoryName, detail);
+            response.sendRedirect(request.getContextPath() + "/category");
+        } catch (Exception e) {
+            e.printStackTrace();
+//            response.sendRedirect(request.getContextPath() + "/error.jsp"); // Chuyển hướng đến trang lỗi
+        }
     }
 
     /**
@@ -88,11 +108,4 @@ public class CategoryServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    public static void main(String[] args) {
-        CategoryDAO dao = new CategoryDAO();
-        List<CategoryModel> list = dao.getAllCategory();
-        for (CategoryModel i : list) {
-            System.out.println(i.getCategoryName());
-        }
-    }
 }
