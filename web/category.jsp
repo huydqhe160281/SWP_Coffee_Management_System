@@ -111,7 +111,7 @@
                                                                 </div>
                                                             </form>
                                                         </div>
-                                                        <button class="btn btn-primary waves-effect h-15">
+                                                        <button class="btn btn-primary waves-effect h-15" onclick="window.location.href ='/category_create'">
                                                             Add New
                                                         </button>
                                                     </div>
@@ -174,8 +174,8 @@
         </div>
 
         <script type="text/javascript">
-            
-            
+
+
         </script>
 
 

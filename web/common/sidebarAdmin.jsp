@@ -1,4 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 
 <!--Navbar start-->          
 <nav class="pcoded-navbar">
@@ -25,27 +27,37 @@
         </div>
         <div class="pcoded-navigation-label">Navigation</div>
         <ul class="pcoded-item pcoded-left-item">
-            <li class="<c:if test="${currentPath == '/index.html'}">active</c:if>">
-                    <a href="index.html" class="waves-effect waves-dark">
-                        <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
-                        <span class="pcoded-mtext">Dashboard</span>
-                        <span class="pcoded-mcaret"></span>
-                    </a>
+            <li class="${fn:contains(currentPath, '/index') ? 'active' : ''}">
+                <a href="index.html" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
+                    <span class="pcoded-mtext">Dashboard</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
             </li>
         </ul>
         <div class="pcoded-navigation-label">Management</div>
         <ul class="pcoded-item pcoded-left-item">
-                <li class="<c:if test="${currentPath == '/category'}">active</c:if>">
-                    <a href="/category" class="waves-effect waves-dark">
-                        <span class="pcoded-micon"><i class="ti-receipt"></i><b>B</b></span>
-                        <span class="pcoded-mtext">Category Management</span>
-                        <span class="pcoded-mcaret"></span>
-                    </a>
-                </li>
-                <li class="<c:if test="${currentPath == '/product'}">active</c:if>">
+            <li class="${fn:contains(currentPath, '/category') ? 'active' : ''}">
+                <a href="/category" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-receipt"></i><b>B</b></span>
+                    <span class="pcoded-mtext">Category Management</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class="${fn:contains(currentPath, '/product') ? 'active' : ''}">
                 <a href="another-path.html" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-receipt"></i><b>B</b></span>
                     <span class="pcoded-mtext">Product Management</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+        </ul>
+        <div class="pcoded-navigation-label">General</div>
+        <ul class="pcoded-item pcoded-left-item">
+            <li class="${fn:contains(currentPath, '/general') ? 'active' : ''}">
+                <a href="another-path.html" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-receipt"></i><b>A</b></span>
+                    <span class="pcoded-mtext">General Management</span>
                     <span class="pcoded-mcaret"></span>
                 </a>
             </li>
