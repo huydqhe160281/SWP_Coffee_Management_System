@@ -10,25 +10,25 @@ package categoryController;
  */
 public class CategoryModel {
 
-    private int categortID;
+    private int categoryID;
     private String categoryName;
     private String detail;
 
     public CategoryModel() {
     }
 
-    public CategoryModel(int categortID, String categoryName, String detail) {
-        this.categortID = categortID;
+    public CategoryModel(int categoryID, String categoryName, String detail) {
+        this.categoryID = categoryID;
         this.categoryName = categoryName;
         this.detail = detail;
     }
 
-    public int getCategortID() {
-        return categortID;
+    public int getCategoryID() {
+        return categoryID;
     }
 
-    public void setCategortID(int categortID) {
-        this.categortID = categortID;
+    public void setCategoryID(int categoryID) {
+        this.categoryID = categoryID;
     }
 
     public String getCategoryName() {
@@ -49,7 +49,7 @@ public class CategoryModel {
 
     @Override
     public String toString() {
-        return "CategoryModel{" + "categortID=" + categortID + ", categoryName=" + categoryName + ", detail=" + detail + '}';
+        return "CategoryModel{" + "categoryID=" + categoryID + ", categoryName=" + categoryName + ", detail=" + detail + '}';
     }
 
     

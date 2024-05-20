@@ -70,12 +70,6 @@
                             <div class="page-header">
                                 <div class="page-block">
                                     <div class="row align-items-center">
-                                        <div class="col-md-8">
-                                            <div class="page-header-title">
-                                                <h5 class="m-b-10">Category Management</h5>
-                                                <p class="m-b-0">Quản lý danh mục của sản phẩm</p>
-                                            </div>
-                                        </div>
                                         <div class="col-md-4">
                                             <ul class="breadcrumb">
                                                 <li class="breadcrumb-item">
@@ -84,12 +78,16 @@
                                                 <li class="breadcrumb-item">
                                                     <a href="/category">Category Management</a>
                                                 </li>
+                                                <li class="breadcrumb-item">
+                                                    <a href="/category_create">Update Category</a>
+                                                </li>
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <!-- Page-header end -->
+
 
                             <div class="pcoded-inner-content">
                                 <!-- Main-body start -->
@@ -98,23 +96,8 @@
                                         <!-- Page-body start -->
                                         <div class="page-body">
                                             <div class="card">
-
                                                 <!-- Sub header table start -->
                                                 <div class="card-header">
-                                                    <div class="d-flex justify-content-between align-items-center pt-3">
-                                                        <div class="p-15 p-b-0 w-25">
-                                                            <form class="form-material" action="search_category" method="get">
-                                                                <div class="form-group form-primary">
-                                                                    <input type="text" name="text_search" class="form-control" value="${requestScope.text_search}"/>
-                                                                    <span class="form-bar"></span>
-                                                                    <label class="float-label"><i class="fa fa-search m-r-10"></i>Search Friend</label>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                        <button class="btn btn-primary waves-effect h-15" onclick="window.location.href ='/category_create'">
-                                                            Add New
-                                                        </button>
-                                                    </div>
                                                     <div class="card-header-right">
                                                         <ul class="list-unstyled card-option">
                                                             <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -127,38 +110,52 @@
                                                 </div>
                                                 <!-- Sub header table end -->
 
-                                                <div class="card-block table-border-style">
-                                                    <div class="table-responsive">
-                                                        <div class="container">
-                                                            <table class="table table-hover">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>#</th>
-                                                                        <th>Category Name</th>
-                                                                        <th>Detail</th>
-                                                                        <th class="text-right">Action</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <c:forEach items="${requestScope.cList}" var="c">
-                                                                        <tr>
-                                                                            <th scope="row">${c.categoryID}</th>
-                                                                            <td>${c.categoryName}</td>
-                                                                            <td class="limit-detail" style="cursor: pointer" data-toggle="tooltip" data-placement="top" title="${c.detail}">${c.detail}</td>
-                                                                            <td class="text-right pt-3">
-                                                                                <button class="btn btn-primary btn-sm">View</button>
-                                                                                <button class="btn btn-warning btn-sm" onclick="window.location.href = '/category_update?categoryID=${c.categoryID}'">Edit</button>
-                                                                                <button class="btn btn-danger btn-sm" onclick="confirm('Không thể xóa danh mục sản phẩm vì còn liên quan đến nhiều sản phẩm khác!!!')">Delete</button>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </c:forEach>
-                                                                </tbody>
-                                                            </table>
+                                                <div class="card-header">
+                                                    <div class="card-block w-75 m-auto">
+                                                        <c:set value="${requestScope.category}" var="c"/>
+                                                        <h3 class="text-center m-auto pb-5">Update Category</h3>
+                                                        <% if (request.getAttribute("error") != null) { %>
+                                                        <div class="alert alert-danger">
+                                                            <%= request.getAttribute("error") %>
                                                         </div>
+                                                        <% } %>
+                                                        <form class="form-material" action="category_update" method="post">
+                                                            <input
+                                                                type="number"
+                                                                name="categoryID"
+                                                                class="form-control"
+                                                                required
+                                                                minlength="3"
+                                                                maxlength="50"
+                                                                value="${c.categoryID}"
+                                                                hidden
+                                                                />
+                                                            <div class="form-group form-default">
+                                                                <label class="">Category Name</label>
+                                                                <input
+                                                                    type="text"
+                                                                    name="categoryName"
+                                                                    class="form-control"
+                                                                    required
+                                                                    minlength="3"
+                                                                    maxlength="50"
+                                                                    value="${c.categoryName}"
+                                                                    />
+                                                            </div>
+                                                            <div class="form-group form-default">
+                                                                <label class="">Detail</label>
+                                                                <textarea name="detail" class="form-control" 
+                                                                          required minlength="10" maxlength="500" 
+                                                                          style="height: 100px;">${c.detail}</textarea>
+                                                                <span class="form-bar"></span>
+                                                            </div>
+                                                            <div class="form-group form-default">
+                                                                <button class="btn btn-primary w-100" type="submit">Update Now</button>
+                                                            </div>
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- Hover table card end -->
                                         </div>
                                         <!-- Page-body end -->
                                     </div>
