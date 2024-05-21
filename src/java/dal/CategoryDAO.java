@@ -133,18 +133,21 @@ public class CategoryDAO extends DBContext {
         return 0;
     }
 
-    public List<Category> getAllCategoryByPage(int indexPage, int pageSize) {
+    public List<Category> getAllCategoryByPage(int indexPage, int pageSize, String sortType) {
         List<Category> list = new ArrayList<>();
+        if (!sortType.equalsIgnoreCase("ASC") && !sortType.equalsIgnoreCase("DESC")) {
+            sortType = "ASC"; 
+        }
         String sql = "SELECT [CategoryID]\n"
                 + "      ,[CategoryName]\n"
                 + "      ,[Detail]\n"
-                + "  FROM [SWP391_SU24].[dbo].[Category] "
-                + "ORDER BY [CategoryID] "
-                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+                + "  FROM [SWP391_SU24].[dbo].[Category]\n"
+                + "ORDER BY [CategoryID] " + sortType + "\n"
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1, (indexPage - 1) * pageSize); // Calculate offset
-            st.setInt(2, pageSize); // Number of rows to fetch
+            st.setInt(1, (indexPage - 1) * pageSize); 
+            st.setInt(2, pageSize); 
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Category c = new Category(
@@ -166,7 +169,7 @@ public class CategoryDAO extends DBContext {
 //        dao.updateCategory(2, "Cafe", "Cà phê là một loại đồ uống phổ biến được làm từ hạt cà phê rang.");
         System.out.println(dao.getTotalCategory());
 
-        List<Category> list = dao.getAllCategoryByPage(2, 2);
+        List<Category> list = dao.getAllCategoryByPage(2, 2, "asc");
         for (Category i : list) {
             System.out.println(i.getCategoryName());
         }

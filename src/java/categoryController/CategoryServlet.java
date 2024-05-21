@@ -63,10 +63,19 @@ public class CategoryServlet extends HttpServlet {
         CategoryDAO categoryDAO = new CategoryDAO();
         String indexPage_raw = request.getParameter("indexPage");
         String sizePage_raw = request.getParameter("sizePage");
-        if (indexPage_raw == null && sizePage_raw == null) {
+        String sortType = request.getParameter("sortType");
+
+        // Kiểm tra và gán giá trị mặc định nếu cần
+        if (indexPage_raw == null) {
             indexPage_raw = "1";
+        }
+        if (sizePage_raw == null) {
             sizePage_raw = "2";
         }
+        if (sortType == null) {
+            sortType = "asc";
+        }
+
         int indexPage = Integer.parseInt(indexPage_raw);
         int sizePage = Integer.parseInt(sizePage_raw);
         int count = categoryDAO.getTotalCategory();
@@ -76,11 +85,13 @@ public class CategoryServlet extends HttpServlet {
             endPage++;
         }
 
-        List<Category> cList = categoryDAO.getAllCategoryByPage(indexPage, sizePage);
-        
+        // Lấy danh sách các Category đã được sắp xếp
+        List<Category> cList = categoryDAO.getAllCategoryByPage(indexPage, sizePage, sortType);
+
         request.setAttribute("indexPage", indexPage);
         request.setAttribute("endPage", endPage);
         request.setAttribute("sizePage", sizePage);
+        request.setAttribute("sortType", sortType); // Đặt thuộc tính sortType để sử dụng trong JSP
         request.setAttribute("cList", cList);
         request.getRequestDispatcher("category.jsp").forward(request, response);
     }
