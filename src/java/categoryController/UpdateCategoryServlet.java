@@ -81,19 +81,19 @@ public class UpdateCategoryServlet extends HttpServlet {
         String detail = request.getParameter("detail");
         int categoryID;
 
-//        if (categoryName == null || categoryName.trim().isEmpty()
-//                || detail == null || detail.trim().isEmpty()) {
-//            request.setAttribute("error", "Category Name and Detail are required.");
-//            request.getRequestDispatcher("/category_update.jsp").forward(request, response);
-//            return;
-//        }
-//
-//        if (categoryName.length() < 3 || categoryName.length() > 50
-//                || detail.length() < 10 || detail.length() > 500) {
-//            request.setAttribute("error", "Category Name must be between 3 and 50 characters long. Detail must be between 10 and 500 characters long.");
-//            request.getRequestDispatcher("/category_update.jsp").forward(request, response);
-//            return;
-//        }
+        if (categoryName == null || categoryName.trim().isEmpty()
+                || detail == null || detail.trim().isEmpty()) {
+            request.setAttribute("error", "Category Name and Detail are required.");
+            request.getRequestDispatcher("/category_update.jsp").forward(request, response);
+            return;
+        }
+
+        if (categoryName.length() < 3 || categoryName.length() > 50
+                || detail.length() < 10 || detail.length() > 500) {
+            request.setAttribute("error", "Category Name must be between 3 and 50 characters long. Detail must be between 10 and 500 characters long.");
+            request.getRequestDispatcher("/category_update.jsp").forward(request, response);
+            return;
+        }
         CategoryDAO categoryDAO = new CategoryDAO();
         try {
             categoryID = Integer.parseInt(categoryID_raw);
@@ -114,10 +114,4 @@ public class UpdateCategoryServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-    public static void main(String[] args) {
-        CategoryDAO dao = new CategoryDAO();
-        dao.updateCategory(3, "Tra sua", "Cà phê là một loại đồ uống phổ biến được làm từ hạt cà phê rang.");
-        System.out.println(dao.getCategoryById("1"));
-    }
 }
