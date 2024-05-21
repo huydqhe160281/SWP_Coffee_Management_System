@@ -19,8 +19,10 @@ public class CategoryDAO extends DBContext {
 
     public List<CategoryModel> getAllCategory() {
         List<CategoryModel> list = new ArrayList<>();
-        String sql = "SELECT * \n"
-                + "FROM category";
+        String sql = "SELECT [CategoryID]\n"
+                + "      ,[CategoryName]\n"
+                + "      ,[Detail]\n"
+                + "  FROM [SWP391_SU24].[dbo].[Category]";
         try {
             PreparedStatement st = connection.prepareStatement(sql);//mo ket noi voi sql
             ResultSet rs = st.executeQuery();
@@ -39,8 +41,10 @@ public class CategoryDAO extends DBContext {
 
     public List<CategoryModel> searchCategoryByName(String text) {
         List<CategoryModel> list = new ArrayList<>();
-        String sql = "SELECT * \n"
-                + "FROM category \n"
+        String sql = "SELECT [CategoryID]\n"
+                + "      ,[CategoryName]\n"
+                + "      ,[Detail]\n"
+                + "  FROM [SWP391_SU24].[dbo].[Category] \n"
                 + "WHERE LOWER(CategoryName) LIKE ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -92,8 +96,10 @@ public class CategoryDAO extends DBContext {
 
     public CategoryModel getCategoryById(String categoryId) {
         CategoryModel category = new CategoryModel();
-        String sql = "SELECT * "
-                + "FROM category "
+        String sql = "SELECT [CategoryID]\n"
+                + "      ,[CategoryName]\n"
+                + "      ,[Detail]\n"
+                + "  FROM [SWP391_SU24].[dbo].[Category]"
                 + "WHERE CategoryID = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -111,14 +117,55 @@ public class CategoryDAO extends DBContext {
         return category;
     }
 
+    public int getTotalCategory() {
+        String sql = "SELECT COUNT(*)\n"
+                + "  FROM [SWP391_SU24].[dbo].[Category]";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return 0;
+    }
+
+    public List<CategoryModel> getAllCategoryByPage(int indexPage, int pageSize) {
+        List<CategoryModel> list = new ArrayList<>();
+        String sql = "SELECT [CategoryID]\n"
+                + "      ,[CategoryName]\n"
+                + "      ,[Detail]\n"
+                + "  FROM [SWP391_SU24].[dbo].[Category] "
+                + "ORDER BY [CategoryID] "
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, (indexPage - 1) * pageSize); // Calculate offset
+            st.setInt(2, pageSize); // Number of rows to fetch
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                CategoryModel c = new CategoryModel(
+                        rs.getInt(1),
+                        rs.getString(2),
+                        rs.getString(3));
+                list.add(c);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+
 //    test data
     public static void main(String[] args) {
         CategoryDAO dao = new CategoryDAO();
 //        dao.createNewCategory("cafe", "Cà phê là một loại đồ uống phổ biến được làm từ hạt cà phê rang.");
 //        dao.updateCategory(2, "Cafe", "Cà phê là một loại đồ uống phổ biến được làm từ hạt cà phê rang.");
+        System.out.println(dao.getTotalCategory());
 
-        System.out.println(dao.getCategoryById("1"));
-        List<CategoryModel> list = dao.getAllCategory();
+        List<CategoryModel> list = dao.getAllCategoryByPage(2, 2);
         for (CategoryModel i : list) {
             System.out.println(i.getCategoryName());
         }

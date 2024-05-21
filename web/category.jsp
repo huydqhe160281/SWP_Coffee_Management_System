@@ -111,7 +111,7 @@
                                                                 </div>
                                                             </form>
                                                         </div>
-                                                        <button class="btn btn-primary waves-effect h-15" onclick="window.location.href ='/category_create'">
+                                                        <button class="btn btn-primary waves-effect h-15" onclick="window.location.href = '/category_create'">
                                                             Add New
                                                         </button>
                                                     </div>
@@ -133,10 +133,10 @@
                                                             <table class="table table-hover">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th>#</th>
-                                                                        <th>Category Name</th>
-                                                                        <th>Detail</th>
-                                                                        <th class="text-right">Action</th>
+                                                                        <th scope="col" class="font-weight-bold">#</th>
+                                                                        <th scope="col" class="font-weight-bold">Category Name</th>
+                                                                        <th scope="col" class="font-weight-bold">Detail</th>
+                                                                        <th scope="col" class="text-right font-weight-bold" >Action</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -144,16 +144,57 @@
                                                                         <tr>
                                                                             <th scope="row">${c.categoryID}</th>
                                                                             <td>${c.categoryName}</td>
-                                                                            <td class="limit-detail" style="cursor: pointer" data-toggle="tooltip" data-placement="top" title="${c.detail}">${c.detail}</td>
-                                                                            <td class="text-right pt-3">
+                                                                            <td class="limit-detail" style="cursor: pointer" data-toggle="tooltip" data-placement="top"
+                                                                                title="${c.detail}"
+                                                                                data-template='<div class="tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner" style="max-width: 400px; white-space: pre-wrap;"></div></div>'>
+                                                                                ${c.detail}
+                                                                            </td>                                                                            <td class="text-right pt-3">
                                                                                 <button class="btn btn-primary btn-sm">View</button>
                                                                                 <button class="btn btn-warning btn-sm" onclick="window.location.href = '/category_update?categoryID=${c.categoryID}'">Edit</button>
                                                                                 <button class="btn btn-danger btn-sm" onclick="confirm('Không thể xóa danh mục sản phẩm vì còn liên quan đến nhiều sản phẩm khác!!!')">Delete</button>
                                                                             </td>
                                                                         </tr>
                                                                     </c:forEach>
+
                                                                 </tbody>
                                                             </table>
+                                                            <div class="d-flex justify-content-end">
+                                                                <form id="sizeForm" method="get" action="category" class="mr-2">
+                                                                    <div class="input-group mb-3">
+                                                                        <div class="input-group-prepend">
+                                                                            <label class="input-group-text" for="inputGroupSelect01">Size</label>
+                                                                        </div>
+                                                                        <select class="custom-select w-25" id="inputGroupSelect01" name="sizePage" onchange="submitSizeForm()">
+                                                                            <option value="2" ${sizePage == 2 ? 'selected' : ''}>2</option>
+                                                                            <option value="5" ${sizePage == 5 ? 'selected' : ''}>5</option>
+                                                                            <option value="10" ${sizePage == 10 ? 'selected' : ''}>10</option>
+                                                                            <option value="20" ${sizePage == 20 ? 'selected' : ''}>20</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <input type="hidden" name="indexPage" value="${indexPage}" />
+                                                                </form>
+                                                                <nav aria-label="...">
+                                                                    <ul class="pagination">
+                                                                        <c:if test="${indexPage > 1}">
+                                                                            <li class="page-item">
+                                                                                <a class="page-link" href="category?indexPage=${indexPage - 1}&sizePage=${sizePage}" tabindex="-1">Previous</a>
+                                                                            </li>
+                                                                        </c:if>
+                                                                        <c:forEach var="i" begin="1" end="${endPage}">
+                                                                            <li class="page-item ${i == indexPage ? 'active' : ''}">
+                                                                                <a class="page-link" href="category?indexPage=${i}&sizePage=${sizePage}">${i} <c:if test="${i == indexPage}"><span class="sr-only">(current)</span></c:if></a>
+                                                                                </li>
+                                                                        </c:forEach>
+                                                                        <c:if test="${indexPage < endPage}">
+                                                                            <li class="page-item">
+                                                                                <a class="page-link" href="category?indexPage=${indexPage + 1}&sizePage=${sizePage}">Next</a>
+                                                                            </li>
+                                                                        </c:if>
+                                                                    </ul>
+                                                                </nav>
+                                                            </div>
+
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -173,11 +214,11 @@
             </div>
         </div>
 
-        <script type="text/javascript">
-
-
+        <script>
+            function submitSizeForm() {
+                document.getElementById('sizeForm').submit();
+            }
         </script>
-
 
         <!-- Required Jquery -->
         <script type="text/javascript" src="assets/js/jquery/jquery.min.js"></script>

@@ -59,7 +59,26 @@ public class CategoryServlet extends HttpServlet {
         String currentPath = request.getRequestURI();
         request.setAttribute("currentPath", currentPath);
         CategoryDAO categoryDAO = new CategoryDAO();
-        List<CategoryModel> cList = categoryDAO.getAllCategory();
+        String indexPage_raw = request.getParameter("indexPage");
+        String sizePage_raw = request.getParameter("sizePage");
+        if (indexPage_raw == null && sizePage_raw == null) {
+            indexPage_raw = "1";
+            sizePage_raw = "2";
+        }
+        int indexPage = Integer.parseInt(indexPage_raw);
+        int sizePage = Integer.parseInt(sizePage_raw);
+        int count = categoryDAO.getTotalCategory();
+
+        int endPage = count / sizePage;
+        if (count % sizePage != 0) {
+            endPage++;
+        }
+
+        List<CategoryModel> cList = categoryDAO.getAllCategoryByPage(indexPage, sizePage);
+        
+        request.setAttribute("indexPage", indexPage);
+        request.setAttribute("endPage", endPage);
+        request.setAttribute("sizePage", sizePage);
         request.setAttribute("cList", cList);
         request.getRequestDispatcher("category.jsp").forward(request, response);
     }
