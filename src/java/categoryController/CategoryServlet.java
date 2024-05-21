@@ -4,6 +4,8 @@
  */
 package categoryController;
 
+import model.Category;
+import dal.CategoryDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -74,7 +76,7 @@ public class CategoryServlet extends HttpServlet {
             endPage++;
         }
 
-        List<CategoryModel> cList = categoryDAO.getAllCategoryByPage(indexPage, sizePage);
+        List<Category> cList = categoryDAO.getAllCategoryByPage(indexPage, sizePage);
         
         request.setAttribute("indexPage", indexPage);
         request.setAttribute("endPage", endPage);
@@ -109,8 +111,8 @@ public class CategoryServlet extends HttpServlet {
 
     public static void main(String[] args) {
         CategoryDAO dao = new CategoryDAO();
-        List<CategoryModel> list = dao.getAllCategory();
-        for (CategoryModel i : list) {
+        List<Category> list = dao.getAllCategory();
+        for (Category i : list) {
             System.out.println(i.getCategoryName());
         }
     }

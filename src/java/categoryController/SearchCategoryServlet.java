@@ -4,6 +4,8 @@
  */
 package categoryController;
 
+import model.Category;
+import dal.CategoryDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -63,7 +65,7 @@ public class SearchCategoryServlet extends HttpServlet {
         String text_search = request.getParameter("text_search");
 
         CategoryDAO categoryDAO = new CategoryDAO();
-        List<CategoryModel> cList = categoryDAO.searchCategoryByName(text_search);
+        List<Category> cList = categoryDAO.searchCategoryByName(text_search);
 //        request.setAttribute("text_search", text_search);
         request.setAttribute("cList", cList);
         request.getRequestDispatcher("category.jsp").forward(request, response);

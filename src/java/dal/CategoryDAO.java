@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package categoryController;
+package dal;
 
+import model.Category;
 import common.DBContext;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,8 +18,8 @@ import java.util.List;
  */
 public class CategoryDAO extends DBContext {
 
-    public List<CategoryModel> getAllCategory() {
-        List<CategoryModel> list = new ArrayList<>();
+    public List<Category> getAllCategory() {
+        List<Category> list = new ArrayList<>();
         String sql = "SELECT [CategoryID]\n"
                 + "      ,[CategoryName]\n"
                 + "      ,[Detail]\n"
@@ -27,7 +28,7 @@ public class CategoryDAO extends DBContext {
             PreparedStatement st = connection.prepareStatement(sql);//mo ket noi voi sql
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                CategoryModel c = new CategoryModel(
+                Category c = new Category(
                         rs.getInt(1),
                         rs.getString(2),
                         rs.getString(3));
@@ -39,8 +40,8 @@ public class CategoryDAO extends DBContext {
         return list;
     }
 
-    public List<CategoryModel> searchCategoryByName(String text) {
-        List<CategoryModel> list = new ArrayList<>();
+    public List<Category> searchCategoryByName(String text) {
+        List<Category> list = new ArrayList<>();
         String sql = "SELECT [CategoryID]\n"
                 + "      ,[CategoryName]\n"
                 + "      ,[Detail]\n"
@@ -51,7 +52,7 @@ public class CategoryDAO extends DBContext {
             st.setString(1, "%" + text + "%");
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                CategoryModel c = new CategoryModel(
+                Category c = new Category(
                         rs.getInt(1),
                         rs.getString(2),
                         rs.getString(3));
@@ -94,8 +95,8 @@ public class CategoryDAO extends DBContext {
         }
     }
 
-    public CategoryModel getCategoryById(String categoryId) {
-        CategoryModel category = new CategoryModel();
+    public Category getCategoryById(String categoryId) {
+        Category category = new Category();
         String sql = "SELECT [CategoryID]\n"
                 + "      ,[CategoryName]\n"
                 + "      ,[Detail]\n"
@@ -106,7 +107,7 @@ public class CategoryDAO extends DBContext {
             st.setString(1, categoryId);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                category = new CategoryModel(
+                category = new Category(
                         rs.getInt("CategoryID"),
                         rs.getString("CategoryName"),
                         rs.getString("Detail"));
@@ -132,8 +133,8 @@ public class CategoryDAO extends DBContext {
         return 0;
     }
 
-    public List<CategoryModel> getAllCategoryByPage(int indexPage, int pageSize) {
-        List<CategoryModel> list = new ArrayList<>();
+    public List<Category> getAllCategoryByPage(int indexPage, int pageSize) {
+        List<Category> list = new ArrayList<>();
         String sql = "SELECT [CategoryID]\n"
                 + "      ,[CategoryName]\n"
                 + "      ,[Detail]\n"
@@ -146,7 +147,7 @@ public class CategoryDAO extends DBContext {
             st.setInt(2, pageSize); // Number of rows to fetch
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                CategoryModel c = new CategoryModel(
+                Category c = new Category(
                         rs.getInt(1),
                         rs.getString(2),
                         rs.getString(3));
@@ -165,8 +166,8 @@ public class CategoryDAO extends DBContext {
 //        dao.updateCategory(2, "Cafe", "Cà phê là một loại đồ uống phổ biến được làm từ hạt cà phê rang.");
         System.out.println(dao.getTotalCategory());
 
-        List<CategoryModel> list = dao.getAllCategoryByPage(2, 2);
-        for (CategoryModel i : list) {
+        List<Category> list = dao.getAllCategoryByPage(2, 2);
+        for (Category i : list) {
             System.out.println(i.getCategoryName());
         }
     }
