@@ -24,6 +24,10 @@
         <servlet-name>UpdateCategoryServlet</servlet-name>
         <servlet-class>categoryController.UpdateCategoryServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DiscountServlet</servlet-name>
+        <servlet-class>Discount.DiscountServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductServlet</servlet-name>
         <url-pattern>/product</url-pattern>
@@ -43,6 +47,10 @@
     <servlet-mapping>
         <servlet-name>UpdateCategoryServlet</servlet-name>
         <url-pattern>/category_update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DiscountServlet</servlet-name>
+        <url-pattern>/discount</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
