@@ -90,11 +90,34 @@ public class CategoryDAO extends DBContext {
         }
     }
 
+    public CategoryModel getCategoryById(String categoryId) {
+        CategoryModel category = new CategoryModel();
+        String sql = "SELECT * "
+                + "FROM category "
+                + "WHERE CategoryID = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, categoryId);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                category = new CategoryModel(
+                        rs.getInt("CategoryID"),
+                        rs.getString("CategoryName"),
+                        rs.getString("Detail"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return category;
+    }
+
 //    test data
     public static void main(String[] args) {
         CategoryDAO dao = new CategoryDAO();
 //        dao.createNewCategory("cafe", "Cà phê là một loại đồ uống phổ biến được làm từ hạt cà phê rang.");
 //        dao.updateCategory(2, "Cafe", "Cà phê là một loại đồ uống phổ biến được làm từ hạt cà phê rang.");
+
+        System.out.println(dao.getCategoryById("1"));
         List<CategoryModel> list = dao.getAllCategory();
         for (CategoryModel i : list) {
             System.out.println(i.getCategoryName());

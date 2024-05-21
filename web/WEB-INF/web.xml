@@ -20,6 +20,10 @@
         <servlet-name>CreateNewCategoryServlet</servlet-name>
         <servlet-class>categoryController.CreateNewCategoryServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdateCategoryServlet</servlet-name>
+        <servlet-class>categoryController.UpdateCategoryServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductServlet</servlet-name>
         <url-pattern>/product</url-pattern>
@@ -35,6 +39,10 @@
     <servlet-mapping>
         <servlet-name>CreateNewCategoryServlet</servlet-name>
         <url-pattern>/category_create</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateCategoryServlet</servlet-name>
+        <url-pattern>/category_update</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
