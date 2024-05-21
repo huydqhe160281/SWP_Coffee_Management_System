@@ -4,6 +4,8 @@
  */
 package categoryController;
 
+import model.Category;
+import dal.CategoryDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -59,7 +61,7 @@ public class UpdateCategoryServlet extends HttpServlet {
         request.setAttribute("currentPath", currentPath);
         String categoryID = request.getParameter("categoryID");
         CategoryDAO categoryDAO = new CategoryDAO();
-        CategoryModel category = categoryDAO.getCategoryById(categoryID);
+        Category category = categoryDAO.getCategoryById(categoryID);
 
         request.setAttribute("category", category);
         request.getRequestDispatcher("updateCategory.jsp").forward(request, response);

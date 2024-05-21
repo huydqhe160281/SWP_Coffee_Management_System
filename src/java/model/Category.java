@@ -2,22 +2,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package categoryController;
+package model;
 
 /**
  *
  * @author ADMIN
  */
-public class CategoryModel {
+public class Category {
 
     private int categoryID;
     private String categoryName;
     private String detail;
 
-    public CategoryModel() {
+    public Category() {
     }
 
-    public CategoryModel(int categoryID, String categoryName, String detail) {
+    public Category(int categoryID, String categoryName, String detail) {
         this.categoryID = categoryID;
         this.categoryName = categoryName;
         this.detail = detail;
