@@ -136,7 +136,7 @@ public class CategoryDAO extends DBContext {
     public List<Category> getAllCategoryByPage(int indexPage, int pageSize, String sortType) {
         List<Category> list = new ArrayList<>();
         if (!sortType.equalsIgnoreCase("ASC") && !sortType.equalsIgnoreCase("DESC")) {
-            sortType = "ASC"; 
+            sortType = "ASC";
         }
         String sql = "SELECT [CategoryID]\n"
                 + "      ,[CategoryName]\n"
@@ -146,8 +146,8 @@ public class CategoryDAO extends DBContext {
                 + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1, (indexPage - 1) * pageSize); 
-            st.setInt(2, pageSize); 
+            st.setInt(1, (indexPage - 1) * pageSize);
+            st.setInt(2, pageSize);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Category c = new Category(
@@ -162,12 +162,27 @@ public class CategoryDAO extends DBContext {
         return list;
     }
 
+    public boolean isCategoryNameExist(String categoryName) {
+        String sql = "SELECT COUNT(*) FROM [dbo].[Category] WHERE [CategoryName] = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, categoryName);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+
 //    test data
     public static void main(String[] args) {
         CategoryDAO dao = new CategoryDAO();
 //        dao.createNewCategory("cafe", "Cà phê là một loại đồ uống phổ biến được làm từ hạt cà phê rang.");
 //        dao.updateCategory(2, "Cafe", "Cà phê là một loại đồ uống phổ biến được làm từ hạt cà phê rang.");
-        System.out.println(dao.getTotalCategory());
+        System.out.println(dao.isCategoryNameExist("cà phê"));
 
         List<Category> list = dao.getAllCategoryByPage(2, 2, "asc");
         for (Category i : list) {

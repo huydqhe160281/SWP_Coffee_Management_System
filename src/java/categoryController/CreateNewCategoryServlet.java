@@ -78,24 +78,32 @@ public class CreateNewCategoryServlet extends HttpServlet {
         if (categoryName == null || categoryName.trim().isEmpty()
                 || detail == null || detail.trim().isEmpty()) {
             request.setAttribute("error", "Category Name and Detail are required.");
-            request.getRequestDispatcher("/category_create.jsp").forward(request, response);
+            request.getRequestDispatcher("/createNewCategory.jsp").forward(request, response);
             return;
         }
 
         if (categoryName.length() < 3 || categoryName.length() > 50
                 || detail.length() < 10 || detail.length() > 500) {
             request.setAttribute("error", "Category Name must be between 3 and 50 characters long. Detail must be between 10 and 500 characters long.");
-            request.getRequestDispatcher("/category_create.jsp").forward(request, response);
+            request.getRequestDispatcher("/createNewCategory.jsp").forward(request, response);
             return;
         }
 
         CategoryDAO categoryDAO = new CategoryDAO();
         try {
+            // Check if category name already exists
+            if (categoryDAO.isCategoryNameExist(categoryName)) {
+                request.setAttribute("error", "Category Name already exists.");
+                request.getRequestDispatcher("/createNewCategory.jsp").forward(request, response);
+                return;
+            }
+
+            // If category name does not exist, create new category
             categoryDAO.createNewCategory(categoryName, detail);
             response.sendRedirect(request.getContextPath() + "/category");
         } catch (Exception e) {
             e.printStackTrace();
-//            response.sendRedirect(request.getContextPath() + "/error.jsp"); // Chuyển hướng đến trang lỗi
+            // Handle exception appropriately
         }
     }
 
