@@ -26,7 +26,7 @@
     </servlet>
     <servlet>
         <servlet-name>DiscountServlet</servlet-name>
-        <servlet-class>Discount.DiscountServlet</servlet-class>
+        <servlet-class>DiscountController.DiscountServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ProductServlet</servlet-name>

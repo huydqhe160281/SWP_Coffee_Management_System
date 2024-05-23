@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Discount;
+package dal;
 
+import model.Discount;
 import common.DBContext;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,14 +18,14 @@ import java.util.List;
  * @author Namqd
  */
 public class DiscountDAO extends DBContext{
-    public List<DiscountModel> getAllDiscounts() {
-        List<DiscountModel> discounts = new ArrayList<>();
-        String query = "SELECT * FROM Discounts";
+    public List<Discount> getAllDiscounts() {
+        List<Discount> discounts = new ArrayList<>();
+        String query = "SELECT * FROM Discount";
         try {
             PreparedStatement ps = connection.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                DiscountModel discount = new DiscountModel(
+                Discount discount = new Discount(
                         rs.getInt("DiscountID"),
                         rs.getInt("Value"),
                         rs.getString("Code"),
@@ -41,7 +42,7 @@ public class DiscountDAO extends DBContext{
         return discounts;
     }
 
-    public void addDiscount(DiscountModel discount) {
+    public void addDiscount(Discount discount) {
         String query = "INSERT INTO Discounts (Value, Code, StartDate, EndDate, MaxDiscount, Quantity) VALUES (?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement ps = connection.prepareStatement(query);
