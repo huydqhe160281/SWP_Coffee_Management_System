@@ -11,13 +11,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  *
  * @author Namqd
  */
-public class DiscountDAO extends DBContext{
+public class DiscountDAO extends DBContext {
+
     public List<Discount> getAllDiscounts() {
         List<Discount> discounts = new ArrayList<>();
         String query = "SELECT * FROM Discount";
@@ -58,6 +60,58 @@ public class DiscountDAO extends DBContext{
         }
     }
 
+    public List<Discount> searchDiscounts(String code, Integer value, Date startDate, Date endDate) {
+        List<Discount> discounts = new ArrayList<>();
+        StringBuilder query = new StringBuilder("SELECT * FROM Discount WHERE 1=1");
+
+        // Thêm các điều kiện tìm kiếm vào câu truy vấn
+        if (code != null && !code.isEmpty()) {
+            query.append(" AND Code LIKE ?");
+        }
+        if (value != null) {
+            query.append(" AND Value = ?");
+        }
+        if (startDate != null) {
+            query.append(" AND StartDate <= ?");
+        }
+        if (endDate != null) {
+            query.append(" AND EndDate >= ?");
+        }
+
+        try ( Connection conn = this.connection;  PreparedStatement ps = conn.prepareStatement(query.toString())) {
+
+            int index = 1;
+            if (code != null && !code.isEmpty()) {
+                ps.setString(index++, "%" + code + "%");
+            }
+            if (value != null) {
+                ps.setInt(index++, value);
+            }
+            if (startDate != null) {
+                ps.setDate(index++, new java.sql.Date(startDate.getTime()));
+            }
+            if (endDate != null) {
+                ps.setDate(index++, new java.sql.Date(endDate.getTime()));
+            }
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                discounts.add(new Discount(
+                        rs.getInt("DiscountID"),
+                        rs.getInt("Value"),
+                        rs.getString("Code"),
+                        rs.getDate("StartDate"),
+                        rs.getDate("EndDate"),
+                        rs.getDouble("MaxDiscount"),
+                        rs.getInt("Quantity")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return discounts;
+    }
+
     public void deleteDiscount(int discountID) {
         String query = "DELETE FROM Discounts WHERE DiscountID = ?";
         try {
@@ -68,5 +122,5 @@ public class DiscountDAO extends DBContext{
             e.printStackTrace();
         }
     }
-    
+
 }

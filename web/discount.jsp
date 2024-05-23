@@ -43,6 +43,29 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
+        .search-form {
+            display: flex;
+            align-items: center; /* Căn chỉnh các phần tử theo trục dọc */
+            gap: 10px; /* Khoảng cách giữa các phần tử */
+        }
+        .search-form input[type="text"],
+        .search-form input[type="number"],
+        .search-form input[type="date"] {
+            flex: 1; /* Mỗi input sẽ có độ rộng bằng nhau */
+            padding: 2px; /* Padding cho input để tăng kích thước click */
+            margin: 0 2px; /* Khoảng cách giữa các input */
+        }
+        .search-form input[type="submit"] {
+            padding: 10px 20px; /* Padding cho nút submit để dễ dàng click */
+            cursor: pointer; /* Con trỏ chuột khi di chuyển vào nút */
+            background-color: #007bff; /* Màu nền cho nút */
+            color: white; /* Màu chữ cho nút */
+            border: none; /* Bỏ đường viền */
+            border-radius: 3px;
+        }
+        .search-form input[type="submit"]:hover {
+            background-color: #0056b3; /* Màu khi hover */
+        }
     </style>
     <body>
 
@@ -82,7 +105,7 @@
                                                     <a href="index.html"> <i class="fa fa-home"></i> </a>
                                                 </li>
                                                 <li class="breadcrumb-item">
-                                                    <a href="/category">Discount Management</a>
+                                                    <a href="/discount">Discount Management</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -102,18 +125,18 @@
                                                 <!-- Sub header table start -->
                                                 <div class="card-header">
                                                     <div class="d-flex justify-content-between align-items-center pt-3">
-                                                        <div class="p-15 p-b-0 w-25">
-                                                            <form class="form-material" action="search_category" method="get">
-                                                                <div class="form-group form-primary">
-                                                                    <input type="text" name="text_search" class="form-control" value="${requestScope.text_search}"/>
-                                                                    <span class="form-bar"></span>
-                                                                    <label class="float-label"><i class="fa fa-search m-r-10"></i>Search</label>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                        <button class="btn btn-primary waves-effect h-15" onclick="window.location.href ='/discount_create'">
+                                                        <button class="btn btn-primary waves-effect h-15" onclick="window.location.href = '/discount_create'">
                                                             Add New
                                                         </button>
+                                                    </div>
+                                                    <div class="p-15 p-b-0 w-25">
+                                                        <form class="search-form" action="discount_search" method="post">
+                                                            Code: <input type="text" name="code" />
+                                                            Value: <input type="number" name="value" />
+                                                            Start Date: <input type="date" name="startDate" />
+                                                            End Date: <input type="date" name="endDate" />
+                                                            <input type="submit" value="Search" />
+                                                        </form>
                                                     </div>
                                                     <div class="card-header-right">
                                                         <ul class="list-unstyled card-option">
@@ -147,11 +170,11 @@
                                                                     <c:forEach items="${requestScope.discounts}" var="discount">
                                                                         <tr>
                                                                             <th scope="row">${discount.discountID}</th>
-                                                                            <td>${discount.value}</td>
+                                                                            <td>${discount.value} %</td>
                                                                             <td>${discount.code}</td>
                                                                             <td>${discount.startDate}</td>
                                                                             <td>${discount.endDate}</td>
-                                                                            <td>${discount.maxDiscount}</td>
+                                                                            <td>${discount.maxDiscount} đ</td>
                                                                             <td>${discount.quantity}</td>
                                                                             <td class="text-right pt-3">
                                                                                 <button class="btn btn-primary btn-sm">View</button>
