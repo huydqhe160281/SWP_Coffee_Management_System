@@ -127,10 +127,10 @@
                                                 </div>
                                                 <!-- Sub header table end -->
 
-                                                <div class="card-block table-border-style">
-                                                    <div class="table-responsive">
-                                                        <div class="container">
-                                                            <table class="table table-hover">
+                                                <div class="card-block table-border-style w-100">
+                                                    <div class="table-responsive w-100">
+                                                        <div class="container w-100">
+                                                            <table class="table table-hover w-100">
                                                                 <thead>
                                                                     <tr>
                                                                         <th scope="col" class="font-weight-bold">#</th>
@@ -153,8 +153,9 @@
                                                                                 title="${c.detail}"
                                                                                 data-template='<div class="tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner" style="max-width: 400px; white-space: pre-wrap;"></div></div>'>
                                                                                 ${c.detail}
-                                                                            </td>                                                                            <td class="text-right pt-3">
-                                                                                <button class="btn btn-primary btn-sm">View</button>
+                                                                            </td>                                                                            
+                                                                            <td class="text-right pt-3">
+                                                                                <button class="btn btn-primary btn-sm" onclick="window.location.href = '/category_detail?categoryID=${c.categoryID}'">View</button>
                                                                                 <button class="btn btn-warning btn-sm" onclick="window.location.href = '/category_update?categoryID=${c.categoryID}'">Edit</button>
                                                                                 <button class="btn btn-danger btn-sm" onclick="confirm('Không thể xóa danh mục sản phẩm vì còn liên quan đến nhiều sản phẩm khác!!!')">Delete</button>
                                                                             </td>
