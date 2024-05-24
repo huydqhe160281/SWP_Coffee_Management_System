@@ -51,6 +51,14 @@
                     <span class="pcoded-mcaret"></span>
                 </a>
             </li>
+            <li class="${fn:contains(currentPath, '/discount') ? 'active' : ''}">
+                <a href="/discount" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-receipt"></i><b>B</b></span>
+                    <span class="pcoded-mtext">Discount Management</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+
         </ul>
         <div class="pcoded-navigation-label">General</div>
         <ul class="pcoded-item pcoded-left-item">
