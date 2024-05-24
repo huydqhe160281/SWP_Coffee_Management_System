@@ -3,20 +3,25 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package Discount;
+package DiscountController;
 
+import dal.DiscountDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import model.Discount;
 
 /**
  *
  * @author Namqd
  */
-public class DiscountServlet extends HttpServlet {
+public class DiscountSearchServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -33,10 +38,10 @@ public class DiscountServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet DiscountServlet</title>");  
+            out.println("<title>Servlet DiscountSearchServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet DiscountServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet DiscountSearchServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -66,7 +71,29 @@ public class DiscountServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        String code = request.getParameter("code");
+        String valueStr = request.getParameter("value");
+        Integer value = null;
+        if (valueStr != null && !valueStr.isEmpty()) {
+            value = Integer.parseInt(valueStr);
+        }
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date startDate = null, endDate = null;
+        try {
+            if (request.getParameter("startDate") != null && !request.getParameter("startDate").isEmpty()) {
+                startDate = format.parse(request.getParameter("startDate"));
+            }
+            if (request.getParameter("endDate") != null && !request.getParameter("endDate").isEmpty()) {
+                endDate = format.parse(request.getParameter("endDate"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        DiscountDAO dao = new DiscountDAO();
+        List<Discount> discounts = dao.searchDiscounts(code, value, startDate, endDate);
+        request.setAttribute("discounts", discounts);
+        request.getRequestDispatcher("/discount.jsp").forward(request, response);
     }
 
     /** 
