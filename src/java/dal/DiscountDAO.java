@@ -45,7 +45,7 @@ public class DiscountDAO extends DBContext {
     }
 
     public void addDiscount(Discount discount) {
-        String query = "INSERT INTO Discounts (Value, Code, StartDate, EndDate, MaxDiscount, Quantity) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Discount (Value, Code, StartDate, EndDate, MaxDiscount, Quantity) VALUES (?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setInt(1, discount.getValue());
@@ -113,7 +113,7 @@ public class DiscountDAO extends DBContext {
     }
 
     public void deleteDiscount(int discountID) {
-        String query = "DELETE FROM Discounts WHERE DiscountID = ?";
+        String query = "DELETE FROM Discount WHERE DiscountID = ?";
         try {
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setInt(1, discountID);
