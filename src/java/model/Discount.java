@@ -18,11 +18,12 @@ public class Discount {
     private Date EndDate;
     private double MaxDiscount;
     private int Quantity;
-
+    private boolean Status;
+    
     public Discount() {
     }
 
-    public Discount(int DiscountID, int Value, String Code, Date StartDate, Date EndDate, double MaxDiscount, int Quantity) {
+    public Discount(int DiscountID, int Value, String Code, Date StartDate, Date EndDate, double MaxDiscount, int Quantity, boolean Status) {
         this.DiscountID = DiscountID;
         this.Value = Value;
         this.Code = Code;
@@ -30,6 +31,7 @@ public class Discount {
         this.EndDate = EndDate;
         this.MaxDiscount = MaxDiscount;
         this.Quantity = Quantity;
+        this.Status = Status;
     }
 
     public int getDiscountID() {
@@ -87,6 +89,16 @@ public class Discount {
     public void setQuantity(int Quantity) {
         this.Quantity = Quantity;
     }
+
+    public boolean isStatus() {
+        return Status;
+    }
+
+    public void setStatus(boolean Status) {
+        this.Status = Status;
+    }
+    
+    
     
     
 }

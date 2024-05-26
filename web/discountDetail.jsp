@@ -189,6 +189,7 @@
                                                             <p>End Date: <%= discount.getEndDate() %></p>
                                                             <p>Max Discount (VND): <%= discount.getMaxDiscount() %></p>
                                                             <p>Quantity: <%= discount.getQuantity() %></p>
+                                                            <p>Status: <%= discount.isStatus() %></p>
                                                             <% } %>
                                                             <a href="/discount">Back to list</a>
                                                         </div>

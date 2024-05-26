@@ -34,7 +34,8 @@ public class DiscountDAO extends DBContext {
                         rs.getDate("StartDate"),
                         rs.getDate("EndDate"),
                         rs.getDouble("MaxDiscount"),
-                        rs.getInt("Quantity")
+                        rs.getInt("Quantity"),
+                        rs.getBoolean("Status")
                 );
                 discounts.add(discount);
             }
@@ -59,8 +60,9 @@ public class DiscountDAO extends DBContext {
                 Date endDate = rs.getDate("EndDate");
                 double maxDiscount = rs.getDouble("MaxDiscount");
                 int quantity = rs.getInt("Quantity");
-
-                discount = new Discount(discountID, value, code, startDate, endDate, maxDiscount, quantity);
+                boolean status = rs.getBoolean("Status");
+                
+                discount = new Discount(discountID, value, code, startDate, endDate, maxDiscount, quantity, status);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -70,7 +72,7 @@ public class DiscountDAO extends DBContext {
     }
 
     public void addDiscount(Discount discount) {
-        String query = "INSERT INTO Discount (Value, Code, StartDate, EndDate, MaxDiscount, Quantity) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Discount (Value, Code, StartDate, EndDate, MaxDiscount, Quantity, Status) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setInt(1, discount.getValue());
@@ -79,6 +81,7 @@ public class DiscountDAO extends DBContext {
             ps.setDate(4, new java.sql.Date(discount.getEndDate().getTime()));
             ps.setDouble(5, discount.getMaxDiscount());
             ps.setInt(6, discount.getQuantity());
+            ps.setBoolean(7, discount.isStatus());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -87,7 +90,7 @@ public class DiscountDAO extends DBContext {
 
     public void updateDiscount(Discount discount) {
         try {
-            String query = "UPDATE Discount SET code=?, value=?, startDate=?, endDate=?, maxDiscount=?, quantity=? WHERE discountID=?";
+            String query = "UPDATE Discount SET Code=?, Value=?, startDate=?, EndDate=?, MaxDiscount=?, Quantity=?, Status = ? WHERE DiscountID=?";
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setString(1, discount.getCode());
             ps.setInt(2, discount.getValue());
@@ -95,7 +98,8 @@ public class DiscountDAO extends DBContext {
             ps.setDate(4, new java.sql.Date(discount.getEndDate().getTime()));
             ps.setDouble(5, discount.getMaxDiscount());
             ps.setInt(6, discount.getQuantity());
-            ps.setInt(7, discount.getDiscountID());
+            ps.setBoolean(7, discount.isStatus());
+            ps.setInt(8, discount.getDiscountID());
             ps.executeUpdate();
             ps.close();
             connection.close();
@@ -147,7 +151,8 @@ public class DiscountDAO extends DBContext {
                         rs.getDate("StartDate"),
                         rs.getDate("EndDate"),
                         rs.getDouble("MaxDiscount"),
-                        rs.getInt("Quantity")
+                        rs.getInt("Quantity"),
+                        rs.getBoolean("Status")
                 ));
             }
         } catch (SQLException e) {
@@ -167,4 +172,18 @@ public class DiscountDAO extends DBContext {
         }
     }
 
+    public boolean isCodeExist(String code, int excludeDiscountId) {
+    String query = "SELECT COUNT(*) FROM Discount WHERE Code = ? AND DiscountID <> ?";
+    try (PreparedStatement ps = connection.prepareStatement(query)) {
+        ps.setString(1, code);
+        ps.setInt(2, excludeDiscountId);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1) > 0;  // Returns true if any row exists with the same code
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
 }

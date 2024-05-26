@@ -104,7 +104,7 @@
                                                 <div class="card-header">
                                                     <h3 class="text-center">Update Discount</h3>
                                                     <% if (request.getAttribute("error") != null) { %>
-                                                        <div class="alert alert-danger">
+                                                    <div class="alert alert-danger" style="text-align: center;">
                                                             <%= request.getAttribute("error").toString() %>
                                                         </div>
                                                     <% } %>
@@ -119,6 +119,7 @@
                                                             End Date: <input type="date" name="endDate" value="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(discount.getEndDate()) %>" required><br>
                                                             Max Discount (VND): <input type="number" name="maxDiscount" value="<%= discount.getMaxDiscount() %>" required><br>
                                                             Quantity: <input type="number" name="quantity" value="<%= discount.getQuantity() %>" required><br>
+                                                            Status: <input type="text" name="status" value="<%= discount.isStatus() %>"/>
                                                             <input type="submit" value="Update">
                                                         </form>
                                                     <% } else { %>

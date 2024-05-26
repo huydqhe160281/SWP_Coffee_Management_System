@@ -163,6 +163,7 @@
                                                                         <th>End Date</th>
                                                                         <th>Max Discount</th>
                                                                         <th>Quantity</th>
+                                                                        <th>Status</th>
                                                                         <th class="text-right">Action</th>
                                                                     </tr>
                                                                 </thead>
@@ -176,6 +177,7 @@
                                                                             <td>${discount.endDate}</td>
                                                                             <td>${discount.maxDiscount} đ</td>
                                                                             <td>${discount.quantity}</td>
+                                                                            <td>${discount.status}</td>
                                                                             <td class="text-right pt-3">
                                                                                 <button class="btn btn-primary btn-sm" onclick="window.location.href = '/discount_view_detail?discountID=${discount.discountID}'">View</button>
                                                                                 <button class="btn btn-warning btn-sm" onclick="window.location.href = '/discount_update?discountID=${discount.discountID}'">Edit</button>
