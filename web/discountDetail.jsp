@@ -1,9 +1,9 @@
-<%--
-    Document   : category
-    Created on : May 20, 2024, 8:38:20 PM
-    Author     : ADMIN
+<%-- 
+    Document   : discountDetail
+    Created on : May 26, 2024, 8:55:59 PM
+    Author     : Namqd
 --%>
-
+<%@ page import="model.Discount" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -43,48 +43,78 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
-        .form-material {
-            background-color: #ffffff;
+        body {
+            font-family: 'Open Sans', sans-serif;
+            color: #333;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: #333;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+
+        .table-responsive {
+            margin-top: 20px;
+            background: #ffffff;
+            border: 1px solid #ddd;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            width: 50%;
-            margin: auto;
         }
 
-        /* Tăng độ rõ ràng và đẹp mắt cho các trường nhập liệu */
-        .form-material input[type="text"],
-        .form-material input[type="number"],
-        .form-material input[type="date"] {
+        input[type="text"], input[type="number"], input[type="date"], input[type="submit"] {
             width: 100%;
             padding: 10px;
-            margin-bottom: 10px;
+            margin: 10px 0;
+            display: inline-block;
             border: 1px solid #ccc;
             border-radius: 4px;
+            box-sizing: border-box;
         }
 
-        /* Nút gửi với hiệu ứng hover */
-        .form-material input[type="submit"] {
-            width: 100%;
-            padding: 10px;
+        input[type="submit"] {
+            background-color: #4CAF50;
             color: white;
-            background-color: #5cb85c;
             border: none;
-            border-radius: 4px;
             cursor: pointer;
         }
 
-        .form-material input[type="submit"]:hover {
-            background-color: #45a045;
+        input[type="submit"]:hover {
+            background-color: #45a049;
         }
 
-        /* Hiệu ứng cho các thông báo lỗi */
         .alert-danger {
-            color: white;
-            background-color: #f44336;
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
             padding: 10px;
-            border-radius: 4px;
             margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .limit-detail {
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
     </style>
     <body>
@@ -113,6 +143,12 @@
                             <div class="page-header">
                                 <div class="page-block">
                                     <div class="row align-items-center">
+                                        <div class="col-md-8">
+                                            <div class="page-header-title">
+                                                <h5 class="m-b-10">Discount Management</h5>
+                                                <p class="m-b-0">Quản lý voucher</p>
+                                            </div>
+                                        </div>
                                         <div class="col-md-4">
                                             <ul class="breadcrumb">
                                                 <li class="breadcrumb-item">
@@ -121,9 +157,6 @@
                                                 <li class="breadcrumb-item">
                                                     <a href="/discount">Discount Management</a>
                                                 </li>
-                                                <li class="breadcrumb-item">
-                                                    <a href="/category_create">Create New Discount</a>
-                                                </li>
                                             </ul>
                                         </div>
                                     </div>
@@ -131,48 +164,38 @@
                             </div>
                             <!-- Page-header end -->
 
-
                             <div class="pcoded-inner-content">
                                 <!-- Main-body start -->
                                 <div class="main-body">
                                     <div class="page-wrapper">
                                         <!-- Page-body start -->
                                         <div class="page-body">
-                                            <div class="card">
-                                                <!-- Sub header table start -->
-                                                <div class="card-header">
-                                                    <div class="card-header-right">
-                                                        <ul class="list-unstyled card-option">
-                                                            <li><i class="fa fa fa-wrench open-card-option"></i></li>
-                                                            <li><i class="fa fa-window-maximize full-card"></i></li>
-                                                            <li><i class="fa fa-minus minimize-card"></i></li>
-                                                            <li><i class="fa fa-refresh reload-card"></i></li>
-                                                            <li><i class="fa fa-trash close-card"></i></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
+                                            <div class="card">                                              
                                                 <!-- Sub header table end -->
 
-                                                <div class="card-header">
-                                                    <div class="card-block w-75 m-auto">
-                                                        <h3 class="text-center m-auto pb-5">Create New Discount</h3>
-                                                        <% if (request.getAttribute("error") != null) { %>
-                                                        <div class="alert alert-danger">
-                                                            <%= request.getAttribute("error") %>
+                                                <div class="card-block table-border-style">
+                                                    <div class="table-responsive">
+                                                        <div class="container">
+                                                            <h1>Discount Details</h1>
+                                                            <% if (request.getAttribute("error") != null) { %>
+                                                            <p><%= request.getAttribute("error") %></p>
+                                                            <% } else if (request.getAttribute("discount") != null) {
+                                                                Discount discount = (Discount) request.getAttribute("discount");
+                                                            %>
+                                                            <p>ID: <%= discount.getDiscountID() %></p>
+                                                            <p>Code: <%= discount.getCode() %></p>
+                                                            <p>Value: <%= discount.getValue() %> %</p>
+                                                            <p>Start Date: <%= discount.getStartDate() %></p>
+                                                            <p>End Date: <%= discount.getEndDate() %></p>
+                                                            <p>Max Discount (VND): <%= discount.getMaxDiscount() %></p>
+                                                            <p>Quantity: <%= discount.getQuantity() %></p>
+                                                            <% } %>
+                                                            <a href="/discount">Back to list</a>
                                                         </div>
-                                                        <% } %>
-                                                        <form class="form-material" action="discount_create" method="post">
-                                                            Code: <input type="text" name="code" required><br>
-                                                            Value (%): <input type="number" name="value" required><br>
-                                                            Start Date: <input type="date" name="startDate" required><br>
-                                                            End Date: <input type="date" name="endDate" required><br>
-                                                            Max Discount (VND): <input type="number" name="maxDiscount" required><br>
-                                                            Quantity: <input type="number" name="quantity" required><br>
-                                                            <input type="submit" value="Create">
-                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <!-- Hover table card end -->
                                         </div>
                                         <!-- Page-body end -->
                                     </div>
@@ -209,4 +232,3 @@
         <script type="text/javascript" src="assets/js/script.js"></script>
     </body>
 </html>
-

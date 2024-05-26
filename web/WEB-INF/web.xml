@@ -36,6 +36,14 @@
         <servlet-name>CreateNewDiscountServlet</servlet-name>
         <servlet-class>DiscountController.CreateNewDiscountServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdateDiscountServlet</servlet-name>
+        <servlet-class>DiscountController.UpdateDiscountServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewDiscountServlet</servlet-name>
+        <servlet-class>DiscountController.ViewDiscountServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductServlet</servlet-name>
         <url-pattern>/product</url-pattern>
@@ -67,6 +75,14 @@
     <servlet-mapping>
         <servlet-name>CreateNewDiscountServlet</servlet-name>
         <url-pattern>/discount_create</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateDiscountServlet</servlet-name>
+        <url-pattern>/discount_update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewDiscountServlet</servlet-name>
+        <url-pattern>/discount_view_detail</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

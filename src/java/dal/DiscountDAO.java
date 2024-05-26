@@ -44,6 +44,31 @@ public class DiscountDAO extends DBContext {
         return discounts;
     }
 
+    public Discount getDiscountByID(int discountID) {
+        Discount discount = null;
+        String sql = "SELECT * FROM Discount WHERE DiscountID = ?";
+
+        try ( PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, discountID);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                int value = rs.getInt("Value");
+                String code = rs.getString("Code");
+                Date startDate = rs.getDate("StartDate");
+                Date endDate = rs.getDate("EndDate");
+                double maxDiscount = rs.getDouble("MaxDiscount");
+                int quantity = rs.getInt("Quantity");
+
+                discount = new Discount(discountID, value, code, startDate, endDate, maxDiscount, quantity);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return discount;
+    }
+
     public void addDiscount(Discount discount) {
         String query = "INSERT INTO Discount (Value, Code, StartDate, EndDate, MaxDiscount, Quantity) VALUES (?, ?, ?, ?, ?, ?)";
         try {
@@ -55,6 +80,25 @@ public class DiscountDAO extends DBContext {
             ps.setDouble(5, discount.getMaxDiscount());
             ps.setInt(6, discount.getQuantity());
             ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateDiscount(Discount discount) {
+        try {
+            String query = "UPDATE Discount SET code=?, value=?, startDate=?, endDate=?, maxDiscount=?, quantity=? WHERE discountID=?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, discount.getCode());
+            ps.setInt(2, discount.getValue());
+            ps.setDate(3, new java.sql.Date(discount.getStartDate().getTime()));
+            ps.setDate(4, new java.sql.Date(discount.getEndDate().getTime()));
+            ps.setDouble(5, discount.getMaxDiscount());
+            ps.setInt(6, discount.getQuantity());
+            ps.setInt(7, discount.getDiscountID());
+            ps.executeUpdate();
+            ps.close();
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

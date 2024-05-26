@@ -177,7 +177,7 @@
                                                                             <td>${discount.maxDiscount} đ</td>
                                                                             <td>${discount.quantity}</td>
                                                                             <td class="text-right pt-3">
-                                                                                <button class="btn btn-primary btn-sm">View</button>
+                                                                                <button class="btn btn-primary btn-sm" onclick="window.location.href = '/discount_view_detail?discountID=${discount.discountID}'">View</button>
                                                                                 <button class="btn btn-warning btn-sm" onclick="window.location.href = '/discount_update?discountID=${discount.discountID}'">Edit</button>
                                                                                 <button class="btn btn-danger btn-sm" onclick="confirm('Are you sure you want to delete this discount?')">Delete</button>
                                                                             </td>
