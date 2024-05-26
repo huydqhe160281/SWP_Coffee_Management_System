@@ -179,7 +179,10 @@
                                                                             <td class="text-right pt-3">
                                                                                 <button class="btn btn-primary btn-sm" onclick="window.location.href = '/discount_view_detail?discountID=${discount.discountID}'">View</button>
                                                                                 <button class="btn btn-warning btn-sm" onclick="window.location.href = '/discount_update?discountID=${discount.discountID}'">Edit</button>
-                                                                                <button class="btn btn-danger btn-sm" onclick="confirm('Are you sure you want to delete this discount?')">Delete</button>
+                                                                                <form style="display:inline;" action="discount_delete" method="get">
+                                                                                    <input type="hidden" name="discountID" value="${discount.discountID}" />
+                                                                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete discount with code: ${discount.code}?');">Delete</button>
+                                                                                </form>
                                                                             </td>
                                                                         </tr>
                                                                     </c:forEach>
