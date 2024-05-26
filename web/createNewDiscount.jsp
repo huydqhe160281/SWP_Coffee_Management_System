@@ -1,5 +1,5 @@
 <%--
-    Document   : Discount
+    Document   : category
     Created on : May 20, 2024, 8:38:20 PM
     Author     : ADMIN
 --%>
@@ -43,28 +43,48 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
-        .search-form {
-            display: flex;
-            align-items: center; /* Căn chỉnh các phần tử theo trục dọc */
-            gap: 10px; /* Khoảng cách giữa các phần tử */
+        .form-material {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 50%;
+            margin: auto;
         }
-        .search-form input[type="text"],
-        .search-form input[type="number"],
-        .search-form input[type="date"] {
-            flex: 1; /* Mỗi input sẽ có độ rộng bằng nhau */
-            padding: 2px; /* Padding cho input để tăng kích thước click */
-            margin: 0 2px; /* Khoảng cách giữa các input */
+
+        /* Tăng độ rõ ràng và đẹp mắt cho các trường nhập liệu */
+        .form-material input[type="text"],
+        .form-material input[type="number"],
+        .form-material input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
-        .search-form input[type="submit"] {
-            padding: 10px 20px; /* Padding cho nút submit để dễ dàng click */
-            cursor: pointer; /* Con trỏ chuột khi di chuyển vào nút */
-            background-color: #007bff; /* Màu nền cho nút */
-            color: white; /* Màu chữ cho nút */
-            border: none; /* Bỏ đường viền */
-            border-radius: 3px;
+
+        /* Nút gửi với hiệu ứng hover */
+        .form-material input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            color: white;
+            background-color: #5cb85c;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
         }
-        .search-form input[type="submit"]:hover {
-            background-color: #0056b3; /* Màu khi hover */
+
+        .form-material input[type="submit"]:hover {
+            background-color: #45a045;
+        }
+
+        /* Hiệu ứng cho các thông báo lỗi */
+        .alert-danger {
+            color: white;
+            background-color: #f44336;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
         }
     </style>
     <body>
@@ -93,12 +113,6 @@
                             <div class="page-header">
                                 <div class="page-block">
                                     <div class="row align-items-center">
-                                        <div class="col-md-8">
-                                            <div class="page-header-title">
-                                                <h5 class="m-b-10">Discount Management</h5>
-                                                <p class="m-b-0">Quản lý voucher</p>
-                                            </div>
-                                        </div>
                                         <div class="col-md-4">
                                             <ul class="breadcrumb">
                                                 <li class="breadcrumb-item">
@@ -107,12 +121,16 @@
                                                 <li class="breadcrumb-item">
                                                     <a href="/discount">Discount Management</a>
                                                 </li>
+                                                <li class="breadcrumb-item">
+                                                    <a href="/category_create">Create New Discount</a>
+                                                </li>
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <!-- Page-header end -->
+
 
                             <div class="pcoded-inner-content">
                                 <!-- Main-body start -->
@@ -121,23 +139,8 @@
                                         <!-- Page-body start -->
                                         <div class="page-body">
                                             <div class="card">
-
                                                 <!-- Sub header table start -->
                                                 <div class="card-header">
-                                                    <div class="d-flex justify-content-between align-items-center pt-3">
-                                                        <button class="btn btn-primary waves-effect h-15" onclick="window.location.href = '/discount_create'">
-                                                            Add New
-                                                        </button>
-                                                    </div>
-                                                    <div class="p-15 p-b-0 w-25">
-                                                        <form class="search-form" action="discount_search" method="post">
-                                                            Code: <input type="text" name="code" />
-                                                            Value: <input type="number" name="value" />
-                                                            Start Date: <input type="date" name="startDate" />
-                                                            End Date: <input type="date" name="endDate" />
-                                                            <input type="submit" value="Search" />
-                                                        </form>
-                                                    </div>
                                                     <div class="card-header-right">
                                                         <ul class="list-unstyled card-option">
                                                             <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -150,46 +153,26 @@
                                                 </div>
                                                 <!-- Sub header table end -->
 
-                                                <div class="card-block table-border-style">
-                                                    <div class="table-responsive">
-                                                        <div class="container">
-                                                            <table class="table table-hover">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>#</th>
-                                                                        <th>Value</th>
-                                                                        <th>Code</th>
-                                                                        <th>Start Date</th>
-                                                                        <th>End Date</th>
-                                                                        <th>Max Discount</th>
-                                                                        <th>Quantity</th>
-                                                                        <th class="text-right">Action</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <c:forEach items="${requestScope.discounts}" var="discount">
-                                                                        <tr>
-                                                                            <th scope="row">${discount.discountID}</th>
-                                                                            <td>${discount.value} %</td>
-                                                                            <td>${discount.code}</td>
-                                                                            <td>${discount.startDate}</td>
-                                                                            <td>${discount.endDate}</td>
-                                                                            <td>${discount.maxDiscount} đ</td>
-                                                                            <td>${discount.quantity}</td>
-                                                                            <td class="text-right pt-3">
-                                                                                <button class="btn btn-primary btn-sm" onclick="window.location.href = '/discount_view_detail?discountID=${discount.discountID}'">View</button>
-                                                                                <button class="btn btn-warning btn-sm" onclick="window.location.href = '/discount_update?discountID=${discount.discountID}'">Edit</button>
-                                                                                <button class="btn btn-danger btn-sm" onclick="confirm('Are you sure you want to delete this discount?')">Delete</button>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </c:forEach>
-                                                                </tbody>
-                                                            </table>
+                                                <div class="card-header">
+                                                    <div class="card-block w-75 m-auto">
+                                                        <h3 class="text-center m-auto pb-5">Create New Discount</h3>
+                                                        <% if (request.getAttribute("error") != null) { %>
+                                                        <div class="alert alert-danger">
+                                                            <%= request.getAttribute("error") %>
                                                         </div>
+                                                        <% } %>
+                                                        <form class="form-material" action="discount_create" method="post">
+                                                            Code: <input type="text" name="code" required><br>
+                                                            Value (%): <input type="number" name="value" required><br>
+                                                            Start Date: <input type="date" name="startDate" required><br>
+                                                            End Date: <input type="date" name="endDate" required><br>
+                                                            Max Discount (VND): <input type="number" name="maxDiscount" required><br>
+                                                            Quantity: <input type="number" name="quantity" required><br>
+                                                            <input type="submit" value="Create">
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- Hover table card end -->
                                         </div>
                                         <!-- Page-body end -->
                                     </div>
@@ -226,3 +209,4 @@
         <script type="text/javascript" src="assets/js/script.js"></script>
     </body>
 </html>
+

@@ -55,26 +55,8 @@ public class DiscountServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String currentPath = request.getRequestURI();
-        request.setAttribute("currentPath", currentPath);
-        String value = request.getParameter("value");
-        String code = request.getParameter("code");
-        String startDate = request.getParameter("startDate");
-        String endDate = request.getParameter("endDate");
-        String maxDiscount = request.getParameter("maxDiscount");
-        String quantity = request.getParameter("quantity");
-
-        Discount discount = new Discount();
-        discount.setValue(Integer.parseInt(value));
-        discount.setCode(code);
-        discount.setStartDate(java.sql.Date.valueOf(startDate));
-        discount.setEndDate(java.sql.Date.valueOf(endDate));
-        discount.setMaxDiscount(Double.parseDouble(maxDiscount));
-        discount.setQuantity(Integer.parseInt(quantity));
-
-        discountDAO.addDiscount(discount);
-        response.sendRedirect("discount");
+    throws ServletException, IOException {
+        
     }
 
     @Override
