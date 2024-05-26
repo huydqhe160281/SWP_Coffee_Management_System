@@ -91,7 +91,7 @@ public class Discount {
     }
 
     public boolean isStatus() {
-        return Status;
+        return getEndDate().after(new Date());
     }
 
     public void setStatus(boolean Status) {

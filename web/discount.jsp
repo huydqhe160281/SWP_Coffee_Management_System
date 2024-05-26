@@ -3,7 +3,9 @@
     Created on : May 20, 2024, 8:38:20 PM
     Author     : ADMIN
 --%>
-
+<%@ page import="java.util.Date" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="model.Discount" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -65,6 +67,12 @@
         }
         .search-form input[type="submit"]:hover {
             background-color: #0056b3; /* Màu khi hover */
+        }
+        .status-active {
+            color: green; /* Sets the text color to green */
+        }
+        .status-expired {
+            color: red; /* Sets the text color to red */
         }
     </style>
     <body>
@@ -177,7 +185,9 @@
                                                                             <td>${discount.endDate}</td>
                                                                             <td>${discount.maxDiscount} đ</td>
                                                                             <td>${discount.quantity}</td>
-                                                                            <td>${discount.status}</td>
+                                                                            <td class="${discount.status ? 'status-active' : 'status-expired'}">
+                                                                                ${discount.status ? 'On going' : 'Out of date'}
+                                                                            </td>
                                                                             <td class="text-right pt-3">
                                                                                 <button class="btn btn-primary btn-sm" onclick="window.location.href = '/discount_view_detail?discountID=${discount.discountID}'">View</button>
                                                                                 <button class="btn btn-warning btn-sm" onclick="window.location.href = '/discount_update?discountID=${discount.discountID}'">Edit</button>

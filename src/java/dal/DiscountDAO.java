@@ -35,7 +35,7 @@ public class DiscountDAO extends DBContext {
                         rs.getDate("EndDate"),
                         rs.getDouble("MaxDiscount"),
                         rs.getInt("Quantity"),
-                        rs.getBoolean("Status")
+                        new Date().before(rs.getDate("EndDate"))
                 );
                 discounts.add(discount);
             }
