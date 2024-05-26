@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package DiscountController;
 
 import dal.DiscountDAO;
@@ -20,12 +19,14 @@ import model.Discount;
  * @author Namqd
  */
 public class DiscountServlet extends HttpServlet {
-   
+
     private final DiscountDAO discountDAO = new DiscountDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
+        String currentPath = request.getRequestURI();
+        request.setAttribute("currentPath", currentPath);
         String action = request.getParameter("action");
         if (action == null) {
             action = "";
@@ -42,10 +43,11 @@ public class DiscountServlet extends HttpServlet {
                 request.getRequestDispatcher("/discount.jsp").forward(request, response);
                 break;
         }
-    } 
+    }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -53,7 +55,9 @@ public class DiscountServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
+        String currentPath = request.getRequestURI();
+        request.setAttribute("currentPath", currentPath);
         String value = request.getParameter("value");
         String code = request.getParameter("code");
         String startDate = request.getParameter("startDate");
@@ -72,6 +76,7 @@ public class DiscountServlet extends HttpServlet {
         discountDAO.addDiscount(discount);
         response.sendRedirect("discount");
     }
+
     @Override
     public String getServletInfo() {
         return "Short description";
