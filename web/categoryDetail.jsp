@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
@@ -42,6 +43,22 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+        }
+        .marquee {
+            color: red;
+            font-size: 16px;
+            font-weight: 600;
+            display: inline-block;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(100px); /* Bạn có thể thay đổi giá trị này */
+            }
         }
     </style>
     <body>
@@ -120,7 +137,7 @@
                                                                         <div class="table-responsive">
                                                                             <c:choose>
                                                                                 <c:when test="${empty requestScope.pList}">
-                                                                                    <p>There are no products in this category.</p>
+                                                                                    <p class="marquee">There are no products in this category.</p>
                                                                                 </c:when>
                                                                                 <c:otherwise>
                                                                                     <table class="table table-hover w-100">
@@ -144,8 +161,8 @@
                                                                                                 <tr>
                                                                                                     <th scope="row">${p.productID}</th>
                                                                                                     <td>${p.productName}</td> 
-                                                                                                    <td>${p.costPrice}</td>
-                                                                                                    <td>${p.price}</td>
+                                                                                                    <td><fmt:formatNumber value="${p.costPrice}" type="currency" pattern="###,### ₫" currencySymbol="₫" /></td>
+                                                                                                    <td><fmt:formatNumber value="${p.price}" type="currency" pattern="###,### ₫" currencySymbol="₫" /></td>
                                                                                                     <td class="limit-detail" style="cursor: pointer" 
                                                                                                         data-toggle="tooltip" data-placement="top"
                                                                                                         title="${p.description}"
