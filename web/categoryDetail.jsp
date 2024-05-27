@@ -118,36 +118,52 @@
                                                                     </div>
                                                                     <div class="card-block table-border-style w-100">
                                                                         <div class="table-responsive">
-                                                                            <table class="table table-hover">
-                                                                                <thead>
-                                                                                    <tr>
-                                                                                        <th>#</th>
-                                                                                        <th>First Name</th>
-                                                                                        <th>Last Name</th>
-                                                                                        <th>Username</th>
-                                                                                    </tr>
-                                                                                </thead>
-                                                                                <tbody>
-                                                                                    <tr>
-                                                                                        <th scope="row">1</th>
-                                                                                        <td>Mark</td>
-                                                                                        <td>Otto</td>
-                                                                                        <td>@mdo</td>
-                                                                                    </tr>
-                                                                                    <tr>
-                                                                                        <th scope="row">2</th>
-                                                                                        <td>Jacob</td>
-                                                                                        <td>Thornton</td>
-                                                                                        <td>@fat</td>
-                                                                                    </tr>
-                                                                                    <tr>
-                                                                                        <th scope="row">3</th>
-                                                                                        <td>Larry</td>
-                                                                                        <td>the Bird</td>
-                                                                                        <td>@twitter</td>
-                                                                                    </tr>
-                                                                                </tbody>
-                                                                            </table>
+                                                                            <c:choose>
+                                                                                <c:when test="${empty requestScope.pList}">
+                                                                                    <p>There are no products in this category.</p>
+                                                                                </c:when>
+                                                                                <c:otherwise>
+                                                                                    <table class="table table-hover w-100">
+                                                                                        <thead>
+                                                                                            <tr>
+                                                                                                <th scope="col" class="font-weight-bold">#</th>
+                                                                                                <th scope="col" class="font-weight-bold">
+                                                                                                    <a href="?sortType=${sortType == 'asc' ? 'desc' : 'asc'}&indexPage=${indexPage}&sizePage=${sizePage}" style="text-decoration: none; color: inherit;">
+                                                                                                        Product Name
+                                                                                                        <i class="fa fa-long-arrow-${sortType == 'asc' ? 'up' : 'down'}" aria-hidden="true"></i>
+                                                                                                    </a>
+                                                                                                </th>
+                                                                                                <th scope="col" class="font-weight-bold">Cost Price</th>
+                                                                                                <th scope="col" class="font-weight-bold">Price</th>
+                                                                                                <th scope="col" class="font-weight-bold">Description</th>
+                                                                                                <th scope="col" class="font-weight-bold">Status</th>
+                                                                                            </tr>
+                                                                                        </thead>
+                                                                                        <tbody>
+                                                                                            <c:forEach items="${requestScope.pList}" var="p">
+                                                                                                <tr>
+                                                                                                    <th scope="row">${p.productID}</th>
+                                                                                                    <td>${p.productName}</td> 
+                                                                                                    <td>${p.costPrice}</td>
+                                                                                                    <td>${p.price}</td>
+                                                                                                    <td class="limit-detail" style="cursor: pointer" 
+                                                                                                        data-toggle="tooltip" data-placement="top"
+                                                                                                        title="${p.description}"
+                                                                                                        data-template='<div class="tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner" style="max-width: 400px; white-space: pre-wrap;"></div></div>'>
+                                                                                                        ${p.description}
+                                                                                                    </td>   
+                                                                                                    <td>
+                                                                                                        <span class="${p.status ? 'text-success' : 'text-danger'}">
+                                                                                                            ${p.status ? 'Đang bán' : 'Đã dừng bán'}
+                                                                                                        </span>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            </c:forEach>
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </c:otherwise>
+                                                                            </c:choose>
+
                                                                         </div>
                                                                     </div>
                                                                 </div>

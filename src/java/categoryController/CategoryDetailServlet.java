@@ -5,6 +5,7 @@
 package categoryController;
 
 import dal.CategoryDAO;
+import dal.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import model.Category;
+import model.Product;
 
 /**
  *
@@ -64,12 +66,15 @@ public class CategoryDetailServlet extends HttpServlet {
 
         CategoryDAO categoryDAO = new CategoryDAO();
         Category category = categoryDAO.getCategoryById(categoryID);
+        ProductDAO productDAO = new ProductDAO();
+        List<Product> pList = productDAO.getProductByCategoryId(Integer.parseInt(categoryID));
 
         // Lấy danh sách các danh mục để hiển thị trong dropdown
         List<Category> cList = categoryDAO.getAllCategory();
 
         if (category != null) {
             request.setAttribute("category", category);
+            request.setAttribute("pList", pList);
             request.setAttribute("cList", cList);
             request.getRequestDispatcher("/categoryDetail.jsp").forward(request, response);
         } else {
@@ -95,11 +100,14 @@ public class CategoryDetailServlet extends HttpServlet {
 
         CategoryDAO categoryDAO = new CategoryDAO();
         Category category = categoryDAO.getCategoryById(categoryID);
+        ProductDAO productDAO = new ProductDAO();
+        List<Product> pList = productDAO.getProductByCategoryId(Integer.parseInt(categoryID));
 
         // Lấy danh sách các danh mục để hiển thị trong dropdown
         List<Category> cList = categoryDAO.getAllCategory();
 
         if (category != null) {
+            request.setAttribute("pList", pList);
             request.setAttribute("category", category);
             request.setAttribute("cList", cList);
             request.getRequestDispatcher("/categoryDetail.jsp").forward(request, response);
