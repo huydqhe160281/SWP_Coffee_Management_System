@@ -4,12 +4,20 @@
  */
 package dal;
 
+import common.DBContext;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import model.Product;
+
 /**
  *
  * @author ADMIN
  */
-public class ProductDAO {
-    
+public class ProductDAO extends DBContext {
+
 //    public void createNewCategory(String categoryName, String detail, List productIng ) {
 //        String sql = "INSERT INTO [dbo].[Category]\n"
 //                + "           ([CategoryName]\n"
@@ -46,4 +54,47 @@ public class ProductDAO {
 //            System.out.println(e);
 //        }
 //    }
+    public List<Product> getAllProduct() {
+        List<Product> list = new ArrayList<>();
+        String sql = "SELECT [ProductID]\n"
+                + "      ,[ProductName]\n"
+                + "      ,[CostPrice]\n"
+                + "      ,[Price]\n"
+                + "      ,[Image]\n"
+                + "      ,[Description]\n"
+                + "      ,[Recipe]\n"
+                + "      ,[Status]\n"
+                + "      ,[CategoryID]\n"
+                + "  FROM [dbo].[Product]";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Product p = new Product(
+                        rs.getInt("productID"),
+                        rs.getString("ProductName"),
+                        rs.getDouble("CostPrice"),
+                        rs.getDouble("Price"),
+                        rs.getString("Image"),
+                        rs.getString("Description"),
+                        rs.getString("Recipe"),
+                        rs.getBoolean("Status"),
+                        rs.getInt("CategoryID"));
+                list.add(p);
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+
+    public static void main(String[] args) {
+        ProductDAO dao = new ProductDAO();
+        List<Product> list = dao.getAllProduct();
+        for (Product i : list) {
+            System.out.println(i);
+        }
+    }
 }
