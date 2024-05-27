@@ -111,12 +111,12 @@
                                     <div class="form-group form-primary">
                                         <input type="text" name="user-name" class="form-control">
                                         <span class="form-bar"></span>
-                                        <label class="float-label">Choose Username</label>
+                                        <label class="float-label">Username</label>
                                     </div>
                                     <div class="form-group form-primary">
                                         <input type="text" name="email" class="form-control">
                                         <span class="form-bar"></span>
-                                        <label class="float-label">Your Email Address</label>
+                                        <label class="float-label">Email</label>
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-6">
@@ -134,22 +134,49 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group form-primary">
+                                                <input type="text" name="name" class="form-control">
+                                                <span class="form-bar"></span>
+                                                <label class="float-label">Name</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group form-primary">
+                                                <input type="text" name="phone" class="form-control">
+                                                <span class="form-bar"></span>
+                                                <label class="float-label">Phone</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-primary">
+                                        <input type="text" name="address" class="form-control">
+                                        <span class="form-bar"></span>
+                                        <label class="float-label">Address</label>
+                                    </div>
+                                    <div class="form-group form-primary">
+                                        <input type="text" name="role-id" class="form-control">
+                                        <span class="form-bar"></span>
+                                        <label class="float-label">Role</label>
+                                    </div>
                                     <div class="row m-t-25 text-left">
-                                        <div class="col-md-12">
+                                        <div class="col-md-12 mb-2">Campus</div>
+                                        <div class="col-md-12" style="user-select: none;">
                                             <div class="checkbox-fade fade-in-primary">
                                                 <label>
                                                     <input type="checkbox" value="">
                                                     <span class="cr"><i class="cr-icon icofont icofont-ui-check txt-primary"></i></span>
-                                                    <span class="text-inverse">I read and accept <a href="#">Terms &amp; Conditions.</a></span>
+                                                    <span class="text-inverse">Ha Noi</span>
                                                 </label>
                                             </div>
                                         </div>
-                                        <div class="col-md-12">
+                                        <div class="col-md-12" style="user-select: none;">
                                             <div class="checkbox-fade fade-in-primary">
                                                 <label>
                                                     <input type="checkbox" value="">
                                                     <span class="cr"><i class="cr-icon icofont icofont-ui-check txt-primary"></i></span>
-                                                    <span class="text-inverse">Send me the <a href="#!">Newsletter</a> weekly.</span>
+                                                    <span class="text-inverse">Hai Duong</span>
                                                 </label>
                                             </div>
                                         </div>
@@ -171,6 +198,7 @@
                                     </div>
                                 </div>
                             </div>
+
                         </form>
                     </div>
                     <!-- end of col-sm-12 -->
