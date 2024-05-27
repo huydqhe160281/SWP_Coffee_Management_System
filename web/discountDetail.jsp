@@ -116,6 +116,13 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
+        .status-active {
+            color: green;
+        }
+
+        .status-expired {
+            color: red;
+        }
     </style>
     <body>
 
@@ -189,6 +196,7 @@
                                                             <p>End Date: <%= discount.getEndDate() %></p>
                                                             <p>Max Discount (VND): <%= discount.getMaxDiscount() %></p>
                                                             <p>Quantity: <%= discount.getQuantity() %></p>
+                                                            <p>Status: <%= discount.isStatus() ? "<span class='status-active'>On going</span>" : "<span class='status-expired'>Out of date</span>" %></p>
                                                             <% } %>
                                                             <a href="/discount">Back to list</a>
                                                         </div>

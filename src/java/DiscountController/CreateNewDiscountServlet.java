@@ -35,6 +35,7 @@ public class CreateNewDiscountServlet extends HttpServlet {
         String endDate = request.getParameter("endDate");
         String maxDiscount = request.getParameter("maxDiscount");
         String quantity = request.getParameter("quantity");
+        String status = request.getParameter("status");
 
         Discount discount = new Discount();
         discount.setValue(Integer.parseInt(value));
@@ -43,6 +44,7 @@ public class CreateNewDiscountServlet extends HttpServlet {
         discount.setEndDate(java.sql.Date.valueOf(endDate));
         discount.setMaxDiscount(Double.parseDouble(maxDiscount));
         discount.setQuantity(Integer.parseInt(quantity));
+        discount.setStatus(Boolean.parseBoolean(status));
 
         discountDAO.addDiscount(discount);
         response.sendRedirect("discount");

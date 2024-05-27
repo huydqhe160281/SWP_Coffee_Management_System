@@ -35,24 +35,32 @@ public class UpdateDiscountServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         try {
-            int discountID = Integer.parseInt(request.getParameter("discountID"));
-            String value = request.getParameter("value");
-            String code = request.getParameter("code");
-            Date startDate = java.sql.Date.valueOf(request.getParameter("startDate"));
-            Date endDate = java.sql.Date.valueOf(request.getParameter("endDate"));
-            double maxDiscount = Double.parseDouble(request.getParameter("maxDiscount"));
-            int quantity = Integer.parseInt(request.getParameter("quantity"));
+        int discountID = Integer.parseInt(request.getParameter("discountID"));
+        String value = request.getParameter("value");
+        String code = request.getParameter("code");
+        Date startDate = java.sql.Date.valueOf(request.getParameter("startDate"));
+        Date endDate = java.sql.Date.valueOf(request.getParameter("endDate"));
+        double maxDiscount = Double.parseDouble(request.getParameter("maxDiscount"));
+        int quantity = Integer.parseInt(request.getParameter("quantity"));
+        boolean status = Boolean.parseBoolean(request.getParameter("status"));
 
-            Discount discount = new Discount(discountID, Integer.parseInt(value), code, startDate, endDate, maxDiscount, quantity);
+        // Check for duplicate code
+        if (discountDAO.isCodeExist(code, discountID)) {
+            request.setAttribute("error", "The discount code '" + code + "' is already in use. Please use a different code.");
+            request.setAttribute("discount", new Discount(discountID, Integer.parseInt(value), code, startDate, endDate, maxDiscount, quantity, status));
+            request.getRequestDispatcher("/updateDiscount.jsp").forward(request, response);
+        } else {
+            Discount discount = new Discount(discountID, Integer.parseInt(value), code, startDate, endDate, maxDiscount, quantity, status);
             discountDAO.updateDiscount(discount);
             response.sendRedirect("discount"); // Redirect to the discount list or confirmation page
-        } catch (NumberFormatException e) {
-            request.setAttribute("error", "Error processing input. Please ensure all fields are correctly filled.");
-            request.getRequestDispatcher("/updateDiscount.jsp").forward(request, response);
-        } catch (Exception e) {
-            request.setAttribute("error", "System error: " + e.getMessage());
-            request.getRequestDispatcher("/errorPage.jsp").forward(request, response);
         }
+    } catch (NumberFormatException e) {
+        request.setAttribute("error", "Error processing input. Please ensure all fields are correctly filled.");
+        request.getRequestDispatcher("/updateDiscount.jsp").forward(request, response);
+    } catch (Exception e) {
+        request.setAttribute("error", "System error: " + e.getMessage());
+        request.getRequestDispatcher("/errorPage.jsp").forward(request, response);
+    }
     }
 
     @Override

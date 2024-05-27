@@ -64,6 +64,12 @@
             border-radius: 4px;
             margin-bottom: 20px;
         }
+        .status-active {
+            color: green; /* Sets the text color to green */
+        }
+        .status-expired {
+            color: red; /* Sets the text color to red */
+        }
     </style>
     <body>
         <jsp:include page="./common/reloading.jsp"/>
@@ -79,7 +85,7 @@
                                 <div class="page-block">
                                     <div class="row align-items-center">
                                         <div```html
-                                        <div class="col-md-4">
+                                            <div class="col-md-4">
                                             <ul class="breadcrumb">
                                                 <li class="breadcrumb-item">
                                                     <a href="index.html"> <i class="fa fa-home"></i> </a>
@@ -104,25 +110,26 @@
                                                 <div class="card-header">
                                                     <h3 class="text-center">Update Discount</h3>
                                                     <% if (request.getAttribute("error") != null) { %>
-                                                        <div class="alert alert-danger">
-                                                            <%= request.getAttribute("error").toString() %>
-                                                        </div>
+                                                    <div class="alert alert-danger" style="text-align: center;">
+                                                        <%= request.getAttribute("error").toString() %>
+                                                    </div>
                                                     <% } %>
                                                     <% 
                                                         Discount discount = (Discount) request.getAttribute("discount");
                                                         if (discount != null) { %>
-                                                        <form class="form-material" action="discount_update" method="post">
-                                                            <input type="hidden" name="discountID" value="<%= discount.getDiscountID() %>">
-                                                            Code: <input type="text" name="code" value="<%= discount.getCode() %>" required><br>
-                                                            Value (%): <input type="number" name="value" value="<%= discount.getValue() %>" required><br>
-                                                            Start Date: <input type="date" name="startDate" value="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(discount.getStartDate()) %>" required><br>
-                                                            End Date: <input type="date" name="endDate" value="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(discount.getEndDate()) %>" required><br>
-                                                            Max Discount (VND): <input type="number" name="maxDiscount" value="<%= discount.getMaxDiscount() %>" required><br>
-                                                            Quantity: <input type="number" name="quantity" value="<%= discount.getQuantity() %>" required><br>
-                                                            <input type="submit" value="Update">
-                                                        </form>
+                                                    <form class="form-material" action="discount_update" method="post">
+                                                        <input type="hidden" name="discountID" value="<%= discount.getDiscountID() %>">
+                                                        Code: <input type="text" name="code" value="<%= discount.getCode() %>" required><br>
+                                                        Value (%): <input type="number" name="value" value="<%= discount.getValue() %>" required><br>
+                                                        Start Date: <input type="date" name="startDate" value="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(discount.getStartDate()) %>" required><br>
+                                                        End Date: <input type="date" name="endDate" value="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(discount.getEndDate()) %>" required><br>
+                                                        Max Discount (VND): <input type="number" name="maxDiscount" value="<%= discount.getMaxDiscount() %>" required><br>
+                                                        Quantity: <input type="number" name="quantity" value="<%= discount.getQuantity() %>" required><br>
+                                                        Status: <input type="text" class="<%= discount.isStatus() ? "status-active" : "status-expired" %>" name="status" value="<%= discount.isStatus() ? "On going" : "Out of date" %>" readonly />
+                                                        <input type="submit" value="Update">
+                                                    </form>
                                                     <% } else { %>
-                                                        <p>Discount information is not available. Please check the Discount ID.</p>
+                                                    <p>Discount information is not available. Please check the Discount ID.</p>
                                                     <% } %>
                                                 </div>
                                             </div>
