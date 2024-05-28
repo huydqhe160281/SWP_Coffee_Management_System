@@ -133,12 +133,14 @@
                                                             <table class="table table-hover w-100">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th scope="col" class="font-weight-bold">#</th>
                                                                         <th scope="col" class="font-weight-bold">
                                                                             <a href="?sortType=${sortType == 'asc' ? 'desc' : 'asc'}&indexPage=${indexPage}&sizePage=${sizePage}" style="text-decoration: none; color: inherit;">
-                                                                                Category Name
-                                                                                <i class="fa fa-long-arrow-${sortType == 'asc' ? 'up' : 'down'}" aria-hidden="true"></i>
+                                                                                #<i class="fa fa-long-arrow-${sortType == 'asc' ? 'up' : 'down'}" aria-hidden="true"></i>
                                                                             </a>
+
+                                                                        </th>
+                                                                        <th scope="col" class="font-weight-bold">
+                                                                                Category Name
                                                                         </th>
                                                                         <th scope="col" class="font-weight-bold">Detail</th>
                                                                         <th scope="col" class="text-right font-weight-bold" >Action</th>
