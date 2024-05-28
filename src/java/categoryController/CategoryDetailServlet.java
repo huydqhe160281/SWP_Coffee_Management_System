@@ -4,20 +4,23 @@
  */
 package categoryController;
 
-import model.Category;
 import dal.CategoryDAO;
+import dal.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import model.Category;
+import model.Product;
 
 /**
  *
  * @author ADMIN
  */
-public class UpdateCategoryServlet extends HttpServlet {
+public class CategoryDetailServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,10 +39,10 @@ public class UpdateCategoryServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UpdateCategoryServlet</title>");
+            out.println("<title>Servlet CategoryDetailServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet UpdateCategoryServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet CategoryDetailServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,11 +63,24 @@ public class UpdateCategoryServlet extends HttpServlet {
         String currentPath = request.getRequestURI();
         request.setAttribute("currentPath", currentPath);
         String categoryID = request.getParameter("categoryID");
+
         CategoryDAO categoryDAO = new CategoryDAO();
         Category category = categoryDAO.getCategoryById(categoryID);
+        ProductDAO productDAO = new ProductDAO();
+        List<Product> pList = productDAO.getProductByCategoryId(Integer.parseInt(categoryID));
 
-        request.setAttribute("category", category);
-        request.getRequestDispatcher("updateCategory.jsp").forward(request, response);
+        // Lấy danh sách các danh mục để hiển thị trong dropdown
+        List<Category> cList = categoryDAO.getAllCategory();
+
+        if (category != null) {
+            request.setAttribute("category", category);
+            request.setAttribute("pList", pList);
+            request.setAttribute("cList", cList);
+            request.getRequestDispatcher("/categoryDetail.jsp").forward(request, response);
+        } else {
+            // Handle the case where category is not found
+//            response.sendRedirect(request.getContextPath() + "/categoryNotFound.jsp");
+        }
     }
 
     /**
@@ -80,39 +96,24 @@ public class UpdateCategoryServlet extends HttpServlet {
             throws ServletException, IOException {
         String currentPath = request.getRequestURI();
         request.setAttribute("currentPath", currentPath);
-        String categoryID_raw = request.getParameter("categoryID");
-        String categoryName = request.getParameter("categoryName");
-        String detail = request.getParameter("detail");
-        int categoryID;
+        String categoryID = request.getParameter("categoryID");
 
-        if (categoryName == null || categoryName.trim().isEmpty()
-                || detail == null || detail.trim().isEmpty()) {
-            request.setAttribute("error", "Category Name and Detail are required.");
-            request.getRequestDispatcher("/updateCategory.jsp").forward(request, response);
-            return;
-        }
-
-        if (categoryName.length() < 3 || categoryName.length() > 50
-                || detail.length() < 10 || detail.length() > 500) {
-            request.setAttribute("error", "Category Name must be between 3 and 50 characters long. Detail must be between 10 and 500 characters long.");
-            request.getRequestDispatcher("/updateCategory.jsp").forward(request, response);
-            return;
-        }
         CategoryDAO categoryDAO = new CategoryDAO();
-        try {
-            Category category = categoryDAO.getCategoryById(categoryID_raw);
-            if (categoryDAO.isCategoryNameExist(categoryName)) {
-                request.setAttribute("error", "Category Name already exists.");
-                request.setAttribute("category", category);
-                request.getRequestDispatcher("/updateCategory.jsp").forward(request, response);
-                return;
-            }
-            categoryID = Integer.parseInt(categoryID_raw);
-            categoryDAO.updateCategory(categoryID, categoryName, detail);
-            response.sendRedirect(request.getContextPath() + "/category");
-        } catch (Exception e) {
-            e.printStackTrace();
-//            response.sendRedirect(request.getContextPath() + "/error.jsp"); // Chuyển hướng đến trang lỗi
+        Category category = categoryDAO.getCategoryById(categoryID);
+        ProductDAO productDAO = new ProductDAO();
+        List<Product> pList = productDAO.getProductByCategoryId(Integer.parseInt(categoryID));
+
+        // Lấy danh sách các danh mục để hiển thị trong dropdown
+        List<Category> cList = categoryDAO.getAllCategory();
+
+        if (category != null) {
+            request.setAttribute("pList", pList);
+            request.setAttribute("category", category);
+            request.setAttribute("cList", cList);
+            request.getRequestDispatcher("/categoryDetail.jsp").forward(request, response);
+        } else {
+            // Handle the case where category is not found
+//            response.sendRedirect(request.getContextPath() + "/categoryNotFound.jsp");
         }
     }
 
@@ -125,4 +126,5 @@ public class UpdateCategoryServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
 }

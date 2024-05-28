@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Discount;
+package model;
 
 import java.util.Date;
 
@@ -10,7 +10,7 @@ import java.util.Date;
  *
  * @author Namqd
  */
-public class DiscountModel {
+public class Discount {
     private int DiscountID;
     private int Value;
     private String Code;
@@ -18,11 +18,12 @@ public class DiscountModel {
     private Date EndDate;
     private double MaxDiscount;
     private int Quantity;
-
-    public DiscountModel() {
+    private boolean Status;
+    
+    public Discount() {
     }
 
-    public DiscountModel(int DiscountID, int Value, String Code, Date StartDate, Date EndDate, double MaxDiscount, int Quantity) {
+    public Discount(int DiscountID, int Value, String Code, Date StartDate, Date EndDate, double MaxDiscount, int Quantity, boolean Status) {
         this.DiscountID = DiscountID;
         this.Value = Value;
         this.Code = Code;
@@ -30,6 +31,7 @@ public class DiscountModel {
         this.EndDate = EndDate;
         this.MaxDiscount = MaxDiscount;
         this.Quantity = Quantity;
+        this.Status = Status;
     }
 
     public int getDiscountID() {
@@ -87,6 +89,16 @@ public class DiscountModel {
     public void setQuantity(int Quantity) {
         this.Quantity = Quantity;
     }
+
+    public boolean isStatus() {
+        return getEndDate().after(new Date());
+    }
+
+    public void setStatus(boolean Status) {
+        this.Status = Status;
+    }
+    
+    
     
     
 }
