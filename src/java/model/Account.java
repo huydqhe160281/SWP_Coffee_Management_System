@@ -12,6 +12,7 @@ public class Account {
     private int AccountID;
     private String Username;
     private String Password;
+    private String Name;
     private String Phone;
     private String Email;
     private String Address;
@@ -22,10 +23,11 @@ public class Account {
     public Account() {
     }
 
-    public Account(int AccountID, String Username, String Password, String Phone, String Email, String Address, boolean Status, int RoleID, int CampusID) {
+    public Account(int AccountID, String Username, String Password, String Name, String Phone, String Email, String Address, boolean Status, int RoleID, int CampusID) {
         this.AccountID = AccountID;
         this.Username = Username;
         this.Password = Password;
+        this.Name = Name;
         this.Phone = Phone;
         this.Email = Email;
         this.Address = Address;
@@ -56,6 +58,14 @@ public class Account {
 
     public void setPassword(String Password) {
         this.Password = Password;
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String Name) {
+        this.Name = Name;
     }
 
     public String getPhone() {
@@ -106,6 +116,4 @@ public class Account {
         this.CampusID = CampusID;
     }
     
-    
-
 }

@@ -52,6 +52,10 @@
         <servlet-name>DeleteDiscountServlet</servlet-name>
         <servlet-class>DiscountController.DeleteDiscountServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AccountServlet</servlet-name>
+        <servlet-class>AccountController.AccountServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductServlet</servlet-name>
         <url-pattern>/product</url-pattern>
@@ -76,11 +80,11 @@
         <servlet-name>DiscountServlet</servlet-name>
         <url-pattern>/discount</url-pattern>
     </servlet-mapping>
-   <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>CategoryDetailServlet</servlet-name>
         <url-pattern>/category_detail</url-pattern>
     </servlet-mapping>
-   <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>DiscountSearchServlet</servlet-name>
         <url-pattern>/discount_search</url-pattern>
     </servlet-mapping>
@@ -99,6 +103,10 @@
     <servlet-mapping>
         <servlet-name>DeleteDiscountServlet</servlet-name>
         <url-pattern>/discount_delete</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AccountServlet</servlet-name>
+        <url-pattern>/account</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
