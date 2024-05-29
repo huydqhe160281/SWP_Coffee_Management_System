@@ -19,7 +19,7 @@
                 <thead>
                     <tr>
                         <th>Order ID</th>
-                        <th>Account ID</th>
+                        <th>Account</th>
                         <th>Order Date</th>
                         <th>Actions</th>
                     </tr>
@@ -28,7 +28,7 @@
                     <c:forEach var="order" items="${orders}">
                         <tr>
                             <td>${order.orderID}</td>
-                            <td>${order.accountID}</td>
+                            <td>${order.accountName}</td>
                             <td>${order.orderDate}</td>
                             <td>
                                 <a href="order?action=view&orderId=${order.orderID}" class="btn btn-info">View</a>

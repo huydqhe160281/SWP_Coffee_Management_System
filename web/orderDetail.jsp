@@ -21,8 +21,8 @@
                     <td>${order.orderID}</td>
                 </tr>
                 <tr>
-                    <th>Account ID</th>
-                    <td>${order.accountID}</td>
+                    <th>Account</th>
+                    <td>${order.accountName}</td>
                 </tr>
                 <tr>
                     <th>Order Date</th>
@@ -34,21 +34,21 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>Product ID</th>
+                        <th>Product</th>
                         <th>Unit Price</th>
                         <th>Quantity</th>
                         <th>Note</th>
-                        <th>Discount ID</th>
+                        <th>Discount</th>
                     </tr>
                 </thead>
                 <tbody>
                     <c:forEach var="orderDetail" items="${orderDetails}">
                         <tr>
-                            <td>${orderDetail.productID}</td>
+                            <td>${orderDetail.productName}</td>
                             <td>${orderDetail.unitPrice}</td>
                             <td>${orderDetail.quantity}</td>
                             <td>${orderDetail.note}</td>
-                            <td>${orderDetail.discountID}</td>
+                            <td>${orderDetail.value}</td>
                         </tr>
                     </c:forEach>
                 </tbody>

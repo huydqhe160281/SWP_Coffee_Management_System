@@ -13,14 +13,16 @@ import java.util.Date;
 public class Order {
     private int orderID;
     private int accountID;
+    private String accountName;
     private Date orderDate;
 
     public Order() {
     }
 
-    public Order(int orderID, int accountID, Date orderDate) {
+    public Order(int orderID, int accountID, String accountName, Date orderDate) {
         this.orderID = orderID;
         this.accountID = accountID;
+        this.accountName = accountName;
         this.orderDate = orderDate;
     }
 
@@ -40,6 +42,14 @@ public class Order {
         this.accountID = accountID;
     }
 
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
+    }
+
     public Date getOrderDate() {
         return orderDate;
     }
@@ -47,6 +57,6 @@ public class Order {
     public void setOrderDate(Date orderDate) {
         this.orderDate = orderDate;
     }
-    
+
     
 }

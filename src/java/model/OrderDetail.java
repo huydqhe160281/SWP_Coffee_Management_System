@@ -11,21 +11,25 @@ package model;
 public class OrderDetail {
     private int orderID;
     private int productID;
+    private String productName;
     private double unitPrice;
     private int quantity;
     private String note;
     private int discountID;
+    private int value;
 
     public OrderDetail() {
     }
 
-    public OrderDetail(int orderID, int productID, double unitPrice, int quantity, String note, int discountID) {
+    public OrderDetail(int orderID, int productID, String productName, double unitPrice, int quantity, String note, int discountID, int value) {
         this.orderID = orderID;
         this.productID = productID;
+        this.productName = productName;
         this.unitPrice = unitPrice;
         this.quantity = quantity;
         this.note = note;
         this.discountID = discountID;
+        this.value = value;
     }
 
     public int getOrderID() {
@@ -42,6 +46,14 @@ public class OrderDetail {
 
     public void setProductID(int productID) {
         this.productID = productID;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public double getUnitPrice() {
@@ -75,6 +87,13 @@ public class OrderDetail {
     public void setDiscountID(int discountID) {
         this.discountID = discountID;
     }
-    
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
     
 }

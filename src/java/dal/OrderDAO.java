@@ -21,7 +21,9 @@ import model.OrderDetail;
 public class OrderDAO extends DBContext{
     public List<Order> getAllOrders() {
         List<Order> orders = new ArrayList<>();
-        String sql = "SELECT * FROM [Order]";
+        String sql = "SELECT o.OrderID, o.AccountID, a.Name AS AccountName, o.OrderDate " +
+                     "FROM [Order] o " +
+                     "JOIN Account a ON o.AccountID = a.AccountID";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
@@ -29,6 +31,7 @@ public class OrderDAO extends DBContext{
                 Order order = new Order(
                         rs.getInt("OrderID"),
                         rs.getInt("AccountID"),
+                        rs.getString("AccountName"),
                         rs.getDate("OrderDate")
                 );
                 orders.add(order);
@@ -40,7 +43,10 @@ public class OrderDAO extends DBContext{
     }
 
     public Order getOrderById(int orderId) {
-        String sql = "SELECT * FROM [Order] WHERE OrderID = ?";
+        String sql = "SELECT o.OrderID, o.AccountID, a.Name AS AccountName, o.OrderDate " +
+                     "FROM [Order] o " +
+                     "JOIN Account a ON o.AccountID = a.AccountID " +
+                     "WHERE o.OrderID = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, orderId);
             ResultSet rs = ps.executeQuery();
@@ -48,6 +54,7 @@ public class OrderDAO extends DBContext{
                 return new Order(
                         rs.getInt("OrderID"),
                         rs.getInt("AccountID"),
+                        rs.getString("AccountName"),
                         rs.getDate("OrderDate")
                 );
             }
@@ -59,7 +66,12 @@ public class OrderDAO extends DBContext{
 
     public List<OrderDetail> getOrderDetailsByOrderId(int orderId) {
         List<OrderDetail> orderDetails = new ArrayList<>();
-        String sql = "SELECT * FROM OrderDetail WHERE OrderID = ?";
+        String sql = "SELECT od.OrderID, od.ProductID, p.ProductName, od.UnitPrice, od.Quantity, od.Note, d.Value AS DiscountValue "
+                +    ", d.DiscountID" +
+                     "FROM OrderDetail od " +
+                     "JOIN Product p ON od.ProductID = p.ProductID " +
+                     "LEFT JOIN Discount d ON od.DiscountID = d.DiscountID " +
+                     "WHERE od.OrderID = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, orderId);
             ResultSet rs = ps.executeQuery();
@@ -67,10 +79,12 @@ public class OrderDAO extends DBContext{
                 OrderDetail orderDetail = new OrderDetail(
                         rs.getInt("OrderID"),
                         rs.getInt("ProductID"),
+                        rs.getString("ProductName"),
                         rs.getDouble("UnitPrice"),
                         rs.getInt("Quantity"),
                         rs.getString("Note"),
-                        rs.getInt("DiscountID")
+                        rs.getInt("DiscountID"),
+                        rs.getInt("Value")
                 );
                 orderDetails.add(orderDetail);
             }
