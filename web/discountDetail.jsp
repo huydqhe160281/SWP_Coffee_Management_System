@@ -198,7 +198,7 @@
                                                             <p>Quantity: <%= discount.getQuantity() %></p>
                                                             <p>Status: <%= discount.isStatus() ? "<span class='status-active'>On going</span>" : "<span class='status-expired'>Out of date</span>" %></p>
                                                             <% } %>
-                                                            <a href="/discount">Back to list</a>
+                                                            <a href="discount" class="btn btn-secondary mt-3" style="float: right;">Back</a>
                                                         </div>
                                                     </div>
                                                 </div>
