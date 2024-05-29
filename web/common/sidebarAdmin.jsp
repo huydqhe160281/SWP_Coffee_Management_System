@@ -69,7 +69,7 @@ prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
     <div class="pcoded-navigation-label">General</div>
     <ul class="pcoded-item pcoded-left-item">
       <li class="${fn:contains(currentPath, '/general') ? 'active' : ''}">
-        <a href="another-path.html" class="waves-effect waves-dark">
+        <a href="/general" class="waves-effect waves-dark">
           <span class="pcoded-micon"><i class="ti-receipt"></i><b>A</b></span>
           <span class="pcoded-mtext">General Management</span>
           <span class="pcoded-mcaret"></span>
