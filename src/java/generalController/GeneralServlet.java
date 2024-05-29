@@ -11,6 +11,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.General;
 
 /**
  *
@@ -59,8 +60,13 @@ public class GeneralServlet extends HttpServlet {
         String currentPath = request.getRequestURI();
         request.setAttribute("currentPath", currentPath);
         GeneralDAO generalDao = new GeneralDAO();
-        
-        request.getRequestDispatcher("general.jsp").forward(request, response);
+        try {
+            General general = generalDao.getLastGeneral();
+            request.setAttribute("general", general);
+            request.getRequestDispatcher("general.jsp").forward(request, response);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     /**
