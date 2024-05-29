@@ -64,7 +64,7 @@
         }
 
         /* Nút gửi với hiệu ứng hover */
-        .form-material input[type="submit"] {
+        .form-material input[type="submit"]  {
             width: 100%;
             padding: 10px;
             color: white;
@@ -170,6 +170,7 @@
                                                             Quantity: <input type="number" name="quantity" required><br>
                                                             <input type="submit" value="Create">
                                                         </form>
+                                                        <a href="discount" class="btn btn-secondary mt-3" style="float: right;">Back</a>
                                                     </div>
                                                 </div>
                                             </div>

@@ -131,6 +131,7 @@
                                                     <% } else { %>
                                                     <p>Discount information is not available. Please check the Discount ID.</p>
                                                     <% } %>
+                                                    <a href="discount" class="btn btn-secondary mt-3" style="float: right;">Back</a>
                                                 </div>
                                             </div>
                                         </div>
