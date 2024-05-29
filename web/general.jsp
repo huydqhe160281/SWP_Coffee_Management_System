@@ -101,18 +101,9 @@
 
                                                 <!-- Sub header table start -->
                                                 <div class="card-header">
-                                                    <div class="d-flex justify-content-between align-items-center pt-3">
-                                                        <div class="p-15 p-b-0 w-25">
-                                                            <form class="form-material" action="search_category" method="get">
-                                                                <div class="form-group form-primary">
-                                                                    <input type="text" name="text_search" class="form-control" value="${requestScope.text_search}"/>
-                                                                    <span class="form-bar"></span>
-                                                                    <label class="float-label"><i class="fa fa-search m-r-10"></i>Search Friend</label>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                        <button class="btn btn-primary waves-effect h-15" onclick="window.location.href = '/category_create'">
-                                                            Add New
+                                                    <div class="card-header-left">
+                                                        <button class="btn btn-warning waves-effect h-15" onclick="window.location.href = '/category_create'">
+                                                            Edit Information
                                                         </button>
                                                     </div>
                                                     <div class="card-header-right">
@@ -126,85 +117,112 @@
                                                     </div>
                                                 </div>
                                                 <!-- Sub header table end -->
+                                                <div class="card-header">
 
-                                                <div class="card-block table-border-style w-100">
-                                                    <div class="table-responsive w-100">
-                                                        <div class="container w-100">
-                                                            <table class="table table-hover w-100">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th scope="col" class="font-weight-bold">
-                                                                            <a href="?sortType=${sortType == 'asc' ? 'desc' : 'asc'}&indexPage=${indexPage}&sizePage=${sizePage}" style="text-decoration: none; color: inherit;">
-                                                                                #<i class="fa fa-long-arrow-${sortType == 'asc' ? 'up' : 'down'}" aria-hidden="true"></i>
-                                                                            </a>
-
-                                                                        </th>
-                                                                        <th scope="col" class="font-weight-bold">
-                                                                            Category Name
-                                                                        </th>
-                                                                        <th scope="col" class="font-weight-bold">Detail</th>
-                                                                        <th scope="col" class="text-right font-weight-bold" >Action</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                <c:forEach items="${requestScope.cList}" var="c">
-                                                                    <tr>
-                                                                        <th scope="row">${c.categoryID}</th>
-                                                                        <td>${c.categoryName}</td>
-                                                                        <td class="limit-detail" style="cursor: pointer" data-toggle="tooltip" data-placement="top"
-                                                                            title="${c.detail}"
-                                                                            data-template='<div class="tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner" style="max-width: 400px; white-space: pre-wrap;"></div></div>'>
-                                                                            ${c.detail}
-                                                                        </td>                                                                            
-                                                                        <td class="text-right pt-3">
-                                                                            <button class="btn btn-primary btn-sm" onclick="window.location.href = '/category_detail?categoryID=${c.categoryID}'">View</button>
-                                                                            <button class="btn btn-warning btn-sm" onclick="window.location.href = '/category_update?categoryID=${c.categoryID}'">Edit</button>
-                                                                            <button class="btn btn-danger btn-sm" onclick="confirm('Không thể xóa danh mục sản phẩm vì còn liên quan đến nhiều sản phẩm khác!!!')">Delete</button>
-                                                                        </td>
-                                                                    </tr>
-                                                                </c:forEach>
-
-                                                                </tbody>
-                                                            </table>
-                                                            <div class="d-flex justify-content-end">
-                                                                <form id="sizeForm" method="get" action="category" class="mr-2">
-                                                                    <div class="input-group mb-3">
-                                                                        <div class="input-group-prepend">
-                                                                            <label class="input-group-text" for="inputGroupSelect01">Size</label>
-                                                                        </div>
-                                                                        <select class="custom-select w-25" id="inputGroupSelect01" name="sizePage" onchange="submitSizeForm()">
-                                                                            <option value="2" ${sizePage == 2 ? 'selected' : ''}>2</option>
-                                                                            <option value="5" ${sizePage == 5 ? 'selected' : ''}>5</option>
-                                                                            <option value="10" ${sizePage == 10 ? 'selected' : ''}>10</option>
-                                                                            <option value="20" ${sizePage == 20 ? 'selected' : ''}>20</option>
-                                                                        </select>
-                                                                    </div>
-                                                                    <input type="hidden" name="indexPage" value="${indexPage}" />
-                                                                </form>
-                                                                <nav aria-label="...">
-                                                                    <ul class="pagination">
-                                                                        <c:if test="${indexPage > 1}">
-                                                                            <li class="page-item">
-                                                                                <a class="page-link" href="category?indexPage=${indexPage - 1}&sizePage=${sizePage}" tabindex="-1">Previous</a>
-                                                                            </li>
-                                                                        </c:if>
-                                                                        <c:forEach var="i" begin="1" end="${endPage}">
-                                                                            <li class="page-item ${i == indexPage ? 'active' : ''}">
-                                                                                <a class="page-link" href="category?indexPage=${i}&sizePage=${sizePage}">${i} <c:if test="${i == indexPage}"><span class="sr-only">(current)</span></c:if></a>
-                                                                            </li>
-                                                                        </c:forEach>
-                                                                        <c:if test="${indexPage < endPage}">
-                                                                            <li class="page-item">
-                                                                                <a class="page-link" href="category?indexPage=${indexPage + 1}&sizePage=${sizePage}">Next</a>
-                                                                            </li>
-                                                                        </c:if>
-                                                                    </ul>
-                                                                </nav>
-                                                            </div>
-
-
+                                                    <div class="card w-75 m-auto">
+                                                        <div class="card-header">
+                                                            <h5>General System Information</h5>
+                                                            <!--<span>Add class of <code>.form-control</code> with <code>&lt;input&gt;</code> tag</span>-->
+                                                        </div>
+                                                        <div class="card-block">
+                                                            <form class="form-material">
+                                                                <div
+                                                                    class="form-group form-default form-static-label"
+                                                                    >
+                                                                    <input
+                                                                        type="email"
+                                                                        name="generalID"
+                                                                        class="form-control"
+                                                                        placeholder="Enter Email"
+                                                                        hidden
+                                                                        />
+                                                                    <span class="form-bar"></span>
+                                                                </div>
+                                                                <div
+                                                                    class="form-group form-default form-static-label"
+                                                                    >
+                                                                    <input
+                                                                        type="email"
+                                                                        name="email"
+                                                                        class="form-control"
+                                                                        placeholder="Enter Email"
+                                                                        value="${general.email}"
+                                                                        disabled
+                                                                        />
+                                                                    <span class="form-bar"></span>
+                                                                    <label class="float-label">Email (exa@gmail.com)</label>
+                                                                </div>
+                                                                <div
+                                                                    class="form-group form-default form-static-label"
+                                                                    >
+                                                                    <input
+                                                                        type="number"
+                                                                        name="phone"
+                                                                        class="form-control"
+                                                                        placeholder="Enter Phone Number"
+                                                                        disabled
+                                                                        />
+                                                                    <span class="form-bar"></span>
+                                                                    <label class="float-label">Phone Number</label>
+                                                                </div>
+                                                                <div
+                                                                    class="form-group form-default form-static-label"
+                                                                    >
+                                                                    <input
+                                                                        type="text"
+                                                                        name="nameApp"
+                                                                        class="form-control"
+                                                                        placeholder="Enter Name of App/Web"
+                                                                        value="${general.nameApp}"
+                                                                        disabled
+                                                                        />
+                                                                    <span class="form-bar"></span>
+                                                                    <label class="float-label">Name of App/Web</label>
+                                                                </div>
+                                                                <div
+                                                                    class="form-group form-default form-static-label">
+                                                                    <input
+                                                                        type="text"
+                                                                        name="footer-email"
+                                                                        class="form-control"
+                                                                        placeholder="Enter Address"
+                                                                        value="${general.address}"
+                                                                        disabled
+                                                                        />
+                                                                    <span class="form-bar"></span>
+                                                                    <label class="float-label">Address</label>
+                                                                </div>
+                                                                <div
+                                                                    class="form-group form-default form-static-label"
+                                                                    >
+                                                                    <input
+                                                                        type="text"
+                                                                        name="logoImage"
+                                                                        class="form-control"
+                                                                        value="${general.logoImage}"
+                                                                        disabled
+                                                                        />
+                                                                    <span class="form-bar"></span>
+                                                                    <label class="float-label">Logo Image Url</label>
+                                                                </div>
+                                                                <div
+                                                                    class="form-group form-default form-static-label"
+                                                                    >
+                                                                    <input
+                                                                        type="text"
+                                                                        name="fivicoImage"
+                                                                        class="form-control"
+                                                                        maxlength="6"
+                                                                        value="${general.fivicoImage}"
+                                                                        disabled
+                                                                        />
+                                                                    <span class="form-bar"></span>
+                                                                    <label class="float-label">Favico Url</label>
+                                                                </div>
+                                                            </form>
                                                         </div>
                                                     </div>
+
                                                 </div>
                                             </div>
                                             <!-- Hover table card end -->
