@@ -65,6 +65,13 @@
                     <span class="pcoded-mcaret"></span>
                 </a>
             </li>
+            <li class="${fn:contains(currentPath, '/ingredient') ? 'active' : ''}">
+                <a href="/ingredient" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-receipt"></i><b>B</b></span>
+                    <span class="pcoded-mtext">Ingredient Management</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
         </ul>
         <div class="pcoded-navigation-label">General</div>
         <ul class="pcoded-item pcoded-left-item">
