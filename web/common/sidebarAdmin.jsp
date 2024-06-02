@@ -75,12 +75,10 @@
         </ul>
         <div class="pcoded-navigation-label">General</div>
         <ul class="pcoded-item pcoded-left-item">
-            <li class="pcoded-hasmenu active pcoded-trigger">
+            <li class="pcoded-hasmenu pcoded-trigger ${currentPath == '/general' || currentPath == '/general_update' ? 'active' : ''}"">
                 <a href="javascript:void(0)" class="waves-effect waves-dark">
-                    <span class="pcoded-micon"
-                          ><i class="ti-layout-grid2-alt"></i><b>BC</b></span
-                    >
-                    <span class="pcoded-mtext">Information Page</span>
+                    <span class="pcoded-micon"><i class="ti-id-badge"></i><b>BC</b></span>
+                    <span class="pcoded-mtext">Information Pages</span>
                     <span class="pcoded-mcaret"></span>
                 </a>
                 <ul class="pcoded-submenu">
