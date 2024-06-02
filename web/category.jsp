@@ -83,7 +83,7 @@
                                                                 <div class="form-group form-primary">
                                                                     <input type="text" name="text_search" class="form-control" value="${requestScope.text_search}"/>
                                                                     <span class="form-bar"></span>
-                                                                    <label class="float-label"><i class="fa fa-search m-r-10"></i>Search Friend</label>
+                                                                    <label class="float-label"><i class="fa fa-search m-r-10"></i>Search Field</label>
                                                                 </div>
                                                             </form>
                                                         </div>

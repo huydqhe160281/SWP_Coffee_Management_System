@@ -52,7 +52,7 @@
                 </a>
             </li>
             <li class="${fn:contains(currentPath, '/product') ? 'active' : ''}">
-                <a href="another-path.html" class="waves-effect waves-dark">
+                <a href="/product" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-receipt"></i><b>B</b></span>
                     <span class="pcoded-mtext">Product Management</span>
                     <span class="pcoded-mcaret"></span>
