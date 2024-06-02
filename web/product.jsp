@@ -115,29 +115,40 @@
                                                                             </a>
 
                                                                         </th>
-                                                                        <th scope="col" class="font-weight-bold">
-                                                                            Category Name
-                                                                        </th>
-                                                                        <th scope="col" class="font-weight-bold">Detail</th>
-                                                                        <th scope="col" class="text-right font-weight-bold" >Action</th>
+                                                                        <th>Product Name</th>
+                                                                        <th>Cost Price</th>
+                                                                        <th>Price</th>
+                                                                        <th>Description</th>
+                                                                        <th>Recipe</th>
+                                                                        <th>Status</th>
+                                                                        <th class="text-right">Action</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                <c:forEach items="${requestScope.iList}" var="i">
-<!--                                                                    <tr>
-                                                                        <th scope="row">${c.productID}</th>
-                                                                        <td>${c.productName}</td>
-                                                                        <td class="limit-detail" style="cursor: pointer" data-toggle="tooltip" data-placement="top"
-                                                                            title="${c.detail}"
-                                                                            data-template='<div class="tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner" style="max-width: 400px; white-space: pre-wrap;"></div></div>'>
-                                                                            ${c.detail}
-                                                                        </td>                                                                            
-                                                                        <td class="text-right pt-3">
-                                                                            <button class="btn btn-primary btn-sm" onclick="window.location.href = '/product_detail?productID=${c.productID}'">View</button>
-                                                                            <button class="btn btn-warning btn-sm" onclick="window.location.href = '/product_update?productID=${c.productID}'">Edit</button>
-                                                                        </td>
-                                                                    </tr>-->
-                                                                </c:forEach>
+                                                                    <c:forEach items="${requestScope.pList}" var="p">
+                                                                        <tr>
+                                                                            <th scope="row">${p.productID}</th>
+                                                                            <td>${p.productName}</td>
+                                                                            <td>${p.costPrice}</td>                                                                            
+                                                                            <td>${p.price}</td>                                                                            
+                                                                            <td class="limit-detail" style="cursor: pointer" data-toggle="tooltip" data-placement="top"
+                                                                                title="${p.description}"
+                                                                                data-template='<div class="tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner" style="max-width: 400px; white-space: pre-wrap;"></div></div>'>
+                                                                                ${p.description}
+                                                                            </td>   
+                                                                            <td class="limit-detail" style="cursor: pointer" data-toggle="tooltip" data-placement="top"
+                                                                                title="${p.recipe}"
+                                                                                data-template='<div class="tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner" style="max-width: 400px; white-space: pre-wrap;"></div></div>'>
+                                                                                ${p.recipe}
+                                                                            </td>   
+                                                                            <td>${p.status}</td>                                                                            
+
+                                                                            <td class="text-right pt-3">
+                                                                                <button class="btn btn-primary btn-sm" onclick="window.location.href = '/product_detail?productID=${c.productID}'">View</button>
+                                                                                <button class="btn btn-warning btn-sm" onclick="window.location.href = '/product_update?productID=${c.productID}'">Edit</button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </c:forEach>
 
                                                                 </tbody>
                                                             </table>
@@ -166,7 +177,7 @@
                                                                         <c:forEach var="i" begin="1" end="${endPage}">
                                                                             <li class="page-item ${i == indexPage ? 'active' : ''}">
                                                                                 <a class="page-link" href="product?indexPage=${i}&sizePage=${sizePage}">${i} <c:if test="${i == indexPage}"><span class="sr-only">(current)</span></c:if></a>
-                                                                            </li>
+                                                                                </li>
                                                                         </c:forEach>
                                                                         <c:if test="${indexPage < endPage}">
                                                                             <li class="page-item">

@@ -65,7 +65,7 @@ public class ProductDAO extends DBContext {
                 + "      ,[Recipe]\n"
                 + "      ,[Status]\n"
                 + "      ,[CategoryID]\n"
-                + "  FROM [dbo].[Product]";
+                + "  FROM [SWP391_SU24].[dbo].[Product]";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
@@ -101,7 +101,7 @@ public class ProductDAO extends DBContext {
                 + "      ,[Recipe]\n"
                 + "      ,[Status]\n"
                 + "      ,[CategoryID]\n"
-                + "  FROM [dbo].[Product]\n"
+                + "  FROM [SWP391_SU24].[dbo].[Product]\n"
                 + "  WHERE [CategoryID] = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -128,9 +128,65 @@ public class ProductDAO extends DBContext {
         return list;
     }
 
+    public int getTotalProduct() {
+        String sql = "SELECT COUNT(*)\n"
+                + "  FROM [SWP391_SU24].[dbo].[Product]";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return 0;
+    }
+
+    public List<Product> getAllProductByPage(int indexPage, int pageSize, String sortType) {
+        List<Product> list = new ArrayList<>();
+        if (!sortType.equalsIgnoreCase("ASC") && !sortType.equalsIgnoreCase("DESC")) {
+            sortType = "ASC";
+        }
+        String sql = "SELECT [ProductID]\n"
+                + "      ,[ProductName]\n"
+                + "      ,[CostPrice]\n"
+                + "      ,[Price]\n"
+                + "      ,[Image]\n"
+                + "      ,[Description]\n"
+                + "      ,[Recipe]\n"
+                + "      ,[Status]\n"
+                + "      ,[CategoryID]\n"
+                + "  FROM [SWP391_SU24].[dbo].[Product]\n"
+                + "ORDER BY [ProductID] " + sortType + "\n"
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, (indexPage - 1) * pageSize);
+            st.setInt(2, pageSize);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Product p = new Product(
+                        rs.getInt(1),
+                        rs.getString(2),
+                        rs.getDouble(3),
+                        rs.getDouble(4),
+                        rs.getString(5),
+                        rs.getString(6),
+                        rs.getString(7),
+                        rs.getBoolean(8),
+                        rs.getInt(9));
+                list.add(p);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+
     public static void main(String[] args) {
         ProductDAO dao = new ProductDAO();
-        List<Product> list = dao.getProductByCategoryId(1);
+        List<Product> list = dao.getAllProductByPage(1, 1, "asc");
         for (Product i : list) {
             System.out.println(i);
         }
