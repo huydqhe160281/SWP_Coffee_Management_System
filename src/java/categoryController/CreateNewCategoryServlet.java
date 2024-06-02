@@ -100,7 +100,7 @@ public class CreateNewCategoryServlet extends HttpServlet {
 
             // If category name does not exist, create new category
             categoryDAO.createNewCategory(categoryName, detail);
-            response.sendRedirect(request.getContextPath() + "/category");
+            response.sendRedirect("/category");
         } catch (Exception e) {
             e.printStackTrace();
             // Handle exception appropriately

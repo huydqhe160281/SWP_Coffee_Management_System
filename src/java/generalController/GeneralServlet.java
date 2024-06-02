@@ -4,6 +4,7 @@
  */
 package generalController;
 
+import com.google.gson.Gson;
 import dal.GeneralDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -62,7 +63,10 @@ public class GeneralServlet extends HttpServlet {
         GeneralDAO generalDao = new GeneralDAO();
         try {
             General general = generalDao.getLastGeneral();
-            request.setAttribute("general", general);
+            // Convert the General object to JSON
+            Gson gson = new Gson();
+            String generalJson = gson.toJson(general);
+            request.setAttribute("generalJson", generalJson);
             request.getRequestDispatcher("general.jsp").forward(request, response);
         } catch (Exception e) {
             System.out.println(e);

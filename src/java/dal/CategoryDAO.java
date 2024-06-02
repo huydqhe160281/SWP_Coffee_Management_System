@@ -181,12 +181,12 @@ public class CategoryDAO extends DBContext {
     public static void main(String[] args) {
         CategoryDAO dao = new CategoryDAO();
 //        dao.createNewCategory("cafe", "Cà phê là một loại đồ uống phổ biến được làm từ hạt cà phê rang.");
-//        dao.updateCategory(2, "Cafe", "Cà phê là một loại đồ uống phổ biến được làm từ hạt cà phê rang.");
-        System.out.println(dao.isCategoryNameExist("cà phê"));
+        dao.updateCategory(13, "Trà thái", "Trà thái hay còn gọi là trà Thái Lan là một loại trà được sử dụng phổ biến ở Thái Lan dùng để pha trà sữa.");
+//        System.out.println(dao.isCategoryNameExist("cà phê"));
 
-        List<Category> list = dao.getAllCategoryByPage(2, 2, "asc");
-        for (Category i : list) {
-            System.out.println(i.getCategoryName());
-        }
+//        List<Category> list = dao.getAllCategoryByPage(2, 2, "asc");
+//        for (Category i : list) {
+//            System.out.println(i.getCategoryName());
+//        }
     }
 }

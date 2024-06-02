@@ -51,27 +51,19 @@ public class GeneralDAO extends DBContext {
 
     public General getLastGeneral() {
         General general = null;
-        String sql = "SELECT TOP (1000) [GeneralID]\n"
-                + "      ,[Email]\n"
-                + "      ,[Phone]\n"
-                + "      ,[NameApp]\n"
-                + "      ,[Address]\n"
-                + "      ,[LogoImage]\n"
-                + "      ,[FivicoImage]\n"
-                + "  FROM [SWP391_SU24].[dbo].[General]\n"
-                + "  ORDER BY [GeneralID] DESC";
-        try {
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                int generalID = rs.getInt("generalID");
-                String email = rs.getString("email");
-                int phone = rs.getInt("phone");
-                String nameApp = rs.getString("nameApp");
-                String address = rs.getString("address");
-                String logoImage = rs.getString("logoImage");
-                String fivicoImage = rs.getString("fivicoImage");
+        String sql = "SELECT TOP 1 [GeneralID], [Email], [Phone], [NameApp], [Address], [LogoImage], [FivicoImage] "
+                + "FROM [SWP391_SU24].[dbo].[General] "
+                + "ORDER BY [GeneralID] DESC";
+        try ( PreparedStatement ps = connection.prepareStatement(sql);  ResultSet rs = ps.executeQuery()) {
 
+            if (rs.next()) {
+                int generalID = rs.getInt("GeneralID");
+                String email = rs.getString("Email");
+                int phone = rs.getInt("Phone");
+                String nameApp = rs.getString("NameApp");
+                String address = rs.getString("Address");
+                String logoImage = rs.getString("LogoImage");
+                String fivicoImage = rs.getString("FivicoImage");
                 general = new General(generalID, email, phone, nameApp, address, logoImage, fivicoImage);
             }
         } catch (SQLException e) {

@@ -100,16 +100,16 @@ public class UpdateCategoryServlet extends HttpServlet {
         }
         CategoryDAO categoryDAO = new CategoryDAO();
         try {
-            Category category = categoryDAO.getCategoryById(categoryID_raw);
-            if (categoryDAO.isCategoryNameExist(categoryName)) {
-                request.setAttribute("error", "Category Name already exists.");
-                request.setAttribute("category", category);
-                request.getRequestDispatcher("/updateCategory.jsp").forward(request, response);
-                return;
-            }
+//            Category category = categoryDAO.getCategoryById(categoryID_raw);
+//            if (categoryDAO.isCategoryNameExist(categoryName)) {
+//                request.setAttribute("error", "Category Name already exists.");
+//                request.setAttribute("category", category);
+//                request.getRequestDispatcher("/updateCategory.jsp").forward(request, response);
+//                return;
+//            }
             categoryID = Integer.parseInt(categoryID_raw);
             categoryDAO.updateCategory(categoryID, categoryName, detail);
-            response.sendRedirect(request.getContextPath() + "/category");
+            response.sendRedirect("/category");
         } catch (Exception e) {
             e.printStackTrace();
 //            response.sendRedirect(request.getContextPath() + "/error.jsp"); // Chuyển hướng đến trang lỗi
