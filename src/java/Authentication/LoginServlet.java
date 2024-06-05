@@ -2,21 +2,23 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package categoryController;
+package Authentication;
 
-import dal.CategoryDAO;
+import dal.AccountDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import model.Account;
 
 /**
  *
- * @author ADMIN
+ * @author Dinh Hai
  */
-public class CreateNewCategoryServlet extends HttpServlet {
+public class LoginServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,10 +37,10 @@ public class CreateNewCategoryServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CreateNewCategoryServlet</title>");
+            out.println("<title>Servlet LoginServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CreateNewCategoryServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet LoginServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -56,9 +58,7 @@ public class CreateNewCategoryServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String currentPath = request.getRequestURI();
-        request.setAttribute("currentPath", currentPath);
-        request.getRequestDispatcher("createNewCategory.jsp").forward(request, response);
+        request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 
     /**
@@ -72,38 +72,21 @@ public class CreateNewCategoryServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String categoryName = request.getParameter("categoryName");
-        String detail = request.getParameter("detail");
-
-        if (categoryName == null || categoryName.trim().isEmpty()
-                || detail == null || detail.trim().isEmpty()) {
-            request.setAttribute("error", "Category Name and Detail are required.");
-            request.getRequestDispatcher("/createNewCategory.jsp").forward(request, response);
-            return;
-        }
-
-        if (categoryName.length() < 3 || categoryName.length() > 50
-                || detail.length() < 10 || detail.length() > 500) {
-            request.setAttribute("error", "Category Name must be between 3 and 50 characters long. Detail must be between 10 and 500 characters long.");
-            request.getRequestDispatcher("/createNewCategory.jsp").forward(request, response);
-            return;
-        }
-
-        CategoryDAO categoryDAO = new CategoryDAO();
-        try {
-            // Check if category name already exists
-            if (categoryDAO.isCategoryNameExist(categoryName)) {
-                request.setAttribute("error", "Category Name already exists.");
-                request.getRequestDispatcher("/createNewCategory.jsp").forward(request, response);
-                return;
-            }
-
-            // If category name does not exist, create new category
-            categoryDAO.createNewCategory(categoryName, detail);
-            response.sendRedirect("/category");
-        } catch (Exception e) {
-            e.printStackTrace();
-            // Handle exception appropriately
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        
+        AccountDAO accountDAO = new AccountDAO();
+        Account account = accountDAO.checkLogin(username, password);
+        
+        if (account != null) {
+            HttpSession session = request.getSession();
+            session.setAttribute("account", account);
+            session.setMaxInactiveInterval(30 * 60); // 30 phút
+            
+            response.sendRedirect("index.html"); 
+        } else {
+            request.setAttribute("errorMessage", "Invalid username or password");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
         }
     }
 

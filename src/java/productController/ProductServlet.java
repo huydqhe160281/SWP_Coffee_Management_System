@@ -6,12 +6,15 @@
 package productController;
 
 import common.DBContext;
+import dal.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import model.Product;
 
 /**
  *
@@ -54,7 +57,42 @@ public class ProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        request.getRequestDispatcher("productTable.html").forward(request, response);
+        String currentPath = request.getRequestURI();
+        request.setAttribute("currentPath", currentPath);
+        ProductDAO productDAO = new ProductDAO();
+        String indexPage_raw = request.getParameter("indexPage");
+        String sizePage_raw = request.getParameter("sizePage");
+        String sortType = request.getParameter("sortType");
+
+        // Kiểm tra và gán giá trị mặc định nếu cần
+        if (indexPage_raw == null) {
+            indexPage_raw = "1";
+        }
+        if (sizePage_raw == null) {
+            sizePage_raw = "2";
+        }
+        if (sortType == null) {
+            sortType = "asc";
+        }
+
+        int indexPage = Integer.parseInt(indexPage_raw);
+        int sizePage = Integer.parseInt(sizePage_raw);
+        int count = productDAO.getTotalProduct();
+
+        int endPage = count / sizePage;
+        if (count % sizePage != 0) {
+            endPage++;
+        }
+
+        // Lấy danh sách các Category đã được sắp xếp
+        List<Product> pList = productDAO.getAllProductByPage(indexPage, sizePage, sortType);
+
+        request.setAttribute("indexPage", indexPage);
+        request.setAttribute("endPage", endPage);
+        request.setAttribute("sizePage", sizePage);
+        request.setAttribute("sortType", sortType); // Đặt thuộc tính sortType để sử dụng trong JSP
+        request.setAttribute("pList", pList);
+        request.getRequestDispatcher("product.jsp").forward(request, response);
     } 
 
     /** 

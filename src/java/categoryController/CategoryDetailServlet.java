@@ -5,18 +5,22 @@
 package categoryController;
 
 import dal.CategoryDAO;
+import dal.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import model.Category;
+import model.Product;
 
 /**
  *
  * @author ADMIN
  */
-public class CreateNewCategoryServlet extends HttpServlet {
+public class CategoryDetailServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,10 +39,10 @@ public class CreateNewCategoryServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CreateNewCategoryServlet</title>");
+            out.println("<title>Servlet CategoryDetailServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CreateNewCategoryServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet CategoryDetailServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,7 +62,25 @@ public class CreateNewCategoryServlet extends HttpServlet {
             throws ServletException, IOException {
         String currentPath = request.getRequestURI();
         request.setAttribute("currentPath", currentPath);
-        request.getRequestDispatcher("createNewCategory.jsp").forward(request, response);
+        String categoryID = request.getParameter("categoryID");
+
+        CategoryDAO categoryDAO = new CategoryDAO();
+        Category category = categoryDAO.getCategoryById(categoryID);
+        ProductDAO productDAO = new ProductDAO();
+        List<Product> pList = productDAO.getProductByCategoryId(Integer.parseInt(categoryID));
+
+        // Lấy danh sách các danh mục để hiển thị trong dropdown
+        List<Category> cList = categoryDAO.getAllCategory();
+
+        if (category != null) {
+            request.setAttribute("category", category);
+            request.setAttribute("pList", pList);
+            request.setAttribute("cList", cList);
+            request.getRequestDispatcher("/categoryDetail.jsp").forward(request, response);
+        } else {
+            // Handle the case where category is not found
+//            response.sendRedirect(request.getContextPath() + "/categoryNotFound.jsp");
+        }
     }
 
     /**
@@ -72,38 +94,26 @@ public class CreateNewCategoryServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String categoryName = request.getParameter("categoryName");
-        String detail = request.getParameter("detail");
-
-        if (categoryName == null || categoryName.trim().isEmpty()
-                || detail == null || detail.trim().isEmpty()) {
-            request.setAttribute("error", "Category Name and Detail are required.");
-            request.getRequestDispatcher("/createNewCategory.jsp").forward(request, response);
-            return;
-        }
-
-        if (categoryName.length() < 3 || categoryName.length() > 50
-                || detail.length() < 10 || detail.length() > 500) {
-            request.setAttribute("error", "Category Name must be between 3 and 50 characters long. Detail must be between 10 and 500 characters long.");
-            request.getRequestDispatcher("/createNewCategory.jsp").forward(request, response);
-            return;
-        }
+        String currentPath = request.getRequestURI();
+        request.setAttribute("currentPath", currentPath);
+        String categoryID = request.getParameter("categoryID");
 
         CategoryDAO categoryDAO = new CategoryDAO();
-        try {
-            // Check if category name already exists
-            if (categoryDAO.isCategoryNameExist(categoryName)) {
-                request.setAttribute("error", "Category Name already exists.");
-                request.getRequestDispatcher("/createNewCategory.jsp").forward(request, response);
-                return;
-            }
+        Category category = categoryDAO.getCategoryById(categoryID);
+        ProductDAO productDAO = new ProductDAO();
+        List<Product> pList = productDAO.getProductByCategoryId(Integer.parseInt(categoryID));
 
-            // If category name does not exist, create new category
-            categoryDAO.createNewCategory(categoryName, detail);
-            response.sendRedirect("/category");
-        } catch (Exception e) {
-            e.printStackTrace();
-            // Handle exception appropriately
+        // Lấy danh sách các danh mục để hiển thị trong dropdown
+        List<Category> cList = categoryDAO.getAllCategory();
+
+        if (category != null) {
+            request.setAttribute("pList", pList);
+            request.setAttribute("category", category);
+            request.setAttribute("cList", cList);
+            request.getRequestDispatcher("/categoryDetail.jsp").forward(request, response);
+        } else {
+            // Handle the case where category is not found
+//            response.sendRedirect(request.getContextPath() + "/categoryNotFound.jsp");
         }
     }
 

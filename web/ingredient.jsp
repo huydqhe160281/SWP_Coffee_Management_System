@@ -1,5 +1,5 @@
 <%--
-    Document   : category
+    Document   : ingredient
     Created on : May 20, 2024, 8:38:20 PM
     Author     : ADMIN
 --%>
@@ -48,8 +48,8 @@
                                     <div class="row align-items-center">
                                         <div class="col-md-8">
                                             <div class="page-header-title">
-                                                <h5 class="m-b-10">Category Management</h5>
-                                                <p class="m-b-0">Quản lý danh mục của sản phẩm</p>
+                                                <h5 class="m-b-10">Ingredient Management</h5>
+                                                <p class="m-b-0">Quản lý nguyên liệu của sản phẩm</p>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -58,7 +58,7 @@
                                                     <a href="index.html"> <i class="fa fa-home"></i> </a>
                                                 </li>
                                                 <li class="breadcrumb-item">
-                                                    <a href="/category">Category Management</a>
+                                                    <a href="/ingredient">Ingredient Management</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -79,7 +79,7 @@
                                                 <div class="card-header">
                                                     <div class="d-flex justify-content-between align-items-center pt-3">
                                                         <div class="p-15 p-b-0 w-25">
-                                                            <form class="form-material" action="search_category" method="get">
+                                                            <form class="form-material" action="search_ingredient" method="get">
                                                                 <div class="form-group form-primary">
                                                                     <input type="text" name="text_search" class="form-control" value="${requestScope.text_search}"/>
                                                                     <span class="form-bar"></span>
@@ -87,7 +87,7 @@
                                                                 </div>
                                                             </form>
                                                         </div>
-                                                        <button class="btn btn-primary waves-effect h-15" onclick="window.location.href = '/category_create'">
+                                                        <button class="btn btn-primary waves-effect h-15" onclick="window.location.href = '/ingredient_create'">
                                                             Add New
                                                         </button>
                                                     </div>
@@ -116,34 +116,33 @@
 
                                                                         </th>
                                                                         <th scope="col" class="font-weight-bold">
-                                                                                Category Name
+                                                                            Category Name
                                                                         </th>
                                                                         <th scope="col" class="font-weight-bold">Detail</th>
                                                                         <th scope="col" class="text-right font-weight-bold" >Action</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <c:forEach items="${requestScope.cList}" var="c">
-                                                                        <tr>
-                                                                            <th scope="row">${c.categoryID}</th>
-                                                                            <td>${c.categoryName}</td>
-                                                                            <td class="limit-detail" style="cursor: pointer" data-toggle="tooltip" data-placement="top"
-                                                                                title="${c.detail}"
-                                                                                data-template='<div class="tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner" style="max-width: 400px; white-space: pre-wrap;"></div></div>'>
-                                                                                ${c.detail}
-                                                                            </td>                                                                            
-                                                                            <td class="text-right pt-3">
-                                                                                <button class="btn btn-primary btn-sm" onclick="window.location.href = '/category_detail?categoryID=${c.categoryID}'">View</button>
-                                                                                <button class="btn btn-warning btn-sm" onclick="window.location.href = '/category_update?categoryID=${c.categoryID}'">Edit</button>
-                                                                                <button class="btn btn-danger btn-sm" onclick="confirm('Không thể xóa danh mục sản phẩm vì còn liên quan đến nhiều sản phẩm khác!!!')">Delete</button>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </c:forEach>
+                                                                <c:forEach items="${requestScope.iList}" var="i">
+<!--                                                                    <tr>
+                                                                        <th scope="row">${c.ingredientID}</th>
+                                                                        <td>${c.ingredientName}</td>
+                                                                        <td class="limit-detail" style="cursor: pointer" data-toggle="tooltip" data-placement="top"
+                                                                            title="${c.detail}"
+                                                                            data-template='<div class="tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner" style="max-width: 400px; white-space: pre-wrap;"></div></div>'>
+                                                                            ${c.detail}
+                                                                        </td>                                                                            
+                                                                        <td class="text-right pt-3">
+                                                                            <button class="btn btn-primary btn-sm" onclick="window.location.href = '/ingredient_detail?ingredientID=${c.ingredientID}'">View</button>
+                                                                            <button class="btn btn-warning btn-sm" onclick="window.location.href = '/ingredient_update?ingredientID=${c.ingredientID}'">Edit</button>
+                                                                        </td>
+                                                                    </tr>-->
+                                                                </c:forEach>
 
                                                                 </tbody>
                                                             </table>
                                                             <div class="d-flex justify-content-end">
-                                                                <form id="sizeForm" method="get" action="category" class="mr-2">
+                                                                <form id="sizeForm" method="get" action="ingredient" class="mr-2">
                                                                     <div class="input-group mb-3">
                                                                         <div class="input-group-prepend">
                                                                             <label class="input-group-text" for="inputGroupSelect01">Size</label>
@@ -161,17 +160,17 @@
                                                                     <ul class="pagination">
                                                                         <c:if test="${indexPage > 1}">
                                                                             <li class="page-item">
-                                                                                <a class="page-link" href="category?indexPage=${indexPage - 1}&sizePage=${sizePage}" tabindex="-1">Previous</a>
+                                                                                <a class="page-link" href="?indexPage=${indexPage - 1}&sizePage=${sizePage}" tabindex="-1">Previous</a>
                                                                             </li>
                                                                         </c:if>
                                                                         <c:forEach var="i" begin="1" end="${endPage}">
                                                                             <li class="page-item ${i == indexPage ? 'active' : ''}">
-                                                                                <a class="page-link" href="category?indexPage=${i}&sizePage=${sizePage}">${i} <c:if test="${i == indexPage}"><span class="sr-only">(current)</span></c:if></a>
-                                                                                </li>
+                                                                                <a class="page-link" href="ingredient?indexPage=${i}&sizePage=${sizePage}">${i} <c:if test="${i == indexPage}"><span class="sr-only">(current)</span></c:if></a>
+                                                                            </li>
                                                                         </c:forEach>
                                                                         <c:if test="${indexPage < endPage}">
                                                                             <li class="page-item">
-                                                                                <a class="page-link" href="category?indexPage=${indexPage + 1}&sizePage=${sizePage}">Next</a>
+                                                                                <a class="page-link" href="ingredient?indexPage=${indexPage + 1}&sizePage=${sizePage}">Next</a>
                                                                             </li>
                                                                         </c:if>
                                                                     </ul>

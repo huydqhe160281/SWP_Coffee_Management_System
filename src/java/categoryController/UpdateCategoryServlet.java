@@ -78,6 +78,8 @@ public class UpdateCategoryServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String currentPath = request.getRequestURI();
+        request.setAttribute("currentPath", currentPath);
         String categoryID_raw = request.getParameter("categoryID");
         String categoryName = request.getParameter("categoryName");
         String detail = request.getParameter("detail");
@@ -86,21 +88,28 @@ public class UpdateCategoryServlet extends HttpServlet {
         if (categoryName == null || categoryName.trim().isEmpty()
                 || detail == null || detail.trim().isEmpty()) {
             request.setAttribute("error", "Category Name and Detail are required.");
-            request.getRequestDispatcher("/category_update.jsp").forward(request, response);
+            request.getRequestDispatcher("/updateCategory.jsp").forward(request, response);
             return;
         }
 
         if (categoryName.length() < 3 || categoryName.length() > 50
                 || detail.length() < 10 || detail.length() > 500) {
             request.setAttribute("error", "Category Name must be between 3 and 50 characters long. Detail must be between 10 and 500 characters long.");
-            request.getRequestDispatcher("/category_update.jsp").forward(request, response);
+            request.getRequestDispatcher("/updateCategory.jsp").forward(request, response);
             return;
         }
         CategoryDAO categoryDAO = new CategoryDAO();
         try {
+//            Category category = categoryDAO.getCategoryById(categoryID_raw);
+//            if (categoryDAO.isCategoryNameExist(categoryName)) {
+//                request.setAttribute("error", "Category Name already exists.");
+//                request.setAttribute("category", category);
+//                request.getRequestDispatcher("/updateCategory.jsp").forward(request, response);
+//                return;
+//            }
             categoryID = Integer.parseInt(categoryID_raw);
             categoryDAO.updateCategory(categoryID, categoryName, detail);
-            response.sendRedirect(request.getContextPath() + "/category");
+            response.sendRedirect("/category");
         } catch (Exception e) {
             e.printStackTrace();
 //            response.sendRedirect(request.getContextPath() + "/error.jsp"); // Chuyển hướng đến trang lỗi

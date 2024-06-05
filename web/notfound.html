@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Coffee Management System</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <meta name="keywords" content="bootstrap, bootstrap admin template, admin theme, admin dashboard, dashboard template, admin template, responsive" />
+    <meta name="author" content="Codedthemes" />
+    <!-- Favicon icon -->
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet" />
+    <!-- Required Fremwork -->
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap/css/bootstrap.min.css" />
+    <!-- themify-icons line icon -->
+    <link rel="stylesheet" type="text/css" href="assets/icon/themify-icons/themify-icons.css" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" type="text/css" href="assets/icon/font-awesome/css/font-awesome.min.css" />
+    <!-- Custom styles -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .error-box {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .error-body {
+            text-align: center;
+        }
+        .error-body h1 {
+            font-size: 210px;
+            margin: 0;
+            font-weight: 900;
+            color: #343a40;
+            animation: bounce 2s infinite; /* Thêm hiệu ứng nhảy */
+        }
+        .error-body h3 {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 20px 0;
+            color: #343a40;
+            animation: slideInRight 1s both; /* Thêm hiệu ứng slideInRight */
+        }
+        .error-body p {
+            color: #6c757d;
+            font-size: 16px;
+            animation: fadeInUp 1s both; /* Thêm hiệu ứng fadeInUp */
+        }
+        .error-body .btn {
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 25px;
+            padding: 10px 30px;
+            font-size: 18px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            animation: pulse 2s infinite; /* Thêm hiệu ứng pulse */
+        }
+        .error-body .btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Keyframes */
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-30px);
+            }
+            60% {
+                transform: translateY(-15px);
+            }
+        }
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0%);
+                opacity: 1;
+            }
+        }
+        @keyframes fadeInUp {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0%);
+                opacity: 1;
+            }
+        }
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <section id="wrapper" class="error-page">
+        <div class="error-box">
+            <div class="error-body text-center">
+                <h1>404</h1>
+                <h3 class="text-uppercase" style="animation: slideInRight 1s both;">Page Not Found !</h3>
+                <p class="text-muted m-t-30 m-b-30" style="animation: fadeInUp 1s both;">
+                    YOU SEEM TO BE TRYING TO FIND HIS WAY HOME
+                </p>
+                <a href="index.html" class="btn btn-info btn-rounded waves-effect waves-light m-b-40">Back to home</a>
+            </div>
+        </div>
+    </section>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Custom script -->
+    <script>
+        $(document).ready(function() {
+            $('.btn').addClass('animated'); // Thêm lớp animated cho nút
+
+            // Hiệu ứng khi click nút "Back to home"
+            $('.btn').click(function(e) {
+                e.preventDefault(); // Ngăn chặn hành động mặc định của nút
+
+                $('.error-body').addClass('fadeOutDown'); // Thêm hiệu ứng fadeOutDown
+                setTimeout(function() {
+                    window.location.href = "index.html"; // Chuyển hướng trang
+                }, 1000); // Thời gian delay trước khi chuyển hướng (1000ms = 1s)
+            });
+        });
+    </script>
+</body>
+</html>

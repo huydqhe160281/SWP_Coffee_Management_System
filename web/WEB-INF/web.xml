@@ -33,6 +33,10 @@
         <servlet-class>DiscountController.DiscountSearchServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>CategoryDetailServlet</servlet-name>
+        <servlet-class>categoryController.CategoryDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>CreateNewDiscountServlet</servlet-name>
         <servlet-class>DiscountController.CreateNewDiscountServlet</servlet-class>
     </servlet>
@@ -47,6 +51,22 @@
     <servlet>
         <servlet-name>DeleteDiscountServlet</servlet-name>
         <servlet-class>DiscountController.DeleteDiscountServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AccountServlet</servlet-name>
+        <servlet-class>AccountController.AccountServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>Authentication.LoginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GeneralServlet</servlet-name>
+        <servlet-class>generalController.GeneralServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>IngredientServlet</servlet-name>
+        <servlet-class>ingredientController.IngredientServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ProductServlet</servlet-name>
@@ -73,6 +93,10 @@
         <url-pattern>/discount</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>CategoryDetailServlet</servlet-name>
+        <url-pattern>/category_detail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>DiscountSearchServlet</servlet-name>
         <url-pattern>/discount_search</url-pattern>
     </servlet-mapping>
@@ -92,9 +116,28 @@
         <servlet-name>DeleteDiscountServlet</servlet-name>
         <url-pattern>/discount_delete</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AccountServlet</servlet-name>
+        <url-pattern>/account</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GeneralServlet</servlet-name>
+        <url-pattern>/general</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>IngredientServlet</servlet-name>
+        <url-pattern>/ingredient</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
+    <welcome-file-list>
+        <welcome-file>landing-page.jsp</welcome-file>
+    </welcome-file-list>
 </web-app>
