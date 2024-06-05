@@ -25,10 +25,10 @@ public class SupplierDAO extends DBContext{
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Supplier supplier = new Supplier();
-                supplier.setSupplierID(rs.getInt("supplierID"));
-                supplier.setSupplierName(rs.getString("supplierName"));
-                supplier.setContact(rs.getString("contact"));
-                supplier.setAddress(rs.getString("address"));
+                supplier.setSupplierID(rs.getInt("SupplierID"));
+                supplier.setSupplierName(rs.getString("SupplierName"));
+                supplier.setContact(rs.getString("Contact"));
+                supplier.setAddress(rs.getString("Address"));
                 suppliers.add(supplier);
             }
         } catch (Exception e) {

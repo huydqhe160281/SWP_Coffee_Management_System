@@ -68,6 +68,10 @@
         <servlet-name>IngredientServlet</servlet-name>
         <servlet-class>ingredientController.IngredientServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SupplierServlet</servlet-name>
+        <servlet-class>SupplierController.SupplierServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductServlet</servlet-name>
         <url-pattern>/product</url-pattern>
@@ -131,6 +135,10 @@
     <servlet-mapping>
         <servlet-name>IngredientServlet</servlet-name>
         <url-pattern>/ingredient</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SupplierServlet</servlet-name>
+        <url-pattern>/supplier</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
