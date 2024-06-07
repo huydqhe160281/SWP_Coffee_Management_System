@@ -4,9 +4,9 @@
     Author     : ADMIN
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -21,7 +21,6 @@
         }
     </style>
     <body>
-
         <!-- Pre-loader start -->
         <jsp:include page="./common/reloading.jsp"/>
         <!-- Pre-loader end -->
@@ -113,7 +112,6 @@
                                                                             <a href="?sortType=${sortType == 'asc' ? 'desc' : 'asc'}&indexPage=${indexPage}&sizePage=${sizePage}" style="text-decoration: none; color: inherit;">
                                                                                 #<i class="fa fa-long-arrow-${sortType == 'asc' ? 'up' : 'down'}" aria-hidden="true"></i>
                                                                             </a>
-
                                                                         </th>
                                                                         <th>Product Name</th>
                                                                         <th>Cost Price</th>
@@ -129,27 +127,30 @@
                                                                         <tr>
                                                                             <th scope="row">${p.productID}</th>
                                                                             <td>${p.productName}</td>
-                                                                            <td>${p.costPrice}</td>                                                                            
-                                                                            <td>${p.price}</td>                                                                            
+                                                                            <td><fmt:formatNumber value="${p.costPrice}" type="currency" pattern="###,### ₫" currencySymbol="₫" /></td>
+                                                                            <td><fmt:formatNumber value="${p.price}" type="currency" pattern="###,### ₫" currencySymbol="₫" /></td>
                                                                             <td class="limit-detail" style="cursor: pointer" data-toggle="tooltip" data-placement="top"
                                                                                 title="${p.description}"
                                                                                 data-template='<div class="tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner" style="max-width: 400px; white-space: pre-wrap;"></div></div>'>
                                                                                 ${p.description}
-                                                                            </td>   
+                                                                            </td>
                                                                             <td class="limit-detail" style="cursor: pointer" data-toggle="tooltip" data-placement="top"
                                                                                 title="${p.recipe}"
                                                                                 data-template='<div class="tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner" style="max-width: 400px; white-space: pre-wrap;"></div></div>'>
                                                                                 ${p.recipe}
-                                                                            </td>   
-                                                                            <td>${p.status}</td>                                                                            
-
+                                                                            </td>
+                                                                            <td>
+                                                                                <span class="${p.status ? 'text-success' : 'text-danger'}">
+                                                                                    ${p.status ? 'Đang bán' : 'Đã dừng bán'}
+                                                                                </span>
+                                                                            </td>
                                                                             <td class="text-right pt-3">
-                                                                                <button class="btn btn-primary btn-sm" onclick="window.location.href = '/product_detail?productID=${c.productID}'">View</button>
-                                                                                <button class="btn btn-warning btn-sm" onclick="window.location.href = '/product_update?productID=${c.productID}'">Edit</button>
+                                                                                <button class="btn btn-primary btn-sm" onclick="window.location.href = '/product_detail?productID=${p.productID}'">View</button>
+                                                                                <button class="btn btn-warning btn-sm" onclick="window.location.href = '/product_update?productID=${p.productID}'">Edit</button>
+                                                                                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#confirmModal" data-product-id="${p.productID}">Change Status</button>
                                                                             </td>
                                                                         </tr>
                                                                     </c:forEach>
-
                                                                 </tbody>
                                                             </table>
                                                             <div class="d-flex justify-content-end">
@@ -187,8 +188,6 @@
                                                                     </ul>
                                                                 </nav>
                                                             </div>
-
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -196,6 +195,25 @@
                                             <!-- Hover table card end -->
                                         </div>
                                         <!-- Page-body end -->
+                                    </div>
+                                </div>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Xác nhận cập nhật trạng thái</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Bạn có chắc chắn muốn cập nhật trạng thái sản phẩm này không?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                                <button type="button" class="btn btn-primary" id="confirmBtn">Xác nhận</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <!-- Main-body end -->
@@ -212,6 +230,32 @@
             function submitSizeForm() {
                 document.getElementById('sizeForm').submit();
             }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                var confirmModal = document.getElementById('confirmModal');
+                var confirmBtn = document.getElementById('confirmBtn');
+                var productId;
+
+                confirmModal.addEventListener('show.bs.modal', function (event) {
+                    var button = event.relatedTarget;
+                    productId = button.getAttribute('data-product-id');
+                });
+
+                confirmBtn.addEventListener('click', function () {
+                    var form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = 'product';
+
+                    var input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'productID';
+                    input.value = productId;
+
+                    form.appendChild(input);
+                    document.body.appendChild(form);
+                    form.submit();
+                });
+            });
         </script>
 
         <!-- Required Jquery -->
@@ -230,3 +274,4 @@
         <script type="text/javascript" src="assets/js/script.js"></script>
     </body>
 </html>
+

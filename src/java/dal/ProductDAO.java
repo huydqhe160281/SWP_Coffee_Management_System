@@ -184,6 +184,24 @@ public class ProductDAO extends DBContext {
         return list;
     }
 
+    public boolean updateProductStatus(int productId, boolean status) {
+        String sql = "UPDATE [SWP391_SU24].[dbo].[Product] "
+                + "SET [Status] = ? "
+                + "WHERE [ProductID] = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setBoolean(1, status);
+            st.setInt(2, productId);
+            int rowsUpdated = st.executeUpdate();
+            st.close();
+            // If rowsUpdated is greater than 0, the update was successful
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+
     public static void main(String[] args) {
         ProductDAO dao = new ProductDAO();
         List<Product> list = dao.getAllProductByPage(1, 1, "asc");
