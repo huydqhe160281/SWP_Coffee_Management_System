@@ -78,7 +78,7 @@
                                                 <!-- Sub header table start -->
                                                 <div class="card-header">
                                                     <div class="card-header-left">
-                                                        <button class="btn btn-warning waves-effect h-15" onclick="window.location.href = '/category_create'">
+                                                        <button class="btn btn-warning waves-effect h-15" onclick="window.location.href = '/general_update'">
                                                             Edit Information
                                                         </button>
                                                     </div>
