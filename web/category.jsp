@@ -19,6 +19,11 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
+        .icon-spacing {
+            padding-right: 5px;
+            font-size: 1.6em; /* Tăng kích thước của icon, bạn có thể thay đổi giá trị này để phù hợp */
+            cursor: pointer;
+        }
     </style>
     <body>
 
@@ -116,7 +121,7 @@
 
                                                                         </th>
                                                                         <th scope="col" class="font-weight-bold">
-                                                                                Category Name
+                                                                            Category Name
                                                                         </th>
                                                                         <th scope="col" class="font-weight-bold">Detail</th>
                                                                         <th scope="col" class="text-right font-weight-bold" >Action</th>
@@ -133,10 +138,16 @@
                                                                                 ${c.detail}
                                                                             </td>                                                                            
                                                                             <td class="text-right pt-3">
-                                                                                <button class="btn btn-primary btn-sm" onclick="window.location.href = '/category_detail?categoryID=${c.categoryID}'">View</button>
-                                                                                <button class="btn btn-warning btn-sm" onclick="window.location.href = '/category_update?categoryID=${c.categoryID}'">Edit</button>
-                                                                                <button class="btn btn-danger btn-sm" onclick="confirm('Không thể xóa danh mục sản phẩm vì còn liên quan đến nhiều sản phẩm khác!!!')">Delete</button>
+                                                                                <i class="fa fa-eye icon-spacing" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="View" 
+                                                                                   onclick="window.location.href = '/category_detail?categoryID=${c.categoryID}'"></i>
+                                                                                <i class="fa fa-pencil-square-o icon-spacing" aria-hidden="true" 
+                                                                                   data-toggle="tooltip" data-placement=left title="Edit"
+                                                                                   onclick="window.location.href = '/category_update?categoryID=${c.categoryID}'"></i>
+                                                                                <i class="fa fa-trash-o icon-spacing" aria-hidden="true" 
+                                                                                   data-toggle="tooltip" data-placement="left" title="Delete"
+                                                                                   onclick="confirm('Không thể xóa danh mục sản phẩm vì còn liên quan đến nhiều sản phẩm khác!!!')"></i>
                                                                             </td>
+
                                                                         </tr>
                                                                     </c:forEach>
 

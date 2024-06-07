@@ -145,9 +145,12 @@
                                                                                 </span>
                                                                             </td>
                                                                             <td class="text-right pt-3">
-                                                                                <button class="btn btn-primary btn-sm" onclick="window.location.href = '/product_detail?productID=${p.productID}'">View</button>
-                                                                                <button class="btn btn-warning btn-sm" onclick="window.location.href = '/product_update?productID=${p.productID}'">Edit</button>
-                                                                                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#confirmModal" data-product-id="${p.productID}">Change Status</button>
+                                                                                <i class="fa fa-eye icon-spacing" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="View" 
+                                                                                   onclick="window.location.href = '/product_detail?productID=${p.productID}'"></i>
+                                                                                <i class="fa fa-pencil-square-o icon-spacing" aria-hidden="true" 
+                                                                                   data-toggle="tooltip" data-placement=left title="Edit"
+                                                                                   onclick="window.location.href = '/product_update?productID=${p.productID}'"></i>
+                                                                                <!--<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#confirmModal" data-product-id="${p.productID}">Change Status</button>-->
                                                                             </td>
                                                                         </tr>
                                                                     </c:forEach>
