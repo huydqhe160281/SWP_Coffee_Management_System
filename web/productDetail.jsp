@@ -17,6 +17,43 @@
             .detail-section {
                 margin-top: 20px;
             }
+            .card-custom {
+                border: 1px solid #dee2e6;
+                border-radius: 10px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+            .product-image {
+                border-radius: 10px;
+            }
+            .card-header-custom {
+                background-color: #f8f9fa;
+                border-bottom: 1px solid #dee2e6;
+                border-radius: 10px 10px 0 0;
+            }
+            .product-info {
+                padding: 20px;
+            }
+            .no-data-section {
+                text-align: center;
+                padding: 50px 20px;
+                border: 2px dashed #ccc;
+                border-radius: 10px;
+                background-color: #f9f9f9;
+                transition: background-color 0.3s, box-shadow 0.3s;
+            }
+            .no-data-section:hover {
+                background-color: #f1f1f1;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            }
+            .no-data-section img {
+                max-width: 150px;
+                margin-bottom: 20px;
+            }
+            .no-data-section h5 {
+                margin-top: 20px;
+                font-size: 1.5em;
+                color: #555;
+            }
         </style>
     </head>
     <body>
@@ -89,41 +126,42 @@
 
                                                 <!-- Sub content start -->
 
-                                                <div class="card-body w-75 mx-auto">
-                                                    <c:choose>
-                                                        <c:when test="${product != null}">
-                                                            <div class="row">
-                                                                <div class="col-md-6">
-                                                                    <img src="${product.image}" class="img-fluid rounded" alt="${product.productName}">
+                                                <div class="card w-75 mx-auto my-3 card-custom">
+                                                    <div class="card-body product-info">
+                                                        <c:choose>
+                                                            <c:when test="${product != null}">
+                                                                <div class="row">
+                                                                    <div class="col-md-6 d-flex justify-content-center">
+                                                                        <img src="${product.image ? product.image :  "/assets/images/no-data-6-512.png"}" class="img-fluid rounded product-image w-75" alt="${product.productName}">
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <h3 class="text-primary"><strong>${product.productName}</strong></h3>
+                                                                        <h5>Cost Price: <fmt:formatNumber value="${product.costPrice}" type="currency" pattern="###,### ₫" currencySymbol="₫" /></h5>
+                                                                        <h5>Price: <fmt:formatNumber value="${product.price}" type="currency" pattern="###,### ₫" currencySymbol="₫" /></h5>
+                                                                        <h5>Status: <c:choose>
+                                                                                <c:when test="${product.status}"><span class="badge badge-success">Đang bán</span></c:when>
+                                                                                <c:otherwise><span class="badge badge-danger">Dừng bán</span></c:otherwise>
+                                                                            </c:choose>
+                                                                        </h5>
+                                                                        <h5>Category ID: ${product.categoryId}</h5>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="col-md-6">
-                                                                    <h3 class="text-primary"><strong>${product.productName}</strong></h3>
-                                                                    <h5>Cost Price: <fmt:formatNumber value="${product.costPrice}" type="currency" pattern="###,### ₫" currencySymbol="₫" /></h5>
-                                                                    <h5>Price: <fmt:formatNumber value="${product.price}" type="currency" pattern="###,### ₫" currencySymbol="₫" /></h5>
-                                                                    <h5>Status: <c:choose>
-                                                                            <c:when test="${product.status}"><span class="badge badge-success">Đang bán</span></c:when>
-                                                                            <c:otherwise><span class="badge badge-danger">Dừng bán</span></c:otherwise>
-                                                                        </c:choose>
-                                                                    </h5>
-                                                                    <h5>Category ID: ${product.categoryId}</h5>
+                                                                <div class="row detail-section">
+                                                                    <div class="col-md-12">
+                                                                        <h5>Description</h5>
+                                                                        <p>${product.description}</p>
+                                                                        <h5>Recipe</h5>
+                                                                        <p>${product.recipe}</p>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="row detail-section">
-                                                                <div class="col-md-12">
-                                                                    <h5>Description</h5>
-                                                                    <p>${product.description}</p>
-                                                                    <h5>Recipe</h5>
-                                                                    <p>${product.recipe}</p>
-                                                                </div>
-                                                            </div>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <div class="alert alert-warning" role="alert">
-                                                                No product found with the specified ID.
-                                                            </div>
-                                                        </c:otherwise>
-                                                    </c:choose>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <jsp:include page="./common/noDataLog.jsp"/>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </div>
                                                 </div>
+
                                                 <!-- Sub content end -->
                                             </div>
                                         </div>
