@@ -33,27 +33,6 @@
             .product-info {
                 padding: 20px;
             }
-            .no-data-section {
-                text-align: center;
-                padding: 50px 20px;
-                border: 2px dashed #ccc;
-                border-radius: 10px;
-                background-color: #f9f9f9;
-                transition: background-color 0.3s, box-shadow 0.3s;
-            }
-            .no-data-section:hover {
-                background-color: #f1f1f1;
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            }
-            .no-data-section img {
-                max-width: 150px;
-                margin-bottom: 20px;
-            }
-            .no-data-section h5 {
-                margin-top: 20px;
-                font-size: 1.5em;
-                color: #555;
-            }
         </style>
     </head>
     <body>
@@ -132,7 +111,7 @@
                                                             <c:when test="${product != null}">
                                                                 <div class="row">
                                                                     <div class="col-md-6 d-flex justify-content-center">
-                                                                        <img src="${product.image ? product.image :  "/assets/images/no-data-6-512.png"}" class="img-fluid rounded product-image w-75" alt="${product.productName}">
+                                                                        <img src="${product.image ? product.image :  "/assets/images/noimage.jpg"}" class="img-fluid rounded product-image w-75" alt="${product.productName}">
                                                                     </div>
                                                                     <div class="col-md-6">
                                                                         <h3 class="text-primary"><strong>${product.productName}</strong></h3>
