@@ -122,7 +122,7 @@
                                                                         name="email"
                                                                         class="form-control"
                                                                         placeholder="Enter Email"
-                                                                        value="${general.email}"
+                                                                        value="${generalInfo.email}"
                                                                         disabled
                                                                         />
                                                                     <span class="form-bar"></span>
@@ -136,6 +136,7 @@
                                                                         name="phone"
                                                                         class="form-control"
                                                                         placeholder="Enter Phone Number"
+                                                                        value="${generalInfo.phone}"
                                                                         disabled
                                                                         />
                                                                     <span class="form-bar"></span>
@@ -149,7 +150,7 @@
                                                                         name="nameApp"
                                                                         class="form-control"
                                                                         placeholder="Enter Name of App/Web"
-                                                                        value="${general.nameApp}"
+                                                                        value="${generalInfo.nameApp}"
                                                                         disabled
                                                                         />
                                                                     <span class="form-bar"></span>
@@ -162,7 +163,7 @@
                                                                         name="footer-email"
                                                                         class="form-control"
                                                                         placeholder="Enter Address"
-                                                                        value="${general.address}"
+                                                                        value="${generalInfo.address}"
                                                                         disabled
                                                                         />
                                                                     <span class="form-bar"></span>
@@ -175,7 +176,7 @@
                                                                         type="text"
                                                                         name="logoImage"
                                                                         class="form-control"
-                                                                        value="${general.logoImage}"
+                                                                        value="${generalInfo.logoImage}"
                                                                         disabled
                                                                         />
                                                                     <span class="form-bar"></span>
@@ -189,7 +190,7 @@
                                                                         name="fivicoImage"
                                                                         class="form-control"
                                                                         maxlength="6"
-                                                                        value="${general.fivicoImage}"
+                                                                        value="${generalInfo.fivicoImage}"
                                                                         disabled
                                                                         />
                                                                     <span class="form-bar"></span>

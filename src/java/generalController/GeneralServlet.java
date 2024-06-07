@@ -67,6 +67,7 @@ public class GeneralServlet extends HttpServlet {
             Gson gson = new Gson();
             String generalJson = gson.toJson(general);
             request.setAttribute("generalJson", generalJson);
+            request.setAttribute("generalInfo", general);
             request.getRequestDispatcher("general.jsp").forward(request, response);
         } catch (Exception e) {
             System.out.println(e);
