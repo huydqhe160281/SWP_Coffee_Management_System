@@ -128,6 +128,43 @@ public class ProductDAO extends DBContext {
         return list;
     }
 
+    public Product getProductById(String productId) {
+        Product product = null;
+        String sql = "SELECT [ProductID]\n"
+                + "      ,[ProductName]\n"
+                + "      ,[CostPrice]\n"
+                + "      ,[Price]\n"
+                + "      ,[Image]\n"
+                + "      ,[Description]\n"
+                + "      ,[Recipe]\n"
+                + "      ,[Status]\n"
+                + "      ,[CategoryID]\n"
+                + "  FROM [SWP391_SU24].[dbo].[Product]\n"
+                + "  WHERE [ProductID] = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, productId);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                product = new Product(
+                        rs.getInt(1),
+                        rs.getString(2),
+                        rs.getDouble(3),
+                        rs.getDouble(4),
+                        rs.getString(5),
+                        rs.getString(6),
+                        rs.getString(7),
+                        rs.getBoolean(8),
+                        rs.getInt(9));
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return product;
+    }
+
     public int getTotalProduct() {
         String sql = "SELECT COUNT(*)\n"
                 + "  FROM [SWP391_SU24].[dbo].[Product]";
@@ -205,8 +242,10 @@ public class ProductDAO extends DBContext {
     public static void main(String[] args) {
         ProductDAO dao = new ProductDAO();
         List<Product> list = dao.getAllProductByPage(1, 1, "asc");
-        for (Product i : list) {
-            System.out.println(i);
-        }
+        Product p = dao.getProductById("1");
+        System.out.println(p);
+//        for (Product i : list) {
+//            System.out.println(i);
+//        }
     }
 }
