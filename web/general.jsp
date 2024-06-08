@@ -101,100 +101,40 @@
                                                             <!--<span>Add class of <code>.form-control</code> with <code>&lt;input&gt;</code> tag</span>-->
                                                         </div>
                                                         <div class="card-block">
-                                                            <form class="form-material">
-                                                                <div
-                                                                    class="form-group form-default form-static-label"
-                                                                    >
-                                                                    <input
-                                                                        type="email"
-                                                                        name="generalID"
-                                                                        class="form-control"
-                                                                        placeholder="Enter Email"
-                                                                        hidden
-                                                                        />
+                                                            <form name="generalForm" class="form-material" action="general_update" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+                                                                <div class="form-group form-default form-static-label">
+                                                                    <input type="hidden" name="generalID" class="form-control" value="${generalInfo.generalID}" />
                                                                     <span class="form-bar"></span>
                                                                 </div>
-                                                                <div
-                                                                    class="form-group form-default form-static-label"
-                                                                    >
-                                                                    <input
-                                                                        type="email"
-                                                                        name="email"
-                                                                        class="form-control"
-                                                                        placeholder="Enter Email"
-                                                                        value="${generalInfo.email}"
-                                                                        disabled
-                                                                        />
+                                                                <div class="form-group form-default form-static-label">
+                                                                    <input type="email" name="email" class="form-control" placeholder="Enter Email" value="${generalInfo.email}" disabled/>
                                                                     <span class="form-bar"></span>
                                                                     <label class="float-label">Email (exa@gmail.com)</label>
                                                                 </div>
-                                                                <div
-                                                                    class="form-group form-default form-static-label"
-                                                                    >
-                                                                    <input
-                                                                        type="number"
-                                                                        name="phone"
-                                                                        class="form-control"
-                                                                        placeholder="Enter Phone Number"
-                                                                        value="${generalInfo.phone}"
-                                                                        disabled
-                                                                        />
+                                                                <div class="form-group form-default form-static-label">
+                                                                    <input type="number" name="phone" class="form-control" placeholder="Enter Phone Number" value="${generalInfo.phone}" disabled/>
                                                                     <span class="form-bar"></span>
                                                                     <label class="float-label">Phone Number</label>
                                                                 </div>
-                                                                <div
-                                                                    class="form-group form-default form-static-label"
-                                                                    >
-                                                                    <input
-                                                                        type="text"
-                                                                        name="nameApp"
-                                                                        class="form-control"
-                                                                        placeholder="Enter Name of App/Web"
-                                                                        value="${generalInfo.nameApp}"
-                                                                        disabled
-                                                                        />
+                                                                <div class="form-group form-default form-static-label">
+                                                                    <input type="text" name="nameApp" class="form-control" placeholder="Enter Name of App/Web" value="${generalInfo.nameApp}" disabled/>
                                                                     <span class="form-bar"></span>
                                                                     <label class="float-label">Name of App/Web</label>
                                                                 </div>
-                                                                <div
-                                                                    class="form-group form-default form-static-label">
-                                                                    <input
-                                                                        type="text"
-                                                                        name="footer-email"
-                                                                        class="form-control"
-                                                                        placeholder="Enter Address"
-                                                                        value="${generalInfo.address}"
-                                                                        disabled
-                                                                        />
+                                                                <div class="form-group form-default form-static-label">
+                                                                    <input type="text" name="address" class="form-control" placeholder="Enter Address" value="${generalInfo.address}" disabled/>
                                                                     <span class="form-bar"></span>
                                                                     <label class="float-label">Address</label>
                                                                 </div>
-                                                                <div
-                                                                    class="form-group form-default form-static-label"
-                                                                    >
-                                                                    <input
-                                                                        type="text"
-                                                                        name="logoImage"
-                                                                        class="form-control"
-                                                                        value="${generalInfo.logoImage}"
-                                                                        disabled
-                                                                        />
-                                                                    <span class="form-bar"></span>
-                                                                    <label class="float-label">Logo Image Url</label>
-                                                                </div>
-                                                                <div
-                                                                    class="form-group form-default form-static-label"
-                                                                    >
-                                                                    <input
-                                                                        type="text"
-                                                                        name="fivicoImage"
-                                                                        class="form-control"
-                                                                        maxlength="6"
-                                                                        value="${generalInfo.fivicoImage}"
-                                                                        disabled
-                                                                        />
-                                                                    <span class="form-bar"></span>
-                                                                    <label class="float-label">Favico Url</label>
+                                                                <div class="d-flex flex-row mb-3">
+                                                                    <div class="d-flex flex-column mr-3">
+                                                                        <div class="mb-2">Logo Image</div>
+                                                                        <img src="assets/images/${generalInfo.logoImage}" alt="Logo ${generalInfo.logoImage}" style="max-width: 200px; max-height: 200px;" disabled>
+                                                                    </div>
+                                                                    <div class="d-flex flex-column mr-3">
+                                                                        <div class="mb-2">Favicon Image</div>
+                                                                        <img src="assets/images/${generalInfo.fivicoImage}" alt="Favicon ${generalInfo.fivicoImage}" style="max-width: 200px; max-height: 200px;" disabled>
+                                                                    </div>
                                                                 </div>
                                                             </form>
                                                         </div>
