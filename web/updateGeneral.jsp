@@ -91,7 +91,7 @@
                                                 <div class="card-header">
                                                     <div class="card-block w-75 m-auto">
                                                         <h3 class="text-center m-auto pb-5">Update General Information</h3>
-                                                        <form name="generalForm" class="form-material" action="general_update" method="post" onsubmit="return validateForm()">
+                                                        <form name="generalForm" class="form-material" action="general_update" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
                                                             <div class="form-group form-default form-static-label">
                                                                 <input type="hidden" name="generalID" class="form-control" value="${generalInfo.generalID}" />
                                                                 <span class="form-bar"></span>
@@ -120,22 +120,39 @@
                                                                 <label class="float-label">Address</label>
                                                                 <div id="address-error" class="text-danger"></div>
                                                             </div>
-                                                            <div class="form-group form-default form-static-label">
-                                                                <input type="text" name="logoImage" class="form-control" value="${generalInfo.logoImage}" />
-                                                                <span class="form-bar"></span>
-                                                                <label class="float-label">Logo Image Url</label>
-                                                                <div id="logoImage-error" class="text-danger"></div>
-                                                            </div>
-                                                            <div class="form-group form-default form-static-label">
-                                                                <input type="text" name="fivicoImage" class="form-control" value="${generalInfo.fivicoImage}" />
-                                                                <span class="form-bar"></span>
-                                                                <label class="float-label">Favico Url</label>
-                                                                <div id="fivicoImage-error" class="text-danger"></div>
+                                                            <div class="d-flex flex-row mb-3">
+                                                                <div class="form-group form-default form-static-label">
+                                                                    <div class="d-flex flex-column mr-3">
+                                                                        <div class="mb-2">Logo Image</div>
+                                                                        <div class="image-preview">
+                                                                            <img src="assets/images/${generalInfo.logoImage}" alt="Current Logo" style="max-width: 200px; max-height: 200px;" id="logo-preview" onclick="handleImageClick('logoImage')">
+                                                                            <div class="custom-file mb-2" id="logoInputWrapper" hidden>
+                                                                                <input type="file" class="custom-file-input" id="logoImage" name="logoImage" onchange="previewImage('logoImage', 'logo-preview')" accept="image/*">
+                                                                                <label class="custom-file-label" for="logoImage">Choose file</label>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div id="logoImage-error" class="text-danger"></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group form-default form-static-label">
+                                                                    <div class="d-flex flex-column mr-3">
+                                                                        <div class="mb-2">Favicon Image</div>
+                                                                        <div class="image-preview">
+                                                                            <img src="assets/images/${generalInfo.fivicoImage}" alt="Current Favicon" style="max-width: 200px; max-height: 200px;" id="favicon-preview" onclick="handleImageClick('fivicoImage')">
+                                                                            <div class="custom-file mb-2" id="faviconInputWrapper" hidden>
+                                                                                <input  type="file" class="custom-file-input" id="fivicoImage" name="fivicoImage" onchange="previewImage('fivicoImage', 'favicon-preview')" value="${generalInfo.fivicoImage}" accept="image/*">
+                                                                                <label class="custom-file-label" for="fivicoImage">Choose file</label>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div id="fivicoImage-error" class="text-danger"></div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                             <div class="form-group form-default">
                                                                 <button class="btn btn-primary w-100" type="submit">Update Now</button>
                                                             </div>
                                                         </form>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -157,6 +174,38 @@
         <script>
             function submitSizeForm() {
                 document.getElementById('sizeForm').submit();
+            }
+
+            function previewImage(inputId, previewId) {
+                var input = document.getElementById(inputId);
+                var preview = document.getElementById(previewId);
+                var file = input.files[0];
+                var reader = new FileReader();
+
+                reader.onloadend = function () {
+                    preview.src = reader.result;
+                };
+
+                if (file) {
+                    reader.readAsDataURL(file);
+                } else {
+                    preview.src = "";
+                }
+
+                // Update the file name in the label
+                var fileName = file ? file.name : 'Choose file';
+                var label = input.nextElementSibling;
+                label.innerHTML = fileName;
+
+                // Show the input wrapper if file is selected
+                var inputWrapper = document.getElementById(inputId + 'Wrapper');
+                inputWrapper.style.display = file ? 'block' : 'none';
+            }
+
+            // Handle click on image to trigger file input click
+            function handleImageClick(inputId) {
+                var input = document.getElementById(inputId);
+                input.click();
             }
             function validateForm() {
                 var isValid = true;
