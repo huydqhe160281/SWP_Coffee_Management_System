@@ -96,6 +96,10 @@
         <servlet-name>DeleteSupplierServlet</servlet-name>
         <servlet-class>SupplierController.DeleteSupplierServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SearchSupplierServlet</servlet-name>
+        <servlet-class>SupplierController.SearchSupplierServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductServlet</servlet-name>
         <url-pattern>/product</url-pattern>
@@ -187,6 +191,10 @@
     <servlet-mapping>
         <servlet-name>DeleteSupplierServlet</servlet-name>
         <url-pattern>/supplier_delete</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchSupplierServlet</servlet-name>
+        <url-pattern>/supplier_search</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

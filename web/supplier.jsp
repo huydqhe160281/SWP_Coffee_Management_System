@@ -130,9 +130,11 @@
                                                     </div>
                                                     <div class="p-15 p-b-0 w-25">
                                                         <form class="search-form" action="supplier_search" method="post">
-                                                            Name: <input type="text" name="name" />
+                                                            Supplier Name: <input type="text" name="supplierName" />
                                                             Contact: <input type="text" name="contact" />
-                                                            <input type="submit" value="Search" />
+                                                            <button type="submit" class="search-button">
+                                                                <i class="fa fa-search"></i>
+                                                            </button>
                                                         </form>
                                                     </div>
                                                     <div class="card-header-right">
