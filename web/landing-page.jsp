@@ -37,19 +37,19 @@
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav ml-auto">
                             <li class="nav-item active">
-                                <a class="nav-link" href="index.html">Home</a>
+                                <a class="nav-link" href="#home">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="about.html">About Us</a>
+                                <a class="nav-link" href="#about">About Us</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="gallery.html">Gallery</a>
+                                <a class="nav-link" href="#gallery">Gallery</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="services.html">Services</a>
+                                <a class="nav-link" href="#services">Services</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="contact.html">Contact Us</a>
+                                <a class="nav-link" href="#contact">Contact Us</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#"><i class="fa fa-search" aria-hidden="true"></i></a>
@@ -127,7 +127,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="about_taital_main">
+                        <div class="about_taital_main" id="about">
                             <div class="about_taital">About Us</div>
                             <p class="about_text">Full cleaning and housekeeping services for companies and households.</p>
                             <p class="about_text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text.Lorem Ipsum is simply</p>
@@ -246,9 +246,9 @@
         <!-- gallery section end -->
         <!-- services section start -->
         <div class="services_section layout_padding">
-            <div class="container">
+            <div class="container" id="services">
                 <div class="row">
-                    <div class="col-sm-12">
+                    <div class="col-sm-12" >
                         <h1 class="services_taital">Services</h1>
                         <p class="services_text">Typesetting industry lorem Ipsum is simply dummy text of the </p>
                     </div>
@@ -452,13 +452,6 @@
             </div>
         </div>
         <!-- footer section end -->
-        <!-- copyright section start -->
-        <div class="copyright_section">
-            <div class="container">
-                <p class="copyright_text">2020 All Rights Reserved. Design by <a href="https://html.design">Free html  Templates</a></p>
-            </div>
-        </div>
-        <!-- copyright section end -->
         <!-- Required Jquery -->
         <script type="text/javascript" src="assets/js/jquery/jquery.min.js"></script>
         <script type="text/javascript" src="assets/js/jquery-ui/jquery-ui.min.js"></script>
