@@ -70,19 +70,29 @@ public class AccountDAO extends DBContext{
     }
 
     public void addAccount(Account account) {
-        String sql = "INSERT INTO Account (Username, Password, Name, Phone, Email, Address, Status, RoleID, CampusID) "
-                + "VALUES (?, ?, ?, ?, ?, ?, 1, 2, 1)";
+        String sql = "INSERT INTO [dbo].[Account]\n" +
+"           ([Username]\n" +
+"           ,[Password]\n" +
+"           ,[Name]\n" +
+"           ,[Phone]\n" +
+"           ,[Email]\n" +
+"           ,[Address]\n" +
+"           ,[Status]\n" +
+"           ,[RoleID]\n" +
+"           ,[CampusID])\n" +
+"     VALUES\n" +
+"           (?,?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
                 ps.setString(1, account.getUsername());
                 ps.setString(2, account.getPassword());
                 ps.setString(3, account.getName());
                 ps.setString(4, account.getPhone());
                 ps.setString(5, account.getEmail());
                 ps.setString(6, account.getAddress());
-            }
+                ps.setBoolean(7, account.isStatus());
+                ps.setInt(8, account.getRoleID());
+                ps.setInt(9, account.getCampusID());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -144,7 +154,8 @@ public class AccountDAO extends DBContext{
     }
     public static void main(String[] args) {
         AccountDAO accountDAO = new AccountDAO();
-        List<Account> accounts = accountDAO.getAllAccounts();
-        System.out.println(accounts);
+        Account acc = new Account(0, "Username", "Password", "Name", "Phone", "Email", "Address", true, 2, 1);
+        accountDAO.addAccount(acc);
+        //System.out.println(accounts);
     }
 }

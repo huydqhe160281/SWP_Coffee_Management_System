@@ -155,7 +155,7 @@
 
                                                 <div class="card-header">
                                                     <div class="card-block w-75 m-auto">
-                                                        <h3 class="text-center m-auto pb-5">Create New Discount</h3>
+                                                        <h3 class="text-center m-auto pb-5">Create New Account</h3>
                                                         <% if (request.getAttribute("error") != null) { %>
                                                         <div class="alert alert-danger">
                                                             <%= request.getAttribute("error") %>

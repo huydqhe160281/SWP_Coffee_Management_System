@@ -104,8 +104,8 @@
                                     <div class="row align-items-center">
                                         <div class="col-md-8">
                                             <div class="page-header-title">
-                                                <h5 class="m-b-10">Discount Management</h5>
-                                                <p class="m-b-0">Quản lý voucher</p>
+                                                <h5 class="m-b-10">Account Management</h5>
+                                                <p class="m-b-0">Quản lý Account</p>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -114,7 +114,7 @@
                                                     <a href="index.html"> <i class="fa fa-home"></i> </a>
                                                 </li>
                                                 <li class="breadcrumb-item">
-                                                    <a href="/discount">Discount Management</a>
+                                                    <a href="/discount">Account Management</a>
                                                 </li>
                                             </ul>
                                         </div>
