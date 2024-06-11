@@ -168,12 +168,14 @@
                                                                             <td>${supplier.contact}</td>
                                                                             <td>${supplier.address}</td>
                                                                             <td class="text-right pt-3">
-                                                                                <button class="btn btn-primary btn-sm" onclick="window.location.href = '/supplier_view_detail?supplierID=${supplier.supplierID}'">View</button>
-                                                                                <button class="btn btn-warning btn-sm" onclick="window.location.href = '/supplier_update?supplierID=${supplier.supplierID}'">Edit</button>
-                                                                                <form style="display:inline;" action="supplier_delete" method="post">
-                                                                                    <input type="hidden" name="supplierID" value="${supplier.supplierID}" />
-                                                                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete supplier: ${supplier.supplierName}?');">Delete</button>
-                                                                                </form>
+                                                                                <i class="fa fa-eye icon-spacing" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="View"
+                                                                                   onclick="window.location.href = '/supplier_view_detail?supplierID=${supplier.supplierID}'"></i>
+                                                                                <i class="fa fa-pencil-square-o icon-spacing" aria-hidden="true" 
+                                                                                   data-toggle="tooltip" data-placement="left" title="Edit"
+                                                                                   onclick="window.location.href = '/supplier_update?supplierID=${supplier.supplierID}'"></i>
+                                                                                <i class="fa fa-trash-o icon-spacing" aria-hidden="true" 
+                                                                                   data-toggle="tooltip" data-placement="left" title="Delete"
+                                                                                   onclick="deleteSupplier(${supplier.supplierID}, '${supplier.supplierName}')"></i>
                                                                             </td>
                                                                         </tr>
                                                                     </c:forEach>
@@ -199,7 +201,22 @@
         </div>
 
         <script type="text/javascript">
+            function deleteSupplier(supplierID, supplierName) {
+                if (confirm('Are you sure you want to delete supplier: ' + supplierName + '?')) {
+                    var form = document.createElement('form');
+                    form.method = 'GET';
+                    form.action = 'supplier_delete';
 
+                    var hiddenField = document.createElement('input');
+                    hiddenField.type = 'hidden';
+                    hiddenField.name = 'supplierID';
+                    hiddenField.value = supplierID;
+                    form.appendChild(hiddenField);
+
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            }
 
         </script>
 
