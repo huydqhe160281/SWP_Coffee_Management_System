@@ -143,7 +143,7 @@
                                                             Value: <input type="number" name="value" />
                                                             Start Date: <input type="date" name="startDate" />
                                                             End Date: <input type="date" name="endDate" />
-                                                            <input type="submit" value="Search" />
+                                                            <button type="submit" style="border: none;background-color: #ffffff"><i class="fa fa-search m-r-10"></i></button>
                                                         </form>
                                                     </div>
                                                     <div class="card-header-right">
@@ -189,12 +189,15 @@
                                                                                 ${discount.status ? 'On going' : 'Out of date'}
                                                                             </td>
                                                                             <td class="text-right pt-3">
-                                                                                <button class="btn btn-primary btn-sm" onclick="window.location.href = '/discount_view_detail?discountID=${discount.discountID}'">View</button>
-                                                                                <button class="btn btn-warning btn-sm" onclick="window.location.href = '/discount_update?discountID=${discount.discountID}'">Edit</button>
-                                                                                <form style="display:inline;" action="discount_delete" method="get">
-                                                                                    <input type="hidden" name="discountID" value="${discount.discountID}" />
-                                                                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete discount with code: ${discount.code}?');">Delete</button>
-                                                                                </form>
+                                                                                <i class="fa fa-eye icon-spacing" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="View" 
+                                                                                   onclick="window.location.href = '/discount_view_detail?discountID=${discount.discountID}'"></i>
+                                                                                <i class="fa fa-pencil-square-o icon-spacing" aria-hidden="true" 
+                                                                                   data-toggle="tooltip" data-placement=left title="Edit"
+                                                                                   onclick="window.location.href = '/discount_update?discountID=${discount.discountID}'"></i>
+                                                                                <i class="fa fa-trash-o icon-spacing" aria-hidden="true" 
+                                                                                   data-toggle="tooltip" data-placement="left" title="Delete"
+                                                                                   onclick="deleteDiscount(${discount.discountID}, '${discount.code}')"></i>
+
                                                                             </td>
                                                                         </tr>
                                                                     </c:forEach>
@@ -220,7 +223,22 @@
         </div>
 
         <script type="text/javascript">
+            function deleteDiscount(discountID, code) {
+                if (confirm('Are you sure you want to delete discount with code: ' + code + '?')) {
+                    var form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = 'discount_delete';
 
+                    var hiddenField = document.createElement('input');
+                    hiddenField.type = 'hidden';
+                    hiddenField.name = 'discountID';
+                    hiddenField.value = discountID;
+                    form.appendChild(hiddenField);
+
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            }
 
         </script>
 

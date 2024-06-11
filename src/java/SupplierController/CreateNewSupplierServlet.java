@@ -3,32 +3,30 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package DiscountController;
+package SupplierController;
 
-import dal.DiscountDAO;
+import dal.SupplierDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Supplier;
 
 /**
  *
  * @author Namqd
  */
-public class DeleteDiscountServlet extends HttpServlet {
+public class CreateNewSupplierServlet extends HttpServlet {
    
-    private DiscountDAO discountDAO;
+    private final SupplierDAO supplierDAO = new SupplierDAO();
 
-    public DeleteDiscountServlet() {
-        this.discountDAO = new DiscountDAO();
-    }
-    
+   
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        doPost(request, response);
+        request.getRequestDispatcher("/createNewSupplier.jsp").forward(request, response);
     } 
 
     /** 
@@ -41,9 +39,16 @@ public class DeleteDiscountServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        int discountID = Integer.parseInt(request.getParameter("discountID"));
-        discountDAO.deleteDiscount(discountID);
-        response.sendRedirect("discount");
+        String supplierName = request.getParameter("supplierName");
+        String contact = request.getParameter("contact");
+        String address = request.getParameter("address");
+        
+        Supplier sp = new Supplier();
+        sp.setSupplierName(supplierName);
+        sp.setContact(contact);
+        sp.setAddress(address);
+        supplierDAO.addSupplier(sp);
+        response.sendRedirect("supplier");
     }
 
     /** 
