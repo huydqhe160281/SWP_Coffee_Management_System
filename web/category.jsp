@@ -147,7 +147,6 @@
                                                                                    data-toggle="tooltip" data-placement="left" title="Delete"
                                                                                    onclick="confirm('Không thể xóa danh mục sản phẩm vì còn liên quan đến nhiều sản phẩm khác!!!')"></i>
                                                                             </td>
-
                                                                         </tr>
                                                                     </c:forEach>
 

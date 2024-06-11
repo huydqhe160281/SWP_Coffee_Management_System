@@ -19,6 +19,11 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
+        .icon-spacing {
+            padding-right: 5px;
+            font-size: 1.6em; /* Tăng kích thước của icon, bạn có thể thay đổi giá trị này để phù hợp */
+            cursor: pointer;
+        }
     </style>
     <body>
         <!-- Pre-loader start -->
@@ -144,13 +149,20 @@
                                                                                     ${p.status ? 'Đang bán' : 'Đã dừng bán'}
                                                                                 </span>
                                                                             </td>
+                                                                            <!--                                                                            <td class="text-right pt-3">
+                                                                                                                                                            <i class="fa fa-eye icon-spacing" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="View" 
+                                                                                                                                                               onclick="window.location.href = '/product_detail?productID=${p.productID}'"></i>
+                                                                                                                                                            <i class="fa fa-pencil-square-o icon-spacing" aria-hidden="true" 
+                                                                                                                                                               data-toggle="tooltip" data-placement=left title="Edit"
+                                                                                                                                                               onclick="window.location.href = '/product_update?productID=${p.productID}'"></i>
+                                                                                                                                                            <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#confirmModal" data-product-id="${p.productID}">Change Status</button>
+                                                                                                                                                        </td>-->
                                                                             <td class="text-right pt-3">
                                                                                 <i class="fa fa-eye icon-spacing" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="View" 
                                                                                    onclick="window.location.href = '/product_detail?productID=${p.productID}'"></i>
                                                                                 <i class="fa fa-pencil-square-o icon-spacing" aria-hidden="true" 
                                                                                    data-toggle="tooltip" data-placement=left title="Edit"
                                                                                    onclick="window.location.href = '/product_update?productID=${p.productID}'"></i>
-                                                                                <!--<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#confirmModal" data-product-id="${p.productID}">Change Status</button>-->
                                                                             </td>
                                                                         </tr>
                                                                     </c:forEach>

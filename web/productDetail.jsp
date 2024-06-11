@@ -110,7 +110,7 @@
                                                     <div class="card-body product-info">
                                                         <c:choose>
                                                             <c:when test="${product != null}">
-                                                                <div class="row">
+                                                                <div class="d-flex flex-row align-items-center">
                                                                     <div class="col-md-6 d-flex justify-content-center">
                                                                         <img src="${product.image ? product.image :  "/assets/images/noimage.jpg"}" class="img-fluid rounded product-image w-75" alt="${product.productName}">
                                                                     </div>
