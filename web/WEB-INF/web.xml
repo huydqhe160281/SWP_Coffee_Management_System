@@ -88,6 +88,10 @@
         <servlet-name>UpdateSupplierServlet</servlet-name>
         <servlet-class>SupplierController.UpdateSupplierServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewSupplierServlet</servlet-name>
+        <servlet-class>SupplierController.ViewSupplierServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductServlet</servlet-name>
         <url-pattern>/product</url-pattern>
@@ -171,6 +175,10 @@
     <servlet-mapping>
         <servlet-name>UpdateSupplierServlet</servlet-name>
         <url-pattern>/supplier_update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewSupplierServlet</servlet-name>
+        <url-pattern>/supplier_view_detail</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
