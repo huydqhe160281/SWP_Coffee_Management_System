@@ -33,6 +33,7 @@
             .product-info {
                 padding: 20px;
             }
+
         </style>
     </head>
     <body>
@@ -122,7 +123,8 @@
                                                                                 <c:otherwise><span class="badge badge-danger">Dừng bán</span></c:otherwise>
                                                                             </c:choose>
                                                                         </h5>
-                                                                        <h5>Category ID: ${product.categoryId}</h5>
+                                                                        <h5>Danh mục: ${product.category.categoryName}</h5>
+                                                                        <h5>Chi tiết danh mục:</h5> <p>${product.category.detail}</p>
                                                                     </div>
                                                                 </div>
                                                                 <div class="row detail-section">
