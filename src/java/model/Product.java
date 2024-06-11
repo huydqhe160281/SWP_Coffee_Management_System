@@ -18,13 +18,10 @@ public class Product {
     private String description;
     private String recipe;
     private boolean status;
-    private int categoryId;
+    private Category category; // Đối tượng Category thay vì categoryId
 
-    // Constructors
-    public Product() {
-    }
-
-    public Product(int productID, String productName, double costPrice, double price, String image, String description, String recipe, boolean status, int categoryId) {
+    // Constructor
+    public Product(int productID, String productName, double costPrice, double price, String image, String description, String recipe, boolean status, Category category) {
         this.productID = productID;
         this.productName = productName;
         this.costPrice = costPrice;
@@ -33,10 +30,10 @@ public class Product {
         this.description = description;
         this.recipe = recipe;
         this.status = status;
-        this.categoryId = categoryId;
+        this.category = category;
     }
 
-    // Getters and Setters
+    // Getters và Setters
     public int getProductID() {
         return productID;
     }
@@ -101,27 +98,29 @@ public class Product {
         this.status = status;
     }
 
-    public int getCategoryId() {
-        return categoryId;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
-    // toString method (optional for debugging)
     @Override
     public String toString() {
-        return "Product{"
-                + "productID=" + productID
-                + ", productName='" + productName + '\''
-                + ", costPrice=" + costPrice
-                + ", price=" + price
-                + ", image='" + image + '\''
-                + ", description='" + description + '\''
-                + ", recipe='" + recipe + '\''
-                + ", status=" + status
-                + ", categoryId=" + categoryId
-                + '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("Product{");
+        sb.append("productID=").append(productID);
+        sb.append(", productName=").append(productName);
+        sb.append(", costPrice=").append(costPrice);
+        sb.append(", price=").append(price);
+        sb.append(", image=").append(image);
+        sb.append(", description=").append(description);
+        sb.append(", recipe=").append(recipe);
+        sb.append(", status=").append(status);
+        sb.append(", category=").append(category);
+        sb.append('}');
+        return sb.toString();
     }
+
 }
