@@ -51,6 +51,38 @@ public class ProductDAO extends DBContext {
         return list;
     }
 
+    public List<Product> getHotProducts() {
+        List<Product> hotProducts = new ArrayList<>();
+        String sql = "SELECT p.ProductID, p.ProductName, p.Image, p.Description, p.Recipe, p.Status, p.IsHot, "
+                + "c.CategoryID, c.CategoryName, c.Detail "
+                + "FROM [SWP391_SU24].[dbo].[Product] p "
+                + "JOIN [SWP391_SU24].[dbo].[Category] c ON p.CategoryID = c.CategoryID "
+                + "WHERE p.IsHot = 1";
+        try ( PreparedStatement st = connection.prepareStatement(sql);  ResultSet rs = st.executeQuery()) {
+            while (rs.next()) {
+                Category category = new Category(
+                        rs.getInt("CategoryID"),
+                        rs.getString("CategoryName"),
+                        rs.getString("Detail")
+                );
+                Product p = new Product(
+                        rs.getInt("ProductID"),
+                        rs.getString("ProductName"),
+                        rs.getString("Image"),
+                        rs.getString("Description"),
+                        rs.getString("Recipe"),
+                        rs.getBoolean("Status"),
+                        rs.getBoolean("IsHot"),
+                        category
+                );
+                hotProducts.add(p);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error retrieving hot products: " + e.getMessage());
+        }
+        return hotProducts;
+    }
+
     /**
      * Retrieve products by category ID from the database
      *
@@ -199,9 +231,9 @@ public class ProductDAO extends DBContext {
 
     public static void main(String[] args) {
         ProductDAO dao = new ProductDAO();
-        List<Product> list = dao.getProductByCategoryId(2);
+        List<Product> list = dao.getHotProducts();
         Product p = dao.getProductById("1");
-        System.out.println(p);
+        System.out.println(list);
         // Uncomment the following lines to print the list of products
         // for (Product i : list) {
         //     System.out.println(i);

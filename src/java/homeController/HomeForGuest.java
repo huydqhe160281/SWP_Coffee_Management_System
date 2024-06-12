@@ -5,14 +5,18 @@
 package homeController;
 
 import dal.DiscountDAO;
+import dal.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 import model.Discount;
+import model.Product;
 
 /**
  *
@@ -59,8 +63,18 @@ public class HomeForGuest extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DiscountDAO discountDAO = new DiscountDAO();
+        ProductDAO productDAO = new ProductDAO();
+
+        List<Product> hotProducts = productDAO.getHotProducts();
         List<Discount> discounts = discountDAO.getAllDiscounts();
-        request.setAttribute("discounts", discounts);
+        Date currentDate = new Date();
+        List<Discount> validDiscounts = discounts.stream()
+                .filter(discount -> discount.getEndDate().after(currentDate))
+                .collect(Collectors.toList());
+
+        request.setAttribute("discounts", validDiscounts);
+        request.setAttribute("hotProducts", hotProducts);
+
         request.getRequestDispatcher("landing-page.jsp").forward(request, response);
     }
 

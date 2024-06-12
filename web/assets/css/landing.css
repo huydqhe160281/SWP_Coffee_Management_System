@@ -43,7 +43,9 @@ body {
     line-height: 1.80857;
     font-weight: normal;
     overflow-x: hidden !important;
+    background: rgba(247, 109, 55, 0.1);
 }
+
 
 a {
     color: #1f1f1f;
@@ -156,7 +158,7 @@ img {
     height: auto;
 }
 
- :focus {
+:focus {
     outline: 0;
 }
 
@@ -259,7 +261,8 @@ button {
     color: #fff;
 }
 
-.logo {}
+.logo {
+}
 
 /* header section end */
 
@@ -542,8 +545,7 @@ a:hover {
     width: 100%;
     float: left;
     background-image: url(../images/services-bg.png);
-    height: auto;
-    padding-bottom: 100px;
+    min-height: 650px;
     background-attachment: fixed;
 }
 
@@ -583,41 +585,70 @@ a:hover {
 .box_main .house_icon .image_2 {
     display: none;
 }
+.box_main {
+    width: 100%;
+    background-color: #f76d37;
+    padding: 40px 30px;
+    box-shadow: 0px 0px 18px -6px;
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    border-radius: 10px;
+}
 
-.box_main:hover .house_icon .image_2 {
-    display: block;
+.box_main:hover {
+    background-color: #ffffff;
+    box-shadow: 0px 0px 18px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+}
+
+.house_icon {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.house_icon img {
+    max-width: 100%;
+    transition: transform 0.3s;
 }
 
 .box_main:hover .house_icon .image_1 {
     display: none;
 }
 
-.box_main:hover {
-    background-color: #ffffff;
+.box_main:hover .house_icon .image_2 {
+    display: block;
 }
 
-.box_main {
-    width: 100%;
-    background-color: #f76d37;
-    padding: 40px 30px;
-    box-shadow: 0px 0px 18px -6px;
+.decorate_text, .tation_text, .readmore_bt {
+    text-align: center;
+    transition: color 0.3s;
 }
 
-.box_main:hover .decorate_text {
+.box_main:hover .decorate_text, .box_main:hover .tation_text {
     color: #000;
 }
 
-.box_main:hover .tation_text {
-    color: #000;
+.readmore_bt {
+    display: none;
 }
 
 .box_main:hover .readmore_bt {
     display: block;
 }
 
-.box_main:hover .readmore_bt a {
+.readmore_bt a {
     color: #ffffff;
     background-color: #000;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.box_main:hover .readmore_bt a {
+    background-color: #f76d37;
+    color: #fff;
+    transition: color 0.3s;
 }
 
 .services_section_2 {
