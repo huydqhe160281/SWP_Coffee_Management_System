@@ -133,25 +133,26 @@
                     <div class="col-md-6">
                         <div class="about_taital_main" id="about">
                             <div class="about_taital">About Us</div>
-                            <p class="about_text">Full cleaning and housekeeping services for companies and households.</p>
-                            <p class="about_text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text.Lorem Ipsum is simply</p>
+                            <p class="about_text">We are a professional coffee shop management team, providing comprehensive management services for coffee shops and tea houses.</p>
+                            <p class="about_text">With our years of experience in the industry, we aim to offer high-quality products, a friendly serving environment, and exceptional customer service.</p>
                             <div class="read_bt"><a href="#">Read More</a></div>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="about_img"><img src="assets/images/about-img.png"/></div>
+                        <div class="about_img"><img src="assets/images/about-img.png" alt="Our Image"/></div>
                     </div>
                 </div>
             </div>
         </div>
         <!-- about section end -->
 
+
         <!-- Hot Products section start -->
         <div class="container">
             <h2 class="gallery_taital my-5" id="hotproduct">Hot Products</h2>
             <div class="row mb-5">
                 <c:forEach items="${hotProducts}" var="product">
-                    <div class="col-md-4 mb-4">
+                    <div class="col-md-3 mb-4">
                         <div class="card h-100">
                             <img src="${empty product.image ? '/assets/images/noimage.jpg' : product.image}" class="card-img-top w-75 mx-auto" alt="${product.productName}">
                             <div class="card-body">
@@ -159,7 +160,7 @@
                                 <p class="card-text text-truncate">${product.description}</p>
                             </div>
                             <div class="card-footer text-center">
-                                <a href="#" class="btn btn-primary w-50">Details</a>
+                                <a href="#" class="btn btn-primary w-75">Details</a>
                             </div>
                         </div>
                     </div>
