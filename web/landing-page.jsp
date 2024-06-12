@@ -4,6 +4,8 @@
     Author     : ADMIN
 --%>
 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -60,68 +62,45 @@
             </div>
         </div>
         <!--header section end -->
+
         <!-- banner section start -->
         <div class="banner_section layout_padding">
             <div class="container">
                 <div id="main_slider" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="banner_taital">
-                                        <h1 class="outstanding_text">Outstanding</h1>
-                                        <h1 class="coffee_text">Coffee Shop</h1>
-                                        <p class="there_text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, </p>
-                                        <div class="learnmore_bt"><a href="#">Learn More</a></div>
+                        <c:forEach items="${requestScope.discounts}" var="discount" varStatus="status">
+                            <c:if test="${discount.status}">
+                                <div class="carousel-item ${status.first ? 'active' : ''}">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="banner_taital">
+                                                <h1 class="outstanding_text">Special Offer</h1>
+                                                <h1 class="coffee_text">Discount: ${discount.value}%</h1>
+                                                <p class="there_text">
+                                                    This voucher to get a maximum discount of 
+                                                    <fmt:formatNumber value="${discount.maxDiscount}" type="currency" pattern="###,### ₫" currencySymbol="₫" />
+                                                    <br/>
+                                                    Valid until <fmt:formatDate value="${discount.endDate}" pattern="dd/MM/yyyy" timeZone="Asia/Ho_Chi_Minh"/>.
+                                                </p>
+                                                <div class="learnmore_bt" onclick="copyToClipboard('${discount.code}')"><a href="#">Get Now</a></div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="banner_taital">
-                                        <h1 class="outstanding_text">Outstanding </h1>
-                                        <h1 class="coffee_text">Coffee Shop</h1>
-                                        <p class="there_text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, </p>
-                                        <div class="learnmore_bt"><a href="#">Learn More</a></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="banner_taital">
-                                        <h1 class="outstanding_text">Outstanding </h1>
-                                        <h1 class="coffee_text">Coffee Shop</h1>
-                                        <p class="there_text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, </p>
-                                        <div class="learnmore_bt"><a href="#">Learn More</a></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                            </c:if>
+                        </c:forEach>
                     </div>
-                    <a
-                        class="carousel-control-prev"
-                        href="#main_slider"
-                        role="button"
-                        data-slide="prev"
-                        >
+                    <a class="carousel-control-prev" href="#main_slider" role="button" data-slide="prev">
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                     </a>
-                    <a
-                        class="carousel-control-next"
-                        href="#main_slider"
-                        role="button"
-                        data-slide="next"
-                        >
+                    <a class="carousel-control-next" href="#main_slider" role="button" data-slide="next">
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </a>
                 </div>
             </div>
         </div>
         <!-- banner section end -->
+
         <!-- about section start -->
         <div class="about_section layout_padding">
             <div class="container">
@@ -452,6 +431,17 @@
             </div>
         </div>
         <!-- footer section end -->
+
+
+        <script type="text/javascript">
+            function copyToClipboard(code) {
+                navigator.clipboard.writeText(code).then(function () {
+                    alert('Voucher code ' + code + ' copied to clipboard!');
+                }, function (err) {
+                    console.error('Could not copy text: ', err);
+                });
+            }
+        </script>
         <!-- Required Jquery -->
         <script type="text/javascript" src="assets/js/jquery/jquery.min.js"></script>
         <script type="text/javascript" src="assets/js/jquery-ui/jquery-ui.min.js"></script>
