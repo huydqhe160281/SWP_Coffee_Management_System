@@ -4,7 +4,9 @@
  */
 package homeController;
 
+import com.google.gson.Gson;
 import dal.DiscountDAO;
+import dal.GeneralDAO;
 import dal.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import model.Discount;
+import model.General;
 import model.Product;
 
 /**
@@ -64,6 +67,11 @@ public class HomeForGuest extends HttpServlet {
             throws ServletException, IOException {
         DiscountDAO discountDAO = new DiscountDAO();
         ProductDAO productDAO = new ProductDAO();
+        GeneralDAO generalDao = new GeneralDAO();
+
+        General general = generalDao.getLastGeneral();
+        Gson gson = new Gson();
+        String generalJson = gson.toJson(general);
 
         List<Product> hotProducts = productDAO.getHotProducts();
         List<Discount> discounts = discountDAO.getAllDiscounts();
@@ -72,6 +80,7 @@ public class HomeForGuest extends HttpServlet {
                 .filter(discount -> discount.getEndDate().after(currentDate))
                 .collect(Collectors.toList());
 
+        request.setAttribute("generalJson", generalJson);
         request.setAttribute("discounts", validDiscounts);
         request.setAttribute("hotProducts", hotProducts);
 

@@ -11,22 +11,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Coffee Management System</title>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-
-        <meta name="keywords" content="bootstrap, bootstrap admin template, admin theme, admin dashboard, dashboard template, admin template, responsive" />
-        <meta name="author" content="Codedthemes" />
-        <!-- Favicon icon -->
-        <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
+        <jsp:include page="./common/import.jsp"/>
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet" />
         <!-- Required Fremwork -->
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap/css/bootstrap.min.css" />
         <!-- style css -->
         <link rel="stylesheet" type="text/css" href="assets/css/landing.css" />
-        <!-- Font Awesome -->
-        <link rel="stylesheet" type="text/css" href="assets/icon/font-awesome/css/font-awesome.min.css" />
         <style>
             /* Style for back to top button */
             #back-to-top {

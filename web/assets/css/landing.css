@@ -43,7 +43,7 @@ body {
     line-height: 1.80857;
     font-weight: normal;
     overflow-x: hidden !important;
-    background: rgba(247, 109, 55, 0.1);
+    background: rgba(247, 109, 55, 0.1) !important;
 }
 
 
