@@ -12,28 +12,27 @@ public class Product {
 
     private int productID;
     private String productName;
-    private double costPrice;
-    private double price;
     private String image;
     private String description;
     private String recipe;
     private boolean status;
-    private Category category; // Đối tượng Category thay vì categoryId
+    private boolean isHot;
+    private Category category;
 
-    // Constructor
-    public Product(int productID, String productName, double costPrice, double price, String image, String description, String recipe, boolean status, Category category) {
+    public Product() {
+    }
+
+    public Product(int productID, String productName, String image, String description, String recipe, boolean status, boolean isHot, Category category) {
         this.productID = productID;
         this.productName = productName;
-        this.costPrice = costPrice;
-        this.price = price;
         this.image = image;
         this.description = description;
         this.recipe = recipe;
         this.status = status;
+        this.isHot = isHot;
         this.category = category;
     }
 
-    // Getters và Setters
     public int getProductID() {
         return productID;
     }
@@ -48,22 +47,6 @@ public class Product {
 
     public void setProductName(String productName) {
         this.productName = productName;
-    }
-
-    public double getCostPrice() {
-        return costPrice;
-    }
-
-    public void setCostPrice(double costPrice) {
-        this.costPrice = costPrice;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 
     public String getImage() {
@@ -98,6 +81,14 @@ public class Product {
         this.status = status;
     }
 
+    public boolean isIsHot() {
+        return isHot;
+    }
+
+    public void setIsHot(boolean isHot) {
+        this.isHot = isHot;
+    }
+
     public Category getCategory() {
         return category;
     }
@@ -108,19 +99,7 @@ public class Product {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Product{");
-        sb.append("productID=").append(productID);
-        sb.append(", productName=").append(productName);
-        sb.append(", costPrice=").append(costPrice);
-        sb.append(", price=").append(price);
-        sb.append(", image=").append(image);
-        sb.append(", description=").append(description);
-        sb.append(", recipe=").append(recipe);
-        sb.append(", status=").append(status);
-        sb.append(", category=").append(category);
-        sb.append('}');
-        return sb.toString();
+        return "Product{" + "productID=" + productID + ", productName=" + productName + ", image=" + image + ", description=" + description + ", recipe=" + recipe + ", status=" + status + ", isHot=" + isHot + ", category=" + category + '}';
     }
 
 }

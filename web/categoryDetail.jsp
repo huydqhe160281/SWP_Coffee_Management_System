@@ -150,8 +150,6 @@
                                                                                                         <i class="fa fa-long-arrow-${sortType == 'asc' ? 'up' : 'down'}" aria-hidden="true"></i>
                                                                                                     </a>
                                                                                                 </th>
-                                                                                                <th scope="col" class="font-weight-bold">Cost Price</th>
-                                                                                                <th scope="col" class="font-weight-bold">Price</th>
                                                                                                 <th scope="col" class="font-weight-bold">Description</th>
                                                                                                 <th scope="col" class="font-weight-bold">Status</th>
                                                                                             </tr>
@@ -161,8 +159,6 @@
                                                                                                 <tr>
                                                                                                     <th scope="row">${p.productID}</th>
                                                                                                     <td>${p.productName}</td> 
-                                                                                                    <td><fmt:formatNumber value="${p.costPrice}" type="currency" pattern="###,### ₫" currencySymbol="₫" /></td>
-                                                                                                    <td><fmt:formatNumber value="${p.price}" type="currency" pattern="###,### ₫" currencySymbol="₫" /></td>
                                                                                                     <td class="limit-detail" style="cursor: pointer" 
                                                                                                         data-toggle="tooltip" data-placement="top"
                                                                                                         title="${p.description}"
