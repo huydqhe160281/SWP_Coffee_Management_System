@@ -4,26 +4,48 @@
     Author     : ADMIN
 --%>
 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Coffee Management System</title>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-
-        <meta name="keywords" content="bootstrap, bootstrap admin template, admin theme, admin dashboard, dashboard template, admin template, responsive" />
-        <meta name="author" content="Codedthemes" />
-        <!-- Favicon icon -->
-        <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
+        <jsp:include page="./common/import.jsp"/>
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet" />
         <!-- Required Fremwork -->
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap/css/bootstrap.min.css" />
         <!-- style css -->
         <link rel="stylesheet" type="text/css" href="assets/css/landing.css" />
-        <!-- Font Awesome -->
-        <link rel="stylesheet" type="text/css" href="assets/icon/font-awesome/css/font-awesome.min.css" />
+        <style>
+            /* Style for back to top button */
+            #back-to-top {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                display: none;
+                background-color: #007bff;
+                color: white;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                text-align: center;
+                line-height: 40px;
+                cursor: pointer;
+                z-index: 99;
+            }
+            #back-to-top:hover {
+                background-color: #0056b3;
+            }
+            .header_section.fixed-header {
+                position: fixed;
+                width: 100%;
+                top: 0;
+                left: 0;
+                z-index: 1000;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+        </style>
     </head>
     <body>
         <!--header section start -->
@@ -43,7 +65,7 @@
                                 <a class="nav-link" href="#about">About Us</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#gallery">Gallery</a>
+                                <a class="nav-link" href="#hotproduct">Hot Products</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#services">Services</a>
@@ -51,77 +73,59 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="#contact">Contact Us</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="fa fa-search" aria-hidden="true"></i></a>
-                            </li>
                         </ul>
                     </div>
                 </nav>
             </div>
         </div>
         <!--header section end -->
+
         <!-- banner section start -->
         <div class="banner_section layout_padding">
             <div class="container">
                 <div id="main_slider" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="banner_taital">
-                                        <h1 class="outstanding_text">Outstanding</h1>
-                                        <h1 class="coffee_text">Coffee Shop</h1>
-                                        <p class="there_text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, </p>
-                                        <div class="learnmore_bt"><a href="#">Learn More</a></div>
+                        <c:if test="${not empty requestScope.discounts}">
+                            <c:forEach items="${requestScope.discounts}" var="discount" varStatus="status">
+                                <div class="carousel-item ${status.first ? 'active' : ''}">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="banner_taital">
+                                                <h1 class="outstanding_text">Special Offer</h1>
+                                                <h1 class="coffee_text">Discount: ${discount.value}%</h1>
+                                                <p class="there_text">
+                                                    This voucher to get a maximum discount of 
+                                                    <fmt:formatNumber value="${discount.maxDiscount}" type="currency" pattern="###,### ₫" currencySymbol="₫" />
+                                                    <br/>
+                                                    Valid until <fmt:formatDate value="${discount.endDate}" pattern="dd/MM/yyyy" timeZone="Asia/Ho_Chi_Minh"/>.
+                                                </p>
+                                                <div class="learnmore_bt" onclick="copyToClipboard('${discount.code}')"><a href="#">Get Now</a></div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="banner_taital">
-                                        <h1 class="outstanding_text">Outstanding </h1>
-                                        <h1 class="coffee_text">Coffee Shop</h1>
-                                        <p class="there_text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, </p>
-                                        <div class="learnmore_bt"><a href="#">Learn More</a></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="banner_taital">
-                                        <h1 class="outstanding_text">Outstanding </h1>
-                                        <h1 class="coffee_text">Coffee Shop</h1>
-                                        <p class="there_text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, </p>
-                                        <div class="learnmore_bt"><a href="#">Learn More</a></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                            </c:forEach>
+                        </c:if>
                     </div>
-                    <a
-                        class="carousel-control-prev"
-                        href="#main_slider"
-                        role="button"
-                        data-slide="prev"
-                        >
-                        <i class="fa fa-angle-left" aria-hidden="true"></i>
-                    </a>
-                    <a
-                        class="carousel-control-next"
-                        href="#main_slider"
-                        role="button"
-                        data-slide="next"
-                        >
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </a>
+                    <c:choose>
+                        <c:when test="${not empty requestScope.discounts and fn:length(requestScope.discounts) > 1}">
+                            <a class="carousel-control-prev" href="#main_slider" role="button" data-slide="prev">
+                                <i class="fa fa-angle-left" aria-hidden="true"></i>
+                            </a>
+                            <a class="carousel-control-next" href="#main_slider" role="button" data-slide="next">
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                            </a>
+                        </c:when>
+                        <c:otherwise>
+                            <!-- Nothing to show -->
+                        </c:otherwise>
+                    </c:choose>
+
                 </div>
             </div>
         </div>
         <!-- banner section end -->
+
         <!-- about section start -->
         <div class="about_section layout_padding">
             <div class="container">
@@ -141,158 +145,81 @@
             </div>
         </div>
         <!-- about section end -->
-        <!-- gallery section start -->
-        <!--        <div class="gallery_section layout_padding">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <h1 class="gallery_taital">Our Gallery</h1>
-                                <p class="gallery_text">Lorem Ipsum is simply dummy text of printing typesetting ststry lorem Ipsum the industry'ndard dummy text ever since of the 1500s, when an unknown printer took a galley of type and scra make a type specimen book. It has</p>
+
+        <!-- Hot Products section start -->
+        <div class="container">
+            <h2 class="gallery_taital my-5" id="hotproduct">Hot Products</h2>
+            <div class="row mb-5">
+                <c:forEach items="${hotProducts}" var="product">
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <img src="${empty product.image ? '/assets/images/noimage.jpg' : product.image}" class="card-img-top w-75 mx-auto" alt="${product.productName}">
+                            <div class="card-body">
+                                <h5 class="card-title">${product.productName}</h5>
+                                <p class="card-text text-truncate">${product.description}</p>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="#" class="btn btn-primary w-50">Details</a>
                             </div>
                         </div>
-                        <div class="">
-                            <div class="gallery_section_2">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="container_main">
-                                            <img src="images/img-1.png" alt="Avatar" class="image">
-                                            <div class="overlay">
-                                                <div class="text"><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="container_main">
-                                            <img src="images/img-2.png" alt="Avatar" class="image">
-                                            <div class="overlay">
-                                                <div class="text"><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="container_main">
-                                            <img src="images/img-3.png" alt="Avatar" class="image">
-                                            <div class="overlay">
-                                                <div class="text"><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="gallery_section_2">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="container_main">
-                                            <img src="images/img-4.png" alt="Avatar" class="image">
-                                            <div class="overlay">
-                                                <div class="text"><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="container_main">
-                                            <img src="images/img-5.png" alt="Avatar" class="image">
-                                            <div class="overlay">
-                                                <div class="overlay">
-                                                    <div class="text"><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="container_main">
-                                            <img src="images/img-6.png" alt="Avatar" class="image">
-                                            <div class="overlay">
-                                                <div class="overlay">
-                                                    <div class="text"><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="gallery_section_2">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="container_main">
-                                            <img src="images/img-7.png" alt="Avatar" class="image">
-                                            <div class="overlay">
-                                                <div class="text"><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="container_main">
-                                            <img src="images/img-8.png" alt="Avatar" class="image">
-                                            <div class="overlay">
-                                                <div class="text"><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="container_main">
-                                            <img src="images/img-9.png" alt="Avatar" class="image">
-                                            <div class="overlay">
-                                                <div class="text"><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="seemore_bt"><a href="#">See More</a></div>
                     </div>
-                </div>-->
-        <!-- gallery section end -->
+                </c:forEach>
+            </div>
+        </div>
+        <!-- Hot Products section end-->
+
         <!-- services section start -->
         <div class="services_section layout_padding">
             <div class="container" id="services">
                 <div class="row">
-                    <div class="col-sm-12" >
+                    <div class="col-sm-12">
                         <h1 class="services_taital">Services</h1>
-                        <p class="services_text">Typesetting industry lorem Ipsum is simply dummy text of the </p>
+                        <p class="services_text">Welcome to our cafe. Discover the services and products we offer!</p>
                     </div>
                 </div>
                 <div class="services_section_2">
                     <div class="row">
                         <div class="col-lg-4 col-sm-12 col-md-4">
                             <div class="box_main active">
-                                <div class="house_icon" >
-                                    <img  src="assets/images/icon1.png" class="image_1"/>
-                                    <img  src="assets/images/icon1.png" class="image_2"/>
+                                <div class="house_icon">
+                                    <img src="assets/images/icon1.png" class="image_1" alt="Icon Coffee"/>
+                                    <img src="assets/images/icon1.png" class="image_2" alt="Icon Coffee"/>
                                 </div>
-                                <h3 class="decorate_text">Original Coffee</h3>
-                                <p class="tation_text">Exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea </p>
+                                <h3 class="decorate_text">High-Quality Coffee</h3>
+                                <p class="tation_text">Providing pure coffee from famous producing regions.</p>
                                 <div class="readmore_bt"><a href="#">Read More</a></div>
                             </div>
                         </div>
                         <div class="col-lg-4 col-sm-12 col-md-4">
                             <div class="box_main">
                                 <div class="house_icon">
-                                    <img src="assets/images/icon2.png" class="image_1">
-                                    <img src="assets/images/icon2.png" class="image_2">
+                                    <img src="assets/images/icon2.png" class="image_1" alt="Icon Drinks"/>
+                                    <img src="assets/images/icon2.png" class="image_2" alt="Icon Drinks"/>
                                 </div>
-                                <h3 class="decorate_text">20 Coffee Flavors</h3>
-                                <p class="tation_text">Exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea </p>
+                                <h3 class="decorate_text">Diverse Beverages</h3>
+                                <p class="tation_text">In addition to coffee, we offer a variety of delicious beverages.</p>
                                 <div class="readmore_bt"><a href="#">Read More</a></div>
                             </div>
                         </div>
                         <div class="col-lg-4 col-sm-12 col-md-4">
                             <div class="box_main">
                                 <div class="house_icon">
-                                    <img src="assets/images/icon3.png" class="image_1">
-                                    <img src="assets/images/icon3.png" class="image_2">
+                                    <img src="assets/images/icon3.png" class="image_1" alt="Icon Ambient"/>
+                                    <img src="assets/images/icon3.png" class="image_2" alt="Icon Ambient"/>
                                 </div>
-                                <h3 class="decorate_text">Pleasant Abient</h3>
-                                <p class="tation_text">Exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea </p>
+                                <h3 class="decorate_text">Relaxing Ambience</h3>
+                                <p class="tation_text">Relax and enjoy our cozy and tranquil atmosphere.</p>
                                 <div class="readmore_bt"><a href="#">Read More</a></div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
         <!-- services section end -->
+
+
         <!-- testimonial section start -->
         <div class="client_section layout_padding">
             <div class="container">
@@ -452,6 +379,14 @@
             </div>
         </div>
         <!-- footer section end -->
+
+        <!-- Back to Top Button start -->
+        <div id="back-to-top" title="Back to top"><i class="fa fa-angle-up"></i></div>
+        <!-- Back to Top Button end-->
+
+
+
+
         <!-- Required Jquery -->
         <script type="text/javascript" src="assets/js/jquery/jquery.min.js"></script>
         <script type="text/javascript" src="assets/js/jquery-ui/jquery-ui.min.js"></script>
@@ -465,7 +400,45 @@
         <script src="assets/js/pcoded.min.js"></script>
         <script src="assets/js/vertical/vertical-layout.min.js"></script>
         <script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
-        <script type="text/javascript" src="assets/js/script.js"></script>  
+        <!--<script type="text/javascript" src="assets/js/script.js"></script>-->  
+        <script>
+                                                    $(document).ready(function () {
+                                                        $(window).scroll(function () {
+                                                            if ($(this).scrollTop() > 1000) {
+                                                                $('#back-to-top').fadeIn(200);
+                                                            } else {
+                                                                $('#back-to-top').fadeOut(200);
+                                                            }
+                                                        });
 
+                                                        // Animate the scroll to top
+                                                        $('#back-to-top').click(function (event) {
+                                                            event.preventDefault();
+
+                                                            $('html, body').animate({
+                                                                scrollTop: 0
+                                                            }, 300);
+                                                        });
+                                                    });
+                                                    $(document).ready(function () {
+                                                        var navbar = $('.header_section');
+
+                                                        $(window).scroll(function () {
+                                                            if ($(window).scrollTop() > 50) {
+                                                                navbar.addClass('fixed-header');
+                                                            } else {
+                                                                navbar.removeClass('fixed-header');
+                                                            }
+                                                        });
+                                                    });
+                                                    function copyToClipboard(code) {
+                                                        navigator.clipboard.writeText(code).then(function () {
+                                                            alert('Voucher code ' + code + ' copied to clipboard!');
+                                                        }, function (err) {
+                                                            console.error('Could not copy text: ', err);
+                                                        });
+                                                    }
+
+        </script>
     </body>
 </html>

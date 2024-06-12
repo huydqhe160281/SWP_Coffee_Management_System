@@ -80,6 +80,10 @@
         <servlet-name>ProductDetailServlet</servlet-name>
         <servlet-class>productController.ProductDetailServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>HomeForGuest</servlet-name>
+        <servlet-class>homeController.HomeForGuest</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductServlet</servlet-name>
         <url-pattern>/product</url-pattern>
@@ -156,12 +160,16 @@
         <servlet-name>ProductDetailServlet</servlet-name>
         <url-pattern>/product_detail</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HomeForGuest</servlet-name>
+        <url-pattern>/landing-page</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>landing-page.jsp</welcome-file>
+        <welcome-file>landing-page</welcome-file>
     </welcome-file-list>
 </web-app>

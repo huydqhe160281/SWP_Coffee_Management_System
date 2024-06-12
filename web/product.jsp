@@ -132,8 +132,8 @@
                                                                         <tr>
                                                                             <th scope="row">${p.productID}</th>
                                                                             <td>${p.productName}</td>
-                                                                            <td><fmt:formatNumber value="${p.costPrice}" type="currency" pattern="###,### ₫" currencySymbol="₫" /></td>
-                                                                            <td><fmt:formatNumber value="${p.price}" type="currency" pattern="###,### ₫" currencySymbol="₫" /></td>
+                                                                            <td></td>
+                                                                            <td></td>
                                                                             <td class="limit-detail" style="cursor: pointer" data-toggle="tooltip" data-placement="top"
                                                                                 title="${p.description}"
                                                                                 data-template='<div class="tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner" style="max-width: 400px; white-space: pre-wrap;"></div></div>'>
