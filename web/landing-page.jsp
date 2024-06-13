@@ -18,13 +18,12 @@
         <!-- style css -->
         <link rel="stylesheet" type="text/css" href="assets/css/landing.css" />
         <style>
-            /* Style for back to top button */
             #back-to-top {
                 position: fixed;
                 bottom: 20px;
                 right: 20px;
                 display: none;
-                background-color: #007bff;
+                background-color: #f76d37;
                 color: white;
                 width: 40px;
                 height: 40px;
@@ -33,9 +32,10 @@
                 line-height: 40px;
                 cursor: pointer;
                 z-index: 99;
+                transition: background-color 0.3s;
             }
             #back-to-top:hover {
-                background-color: #0056b3;
+                background-color: #e64a19;
             }
             .header_section.fixed-header {
                 position: fixed;
@@ -312,7 +312,7 @@
         <!-- contact section start -->
         <div class="contact_section layout_padding">
             <div class="container">
-                <h1 class="contact_text">Contact Us</h1>
+                <h1 class="contact_text" id="contact">Contact Us</h1>
             </div>
         </div>
         <div class="contact_section_2 layout_padding">
@@ -368,11 +368,11 @@
                         <h3 class="useful_text">Menu</h3>
                         <div class="footer_menu">
                             <ul>
-                                <li><a href="index.html">Home</a></li>
-                                <li><a href="about.html">About Us</a></li>
-                                <li><a href="gallery.html">Gallery</a></li>
-                                <li><a href="services.html">Services</a></li>
-                                <li><a href="contact.html">Contact Us</a></li>
+                                <li><a href="#">Home</a></li>
+                                <li><a href="#about">About Us</a></li>
+                                <li><a href="#hotproduct">Gallery</a></li>
+                                <li><a href="#services">Services</a></li>
+                                <li><a href="#contact">Contact Us</a></li>
                             </ul>
                         </div>
                     </div>
@@ -386,17 +386,17 @@
                             <ul>
                                 <li>
                                     <a href="#">
-                                        <i class="fa fa-map-marker" aria-hidden="true"></i><span class="padding_left_10">Address : Loram Ipusm</span>
+                                        <i class="fa fa-map-marker" aria-hidden="true"></i><span class="padding_left_10">Address : ${general.address}</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#">
-                                        <i class="fa fa-phone" aria-hidden="true"></i><span class="padding_left_10">Call : +01 1234567890</span>
+                                        <i class="fa fa-phone" aria-hidden="true"></i><span class="padding_left_10">Call : ${general.phone}</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#">
-                                        <i class="fa fa-envelope" aria-hidden="true"></i><span class="padding_left_10">Email : demo@gmail.com</span>
+                                        <i class="fa fa-envelope" aria-hidden="true"></i><span class="padding_left_10">Email : ${general.email}</span>
                                     </a>
                                 </li>
                             </ul>

@@ -81,9 +81,9 @@ public class HomeForGuest extends HttpServlet {
                 .collect(Collectors.toList());
 
         request.setAttribute("generalJson", generalJson);
+        request.setAttribute("general", general);
         request.setAttribute("discounts", validDiscounts);
         request.setAttribute("hotProducts", hotProducts);
-
         request.getRequestDispatcher("landing-page.jsp").forward(request, response);
     }
 
