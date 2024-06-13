@@ -45,6 +45,21 @@
                 z-index: 1000;
                 box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             }
+            @keyframes fire {
+                0% {
+                    color: #f00;
+                }
+                50% {
+                    color: #fff;
+                }
+                100% {
+                    color: #f00;
+                }
+            }
+
+            .fire {
+                animation: fire 1s infinite;
+            }
         </style>
     </head>
     <body>
@@ -160,11 +175,21 @@
                                 <p class="card-text text-truncate">${product.description}</p>
                             </div>
                             <div class="card-footer text-center">
-                                <a href="#" class="btn btn-primary w-75">Details</a>
+                                <a href="#" class="btn btn-primary w-75 btn-details" 
+                                   data-product-name="${product.productName}"
+                                   data-product-description="${product.description}"
+                                   data-product-image="${empty product.image ? '/assets/images/noimage.jpg' : product.image}"
+                                   data-product-recipe="${product.recipe}"
+                                   data-product-ishot="${product.isHot ? 'Hot Product' : ''}"
+                                   data-product-category="${product.category.categoryName}"
+                                   >
+                                    Details
+                                </a>
                             </div>
                         </div>
                     </div>
                 </c:forEach>
+
             </div>
         </div>
         <!-- Hot Products section end-->
@@ -219,7 +244,6 @@
             </div>
         </div>
         <!-- services section end -->
-
 
         <!-- testimonial section start -->
         <div class="client_section layout_padding">
@@ -284,6 +308,7 @@
             </div>
         </div>
         <!-- testimonial section end -->
+
         <!-- contact section start -->
         <div class="contact_section layout_padding">
             <div class="container">
@@ -330,6 +355,7 @@
             </div>
         </div>
         <!-- contact section end -->
+
         <!-- footer section start -->
         <div class="footer_section layout_padding">
             <div class="container">
@@ -381,12 +407,44 @@
         </div>
         <!-- footer section end -->
 
+        <!-- Product Details Modal start -->
+        <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="productModalLabel">Product Details</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body d-flex align-items-center">
+                        <div id="modalProductImage" class="mr-3"></div>
+                        <div>
+                            <div class="d-flex mb-2">
+                                <span class="font-weight-bold mr-1">Category: </span><div id="modalProductCategory"></div>
+                            </div>
+                            <div class="d-flex mb-2">
+                                <span class="font-weight-bold mr-1">Name:</span><div id="modalProductName"></div>
+                            </div>
+                            <div class="d-flex mb-2">
+                                <span class="font-weight-bold mr-1">Status: </span><div id="modalProductIsHot"></div>
+                            </div>
+                            <div class="">
+                                <span class="font-weight-bold mr-1">Description: </span><div id="modalProductDescription"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Product Details Modal end -->
+
         <!-- Back to Top Button start -->
         <div id="back-to-top" title="Back to top"><i class="fa fa-angle-up"></i></div>
         <!-- Back to Top Button end-->
-
-
-
 
         <!-- Required Jquery -->
         <script type="text/javascript" src="assets/js/jquery/jquery.min.js"></script>
@@ -432,6 +490,26 @@
                                                             }
                                                         });
                                                     });
+                                                    $(document).ready(function () {
+                                                        $('.btn-details').on('click', function (event) {
+                                                            event.preventDefault();
+                                                            var productName = $(this).data('product-name');
+                                                            var productDescription = $(this).data('product-description');
+                                                            var productImage = $(this).data('product-image');
+                                                            var productIsHot = $(this).data('product-ishot');
+                                                            var productCategoryName = $(this).data('product-category');
+
+
+                                                            $('#modalProductName').text(productName);
+                                                            $('#modalProductDescription').text(productDescription);
+                                                            $('#modalProductImage').html('<img src="' + productImage + '" class="img-fluid"/>');
+                                                            $('#modalProductIsHot').html('<span class="badge badge-pill badge-danger fire">' + productIsHot + '</span>');
+                                                            $('#modalProductCategory').text(productCategoryName);
+
+                                                            $('#productModal').modal('show');
+                                                        });
+                                                    });
+
                                                     function copyToClipboard(code) {
                                                         navigator.clipboard.writeText(code).then(function () {
                                                             alert('Voucher code ' + code + ' copied to clipboard!');
