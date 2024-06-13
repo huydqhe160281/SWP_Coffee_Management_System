@@ -5,6 +5,7 @@
 package productController;
 
 import common.DBContext;
+import dal.CategoryDAO;
 import dal.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,6 +14,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
+import model.Category;
 import model.Product;
 
 /**
@@ -62,6 +64,8 @@ public class ProductServlet extends HttpServlet {
         String currentPath = request.getRequestURI();
         request.setAttribute("currentPath", currentPath);
         ProductDAO productDAO = new ProductDAO();
+        CategoryDAO categoryDAO = new CategoryDAO();
+
         String indexPage_raw = request.getParameter("indexPage");
         String sizePage_raw = request.getParameter("sizePage");
         String sortType = request.getParameter("sortType");
@@ -71,7 +75,7 @@ public class ProductServlet extends HttpServlet {
             indexPage_raw = "1";
         }
         if (sizePage_raw == null) {
-            sizePage_raw = "2";
+            sizePage_raw = "5";
         }
         if (sortType == null) {
             sortType = "asc";
@@ -79,7 +83,7 @@ public class ProductServlet extends HttpServlet {
 
         int indexPage = Integer.parseInt(indexPage_raw);
         int sizePage = Integer.parseInt(sizePage_raw);
-        int count = productDAO.getTotalProduct();
+        int count = productDAO.getTotalProductByCategoryId("");
 
         int endPage = count / sizePage;
         if (count % sizePage != 0) {
@@ -87,13 +91,16 @@ public class ProductServlet extends HttpServlet {
         }
 
         // Lấy danh sách các Category đã được sắp xếp
-        List<Product> pList = productDAO.getAllProductByPage(indexPage, sizePage, sortType);
+        List<Product> pList = productDAO.getProductByCategoryIdByPage("", indexPage, sizePage, sortType);
+        List<Category> cList = categoryDAO.getAllCategory();
+        List<Category> cListFormat;
 
         request.setAttribute("indexPage", indexPage);
         request.setAttribute("endPage", endPage);
         request.setAttribute("sizePage", sizePage);
         request.setAttribute("sortType", sortType); // Đặt thuộc tính sortType để sử dụng trong JSP
         request.setAttribute("pList", pList);
+        request.setAttribute("cList", cList);
         request.getRequestDispatcher("product.jsp").forward(request, response);
     }
 
