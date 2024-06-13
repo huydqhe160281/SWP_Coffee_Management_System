@@ -18,13 +18,12 @@
         <!-- style css -->
         <link rel="stylesheet" type="text/css" href="assets/css/landing.css" />
         <style>
-            /* Style for back to top button */
             #back-to-top {
                 position: fixed;
                 bottom: 20px;
                 right: 20px;
                 display: none;
-                background-color: #007bff;
+                background-color: #f76d37;
                 color: white;
                 width: 40px;
                 height: 40px;
@@ -33,9 +32,10 @@
                 line-height: 40px;
                 cursor: pointer;
                 z-index: 99;
+                transition: background-color 0.3s;
             }
             #back-to-top:hover {
-                background-color: #0056b3;
+                background-color: #e64a19;
             }
             .header_section.fixed-header {
                 position: fixed;
@@ -44,6 +44,21 @@
                 left: 0;
                 z-index: 1000;
                 box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            @keyframes fire {
+                0% {
+                    color: #f00;
+                }
+                50% {
+                    color: #fff;
+                }
+                100% {
+                    color: #f00;
+                }
+            }
+
+            .fire {
+                animation: fire 1s infinite;
             }
         </style>
     </head>
@@ -133,25 +148,26 @@
                     <div class="col-md-6">
                         <div class="about_taital_main" id="about">
                             <div class="about_taital">About Us</div>
-                            <p class="about_text">Full cleaning and housekeeping services for companies and households.</p>
-                            <p class="about_text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text.Lorem Ipsum is simply</p>
+                            <p class="about_text">We are a professional coffee shop management team, providing comprehensive management services for coffee shops and tea houses.</p>
+                            <p class="about_text">With our years of experience in the industry, we aim to offer high-quality products, a friendly serving environment, and exceptional customer service.</p>
                             <div class="read_bt"><a href="#">Read More</a></div>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="about_img"><img src="assets/images/about-img.png"/></div>
+                        <div class="about_img"><img src="assets/images/about-img.png" alt="Our Image"/></div>
                     </div>
                 </div>
             </div>
         </div>
         <!-- about section end -->
 
+
         <!-- Hot Products section start -->
         <div class="container">
             <h2 class="gallery_taital my-5" id="hotproduct">Hot Products</h2>
             <div class="row mb-5">
                 <c:forEach items="${hotProducts}" var="product">
-                    <div class="col-md-4 mb-4">
+                    <div class="col-md-3 mb-4">
                         <div class="card h-100">
                             <img src="${empty product.image ? '/assets/images/noimage.jpg' : product.image}" class="card-img-top w-75 mx-auto" alt="${product.productName}">
                             <div class="card-body">
@@ -159,11 +175,21 @@
                                 <p class="card-text text-truncate">${product.description}</p>
                             </div>
                             <div class="card-footer text-center">
-                                <a href="#" class="btn btn-primary w-50">Details</a>
+                                <a href="#" class="btn btn-primary w-75 btn-details" 
+                                   data-product-name="${product.productName}"
+                                   data-product-description="${product.description}"
+                                   data-product-image="${empty product.image ? '/assets/images/noimage.jpg' : product.image}"
+                                   data-product-recipe="${product.recipe}"
+                                   data-product-ishot="${product.isHot ? 'Hot Product' : ''}"
+                                   data-product-category="${product.category.categoryName}"
+                                   >
+                                    Details
+                                </a>
                             </div>
                         </div>
                     </div>
                 </c:forEach>
+
             </div>
         </div>
         <!-- Hot Products section end-->
@@ -218,7 +244,6 @@
             </div>
         </div>
         <!-- services section end -->
-
 
         <!-- testimonial section start -->
         <div class="client_section layout_padding">
@@ -283,10 +308,11 @@
             </div>
         </div>
         <!-- testimonial section end -->
+
         <!-- contact section start -->
         <div class="contact_section layout_padding">
             <div class="container">
-                <h1 class="contact_text">Contact Us</h1>
+                <h1 class="contact_text" id="contact">Contact Us</h1>
             </div>
         </div>
         <div class="contact_section_2 layout_padding">
@@ -329,6 +355,7 @@
             </div>
         </div>
         <!-- contact section end -->
+
         <!-- footer section start -->
         <div class="footer_section layout_padding">
             <div class="container">
@@ -341,11 +368,11 @@
                         <h3 class="useful_text">Menu</h3>
                         <div class="footer_menu">
                             <ul>
-                                <li><a href="index.html">Home</a></li>
-                                <li><a href="about.html">About Us</a></li>
-                                <li><a href="gallery.html">Gallery</a></li>
-                                <li><a href="services.html">Services</a></li>
-                                <li><a href="contact.html">Contact Us</a></li>
+                                <li><a href="#">Home</a></li>
+                                <li><a href="#about">About Us</a></li>
+                                <li><a href="#hotproduct">Gallery</a></li>
+                                <li><a href="#services">Services</a></li>
+                                <li><a href="#contact">Contact Us</a></li>
                             </ul>
                         </div>
                     </div>
@@ -359,17 +386,17 @@
                             <ul>
                                 <li>
                                     <a href="#">
-                                        <i class="fa fa-map-marker" aria-hidden="true"></i><span class="padding_left_10">Address : Loram Ipusm</span>
+                                        <i class="fa fa-map-marker" aria-hidden="true"></i><span class="padding_left_10">Address : ${general.address}</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#">
-                                        <i class="fa fa-phone" aria-hidden="true"></i><span class="padding_left_10">Call : +01 1234567890</span>
+                                        <i class="fa fa-phone" aria-hidden="true"></i><span class="padding_left_10">Call : ${general.phone}</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#">
-                                        <i class="fa fa-envelope" aria-hidden="true"></i><span class="padding_left_10">Email : demo@gmail.com</span>
+                                        <i class="fa fa-envelope" aria-hidden="true"></i><span class="padding_left_10">Email : ${general.email}</span>
                                     </a>
                                 </li>
                             </ul>
@@ -380,12 +407,44 @@
         </div>
         <!-- footer section end -->
 
+        <!-- Product Details Modal start -->
+        <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="productModalLabel">Product Details</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body d-flex align-items-center">
+                        <div id="modalProductImage" class="mr-3"></div>
+                        <div>
+                            <div class="d-flex mb-2">
+                                <span class="font-weight-bold mr-1">Category: </span><div id="modalProductCategory"></div>
+                            </div>
+                            <div class="d-flex mb-2">
+                                <span class="font-weight-bold mr-1">Name:</span><div id="modalProductName"></div>
+                            </div>
+                            <div class="d-flex mb-2">
+                                <span class="font-weight-bold mr-1">Status: </span><div id="modalProductIsHot"></div>
+                            </div>
+                            <div class="">
+                                <span class="font-weight-bold mr-1">Description: </span><div id="modalProductDescription"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Product Details Modal end -->
+
         <!-- Back to Top Button start -->
         <div id="back-to-top" title="Back to top"><i class="fa fa-angle-up"></i></div>
         <!-- Back to Top Button end-->
-
-
-
 
         <!-- Required Jquery -->
         <script type="text/javascript" src="assets/js/jquery/jquery.min.js"></script>
@@ -431,6 +490,26 @@
                                                             }
                                                         });
                                                     });
+                                                    $(document).ready(function () {
+                                                        $('.btn-details').on('click', function (event) {
+                                                            event.preventDefault();
+                                                            var productName = $(this).data('product-name');
+                                                            var productDescription = $(this).data('product-description');
+                                                            var productImage = $(this).data('product-image');
+                                                            var productIsHot = $(this).data('product-ishot');
+                                                            var productCategoryName = $(this).data('product-category');
+
+
+                                                            $('#modalProductName').text(productName);
+                                                            $('#modalProductDescription').text(productDescription);
+                                                            $('#modalProductImage').html('<img src="' + productImage + '" class="img-fluid"/>');
+                                                            $('#modalProductIsHot').html('<span class="badge badge-pill badge-danger fire">' + productIsHot + '</span>');
+                                                            $('#modalProductCategory').text(productCategoryName);
+
+                                                            $('#productModal').modal('show');
+                                                        });
+                                                    });
+
                                                     function copyToClipboard(code) {
                                                         navigator.clipboard.writeText(code).then(function () {
                                                             alert('Voucher code ' + code + ' copied to clipboard!');

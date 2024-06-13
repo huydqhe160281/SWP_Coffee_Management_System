@@ -53,11 +53,13 @@ public class ProductDAO extends DBContext {
 
     public List<Product> getHotProducts() {
         List<Product> hotProducts = new ArrayList<>();
-        String sql = "SELECT p.ProductID, p.ProductName, p.Image, p.Description, p.Recipe, p.Status, p.IsHot, "
+        String sql = "SELECT TOP 4 p.ProductID, p.ProductName, p.Image, p.Description, p.Recipe, p.Status, p.IsHot, "
                 + "c.CategoryID, c.CategoryName, c.Detail "
                 + "FROM [SWP391_SU24].[dbo].[Product] p "
                 + "JOIN [SWP391_SU24].[dbo].[Category] c ON p.CategoryID = c.CategoryID "
-                + "WHERE p.IsHot = 1";
+                + "WHERE p.IsHot = 1 "
+                + "ORDER BY NEWID()";  // NEWID() để lấy ra mẫu ngẫu nhiên
+
         try ( PreparedStatement st = connection.prepareStatement(sql);  ResultSet rs = st.executeQuery()) {
             while (rs.next()) {
                 Category category = new Category(
