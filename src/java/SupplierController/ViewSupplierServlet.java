@@ -12,41 +12,40 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
 import model.Supplier;
 
 /**
  *
  * @author Namqd
  */
-public class SupplierServlet extends HttpServlet {
+public class ViewSupplierServlet extends HttpServlet {
    
-    private final SupplierDAO supplierDAO = new SupplierDAO();
-    
+    private final SupplierDAO supplierDAO;
+
+    public ViewSupplierServlet() {
+        this.supplierDAO = new SupplierDAO();
+    }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String currentPath = request.getRequestURI();
-        request.setAttribute("currentPath", currentPath);
-        String action = request.getParameter("action");
-        if (action == null) {
-            action = "";
-        }
-        switch (action) {
-            case "delete":
-                int supplierID = Integer.parseInt(request.getParameter("id"));
-//                supplierID.deleteSupplier(supplierID);
-                response.sendRedirect("supplier");
-                break;
-            default:
-                List<Supplier> suppliers = supplierDAO.getAllSuppliers();
-                request.setAttribute("suppliers", suppliers);
-                request.getRequestDispatcher("/supplier.jsp").forward(request, response);
-                break;
+        int supplierID = Integer.parseInt(request.getParameter("supplierID"));
+        Supplier supplier = supplierDAO.getSupplierById(supplierID);
+        if (supplier != null) {
+            request.setAttribute("supplier", supplier);
+            request.getRequestDispatcher("/supplierDetail.jsp").forward(request, response);
+        } else {
+            request.setAttribute("error", "Supplier not found.");
+            request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
     } 
 
-    
+    /** 
+     * Handles the HTTP <code>POST</code> method.
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {

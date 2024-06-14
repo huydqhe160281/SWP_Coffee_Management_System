@@ -28,9 +28,7 @@ public class DeleteDiscountServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        int discountID = Integer.parseInt(request.getParameter("discountID"));
-        discountDAO.deleteDiscount(discountID);
-        response.sendRedirect("discount");
+        doPost(request, response);
     } 
 
     /** 
@@ -43,7 +41,9 @@ public class DeleteDiscountServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        
+        int discountID = Integer.parseInt(request.getParameter("discountID"));
+        discountDAO.deleteDiscount(discountID);
+        response.sendRedirect("discount");
     }
 
     /** 

@@ -1,17 +1,16 @@
 <%--
-    Document   : Supplier
-    Created on : June 5, 2024, 8:38:20 PM
+    Document   : createNewSupplier
+    Created on : May 20, 2024, 8:38:20 PM
     Author     : ADMIN
 --%>
-<%@ page import="java.util.List" %>
-<%@ page import="model.Supplier" %>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Supplier Management System</title>
+        <title>Coffee Management System</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -44,26 +43,45 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
-        .search-form {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .form-material {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 50%;
+            margin: auto;
         }
-        .search-form input[type="text"] {
-            flex: 1;
-            padding: 2px;
-            margin: 0 2px;
+
+        .form-material input[type="text"],
+        .form-material input[type="number"],
+        .form-material input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
-        .search-form input[type="submit"] {
-            padding: 10px 20px;
-            cursor: pointer;
-            background-color: #007bff;
+
+        .form-material input[type="submit"]  {
+            width: 100%;
+            padding: 10px;
             color: white;
+            background-color: #5cb85c;
             border: none;
-            border-radius: 3px;
+            border-radius: 4px;
+            cursor: pointer;
         }
-        .search-form input[type="submit"]:hover {
-            background-color: #0056b3;
+
+        .form-material input[type="submit"]:hover {
+            background-color: #45a045;
+        }
+
+        .alert-danger {
+            color: white;
+            background-color: #f44336;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
         }
     </style>
     <body>
@@ -92,12 +110,6 @@
                             <div class="page-header">
                                 <div class="page-block">
                                     <div class="row align-items-center">
-                                        <div class="col-md-8">
-                                            <div class="page-header-title">
-                                                <h5 class="m-b-10">Supplier Management</h5>
-                                                <p class="m-b-0">Quản lý nhà cung cấp</p>
-                                            </div>
-                                        </div>
                                         <div class="col-md-4">
                                             <ul class="breadcrumb">
                                                 <li class="breadcrumb-item">
@@ -105,6 +117,9 @@
                                                 </li>
                                                 <li class="breadcrumb-item">
                                                     <a href="/supplier">Supplier Management</a>
+                                                </li>
+                                                <li class="breadcrumb-item">
+                                                    <a href="/createNewSupplier">Create New Supplier</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -120,23 +135,8 @@
                                         <!-- Page-body start -->
                                         <div class="page-body">
                                             <div class="card">
-
                                                 <!-- Sub header table start -->
                                                 <div class="card-header">
-                                                    <div class="d-flex justify-content-between align-items-center pt-3">
-                                                        <button class="btn btn-primary waves-effect h-15" onclick="window.location.href = '/supplier_create'">
-                                                            Add New
-                                                        </button>
-                                                    </div>
-                                                    <div class="p-15 p-b-0 w-25">
-                                                        <form class="search-form" action="supplier_search" method="post">
-                                                            Supplier Name: <input type="text" name="supplierName" />
-                                                            Contact: <input type="text" name="contact" />
-                                                            <button type="submit" class="search-button">
-                                                                <i class="fa fa-search"></i>
-                                                            </button>
-                                                        </form>
-                                                    </div>
                                                     <div class="card-header-right">
                                                         <ul class="list-unstyled card-option">
                                                             <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -149,45 +149,24 @@
                                                 </div>
                                                 <!-- Sub header table end -->
 
-                                                <div class="card-block table-border-style">
-                                                    <div class="table-responsive">
-                                                        <div class="container">
-                                                            <table class="table table-hover">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>#</th>
-                                                                        <th>Name</th>
-                                                                        <th>Contact</th>
-                                                                        <th>Address</th>
-                                                                        <th class="text-right">Action</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <c:forEach items="${requestScope.suppliers}" var="supplier">
-                                                                        <tr>
-                                                                            <th scope="row">${supplier.supplierID}</th>
-                                                                            <td>${supplier.supplierName}</td>
-                                                                            <td>${supplier.contact}</td>
-                                                                            <td>${supplier.address}</td>
-                                                                            <td class="text-right pt-3">
-                                                                                <i class="fa fa-eye icon-spacing" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="View"
-                                                                                   onclick="window.location.href = '/supplier_view_detail?supplierID=${supplier.supplierID}'"></i>
-                                                                                <i class="fa fa-pencil-square-o icon-spacing" aria-hidden="true" 
-                                                                                   data-toggle="tooltip" data-placement="left" title="Edit"
-                                                                                   onclick="window.location.href = '/supplier_update?supplierID=${supplier.supplierID}'"></i>
-                                                                                <i class="fa fa-trash-o icon-spacing" aria-hidden="true" 
-                                                                                   data-toggle="tooltip" data-placement="left" title="Delete"
-                                                                                   onclick="deleteSupplier(${supplier.supplierID}, '${supplier.supplierName}')"></i>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </c:forEach>
-                                                                </tbody>
-                                                            </table>
+                                                <div class="card-header">
+                                                    <div class="card-block w-75 m-auto">
+                                                        <h3 class="text-center m-auto pb-5">Create New Supplier</h3>
+                                                        <% if (request.getAttribute("error") != null) { %>
+                                                        <div class="alert alert-danger">
+                                                            <%= request.getAttribute("error") %>
                                                         </div>
+                                                        <% } %>
+                                                        <form class="form-material" action="supplier_create" method="post">
+                                                            Supplier Name: <input type="text" name="supplierName" required><br>
+                                                            Contact: <input type="text" name="contact" required><br>
+                                                            Address: <input type="text" name="address" required><br>
+                                                            <input type="submit" value="Create">
+                                                        </form>
+                                                        <a href="supplier" class="btn btn-secondary mt-3" style="float: right;">Back</a>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- Hover table card end -->
                                         </div>
                                         <!-- Page-body end -->
                                     </div>
@@ -203,22 +182,7 @@
         </div>
 
         <script type="text/javascript">
-            function deleteSupplier(supplierID, supplierName) {
-                if (confirm('Are you sure you want to delete supplier: ' + supplierName + '?')) {
-                    var form = document.createElement('form');
-                    form.method = 'GET';
-                    form.action = 'supplier_delete';
 
-                    var hiddenField = document.createElement('input');
-                    hiddenField.type = 'hidden';
-                    hiddenField.name = 'supplierID';
-                    hiddenField.value = supplierID;
-                    form.appendChild(hiddenField);
-
-                    document.body.appendChild(form);
-                    form.submit();
-                }
-            }
 
         </script>
 

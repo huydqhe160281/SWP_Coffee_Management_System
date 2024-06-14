@@ -7,6 +7,7 @@ package dal;
 import common.DBContext;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.Supplier;
@@ -97,5 +98,41 @@ public class SupplierDAO extends DBContext{
             e.printStackTrace();
         }
         return false;
+    }
+    
+    public List<Supplier> searchSuppliers(String supplierName, String contact) {
+        List<Supplier> suppliers = new ArrayList<>();
+        StringBuilder query = new StringBuilder("SELECT * FROM Supplier WHERE 1=1");
+
+        if (supplierName != null && !supplierName.isEmpty()) {
+            query.append(" AND SupplierName LIKE ?");
+        }
+        if (contact != null && !contact.isEmpty()) {
+            query.append(" AND Contact LIKE ?");
+        }
+
+        try ( PreparedStatement ps = connection.prepareStatement(query.toString())) {
+            int index = 1;
+            if (supplierName != null && !supplierName.isEmpty()) {
+                ps.setString(index++, "%" + supplierName + "%");
+            }
+            if (contact != null && !contact.isEmpty()) {
+                ps.setString(index++, "%" + contact + "%");
+            }
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Supplier supplier = new Supplier(
+                    rs.getInt("SupplierID"),
+                    rs.getString("SupplierName"),
+                    rs.getString("Contact"),
+                    rs.getString("Address")
+                );
+                suppliers.add(supplier);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return suppliers;
     }
 }
