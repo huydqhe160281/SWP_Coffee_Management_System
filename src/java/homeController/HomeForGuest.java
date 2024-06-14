@@ -2,10 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package productController;
+package homeController;
 
-import common.DBContext;
-import dal.CategoryDAO;
+import com.google.gson.Gson;
+import dal.DiscountDAO;
+import dal.GeneralDAO;
 import dal.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,15 +14,18 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.List;
-import model.Category;
+import java.util.stream.Collectors;
+import model.Discount;
+import model.General;
 import model.Product;
 
 /**
  *
  * @author ADMIN
  */
-public class ProductServlet extends HttpServlet {
+public class HomeForGuest extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,10 +44,10 @@ public class ProductServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ProductServlet</title>");
+            out.println("<title>Servlet HomeForGuest</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h5>Servlet ProductServlet at " + request.getContextPath() + "</h5>");
+            out.println("<h1>Servlet HomeForGuest at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -61,47 +65,26 @@ public class ProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String currentPath = request.getRequestURI();
-        request.setAttribute("currentPath", currentPath);
+        DiscountDAO discountDAO = new DiscountDAO();
         ProductDAO productDAO = new ProductDAO();
-        CategoryDAO categoryDAO = new CategoryDAO();
+        GeneralDAO generalDao = new GeneralDAO();
 
-        String indexPage_raw = request.getParameter("indexPage");
-        String sizePage_raw = request.getParameter("sizePage");
-        String sortType = request.getParameter("sortType");
+        General general = generalDao.getLastGeneral();
+        Gson gson = new Gson();
+        String generalJson = gson.toJson(general);
 
-        // Kiểm tra và gán giá trị mặc định nếu cần
-        if (indexPage_raw == null) {
-            indexPage_raw = "1";
-        }
-        if (sizePage_raw == null) {
-            sizePage_raw = "5";
-        }
-        if (sortType == null) {
-            sortType = "asc";
-        }
+        List<Product> hotProducts = productDAO.getHotProducts();
+        List<Discount> discounts = discountDAO.getAllDiscounts();
+        Date currentDate = new Date();
+        List<Discount> validDiscounts = discounts.stream()
+                .filter(discount -> discount.getEndDate().after(currentDate))
+                .collect(Collectors.toList());
 
-        int indexPage = Integer.parseInt(indexPage_raw);
-        int sizePage = Integer.parseInt(sizePage_raw);
-        int count = productDAO.getTotalProductByCategoryId("");
-
-        int endPage = count / sizePage;
-        if (count % sizePage != 0) {
-            endPage++;
-        }
-
-        // Lấy danh sách các Category đã được sắp xếp
-        List<Product> pList = productDAO.getProductByCategoryIdByPage("", indexPage, sizePage, sortType);
-        List<Category> cList = categoryDAO.getAllCategory();
-        List<Category> cListFormat;
-
-        request.setAttribute("indexPage", indexPage);
-        request.setAttribute("endPage", endPage);
-        request.setAttribute("sizePage", sizePage);
-        request.setAttribute("sortType", sortType); // Đặt thuộc tính sortType để sử dụng trong JSP
-        request.setAttribute("pList", pList);
-        request.setAttribute("cList", cList);
-        request.getRequestDispatcher("product.jsp").forward(request, response);
+        request.setAttribute("generalJson", generalJson);
+        request.setAttribute("general", general);
+        request.setAttribute("discounts", validDiscounts);
+        request.setAttribute("hotProducts", hotProducts);
+        request.getRequestDispatcher("landing-page.jsp").forward(request, response);
     }
 
     /**
@@ -115,8 +98,7 @@ public class ProductServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String productID = request.getParameter("productID");
-        System.out.println(productID);
+        processRequest(request, response);
     }
 
     /**

@@ -158,9 +158,6 @@
         </div>
 
         <script>
-            function submitSizeForm() {
-                document.getElementById('sizeForm').submit();
-            }
         </script>
 
         <!-- Required Jquery -->

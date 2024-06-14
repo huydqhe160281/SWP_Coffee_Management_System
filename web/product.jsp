@@ -82,13 +82,24 @@
                                                 <!-- Sub header table start -->
                                                 <div class="card-header">
                                                     <div class="d-flex justify-content-between align-items-center pt-3">
-                                                        <div class="p-15 p-b-0 w-25">
-                                                            <form class="form-material" action="search_product" method="get">
+                                                        <div class="p-15 w-50 d-flex align-items-center">
+                                                            <form class="form-material mr-2" action="search_product" method="get">
                                                                 <div class="form-group form-primary">
                                                                     <input type="text" name="text_search" class="form-control" value="${requestScope.text_search}"/>
                                                                     <span class="form-bar"></span>
                                                                     <label class="float-label"><i class="fa fa-search m-r-10"></i>Search Field</label>
                                                                 </div>
+                                                            </form>
+                                                            <form id="sizeForm" method="post" action="category_detail" class="mr-2">
+                                                                <select class="custom-select " id="inputGroupSelect01" name="categoryID" onchange="submitSizeForm()">
+                                                                    <option value="" ${empty category.categoryID ? 'selected' : ''}>All Category</option>
+                                                                    <c:forEach items="${requestScope.cList}" var="c">
+                                                                        <option value="${c.categoryID}" ${category.categoryID == c.categoryID ? 'selected' : ''}>
+                                                                        <a href="/category_detail?categoryID=${c.categoryID}">${c.categoryName}</a>
+                                                                        </option>
+                                                                    </c:forEach>
+                                                                </select>
+
                                                             </form>
                                                         </div>
                                                         <button class="btn btn-primary waves-effect h-15" onclick="window.location.href = '/product_create'">
@@ -119,11 +130,11 @@
                                                                             </a>
                                                                         </th>
                                                                         <th>Product Name</th>
-                                                                        <th>Cost Price</th>
                                                                         <th>Price</th>
                                                                         <th>Description</th>
                                                                         <th>Recipe</th>
                                                                         <th>Status</th>
+                                                                        <th>IsHot</th>
                                                                         <th class="text-right">Action</th>
                                                                     </tr>
                                                                 </thead>
@@ -132,8 +143,7 @@
                                                                         <tr>
                                                                             <th scope="row">${p.productID}</th>
                                                                             <td>${p.productName}</td>
-                                                                            <td><fmt:formatNumber value="${p.costPrice}" type="currency" pattern="###,### ₫" currencySymbol="₫" /></td>
-                                                                            <td><fmt:formatNumber value="${p.price}" type="currency" pattern="###,### ₫" currencySymbol="₫" /></td>
+                                                                            <td></td>
                                                                             <td class="limit-detail" style="cursor: pointer" data-toggle="tooltip" data-placement="top"
                                                                                 title="${p.description}"
                                                                                 data-template='<div class="tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner" style="max-width: 400px; white-space: pre-wrap;"></div></div>'>
@@ -145,8 +155,14 @@
                                                                                 ${p.recipe}
                                                                             </td>
                                                                             <td>
-                                                                                <span class="${p.status ? 'text-success' : 'text-danger'}">
-                                                                                    ${p.status ? 'Đang bán' : 'Đã dừng bán'}
+                                                                                <span class="${p.status ? 'badge badge-pill badge-success' : 'badge badge-pill badge-danger'}">
+                                                                                    ${p.status ? 'On sale' : 'Stopped selling'}
+                                                                                </span>
+                                                                            </td>
+
+                                                                            <td>
+                                                                                <span class="${p.isHot ? 'badge badge-pill badge-success' : 'badge badge-pill badge-danger'}">
+                                                                                    ${p.isHot ? 'Active' : 'Deactive'}
                                                                                 </span>
                                                                             </td>
                                                                             <!--                                                                            <td class="text-right pt-3">

@@ -29,9 +29,9 @@
 
 <script>
     // Function to set the general object in Local Storage
-    function setGeneralToLocalStorage(general) {
+    function setGeneralToLocalStorage(generalJson) {
         try {
-            localStorage.setItem('general', JSON.stringify(general));
+            localStorage.setItem('general', JSON.stringify(generalJson));
         } catch (e) {
             console.error('Error saving to localStorage:', e);
         }
@@ -51,10 +51,23 @@
 
     // Call the functions on window load
     window.onload = function () {
-        // Initialize the general object in Local Storage
-        var generalLocalStorage = JSON.parse(localStorage.getItem('general'));
-        setGeneralToLocalStorage(generalLocalStorage);
-        updateTitleFromLocalStorage();
+        try {
+            var generalLocalStorage = JSON.parse(localStorage.getItem('general'));
+            if (generalLocalStorage) {
+                setGeneralToLocalStorage(generalLocalStorage);
+                updateTitleFromLocalStorage();
+            } else {
+                var generalJson = '${generalJson}'; // Get the generalJson from the attribute
+                if (generalJson.trim().length > 0) {
+                    setGeneralToLocalStorage(JSON.parse(generalJson));
+                    updateTitleFromLocalStorage();
+                } else {
+                    console.error('Empty or invalid generalJson:', generalJson);
+                }
+            }
+        } catch (e) {
+            console.error('Error parsing or setting generalJson:', e);
+        }
     };
 </script>
 
