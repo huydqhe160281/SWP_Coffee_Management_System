@@ -108,6 +108,14 @@
         <servlet-name>HomeForGuest</servlet-name>
         <servlet-class>homeController.HomeForGuest</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewAccountServlet</servlet-name>
+        <servlet-class>AccountController.ViewAccountServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateAccountServlet</servlet-name>
+        <servlet-class>AccountController.UpdateAccountServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductServlet</servlet-name>
         <url-pattern>/product</url-pattern>
@@ -211,6 +219,14 @@
     <servlet-mapping>
         <servlet-name>HomeForGuest</servlet-name>
         <url-pattern>/landing-page</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewAccountServlet</servlet-name>
+        <url-pattern>/account_view_detail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateAccountServlet</servlet-name>
+        <url-pattern>/account_update</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
