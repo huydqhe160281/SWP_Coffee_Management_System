@@ -15,11 +15,6 @@ import model.Product;
  */
 public class ProductDAO extends DBContext {
 
-    /**
-     * Retrieve all products from the database
-     *
-     * @return List of products
-     */
     public List<Product> getAllProduct() {
         List<Product> list = new ArrayList<>();
         String sql = "SELECT p.ProductID, p.ProductName, p.Image, p.Description, p.Recipe, p.Status, p.IsHot, "
@@ -85,12 +80,6 @@ public class ProductDAO extends DBContext {
         return hotProducts;
     }
 
-    /**
-     * Retrieve products by category ID from the database
-     *
-     * @param categoryId The ID of the category
-     * @return List of products in the specified category
-     */
     public List<Product> getProductByCategoryId(int categoryId) {
         List<Product> list = new ArrayList<>();
         String sql = "SELECT p.ProductID, p.ProductName, p.Image, p.Description, p.Recipe, p.Status, p.IsHot, "
@@ -126,12 +115,6 @@ public class ProductDAO extends DBContext {
         return list;
     }
 
-    /**
-     * Retrieve a product by its ID from the database
-     *
-     * @param productId The ID of the product
-     * @return The product with the specified ID, or null if not found
-     */
     public Product getProductById(String productId) {
         Product product = null;
         String sql = "SELECT p.ProductID, p.ProductName, p.Image, p.Description, p.Recipe, p.Status, p.IsHot, "
@@ -166,11 +149,6 @@ public class ProductDAO extends DBContext {
         return product;
     }
 
-    /**
-     * Get the total number of products in the database
-     *
-     * @return Total number of products
-     */
     public int getTotalProduct() {
         String sql = "SELECT COUNT(*) FROM [SWP391_SU24].[dbo].[Product]";
         try ( PreparedStatement st = connection.prepareStatement(sql);  ResultSet rs = st.executeQuery()) {
@@ -183,15 +161,7 @@ public class ProductDAO extends DBContext {
         return 0;
     }
 
-    /**
-     * Retrieve products by page with sorting from the database
-     *
-     * @param indexPage The index of the page to retrieve
-     * @param pageSize The number of products per page
-     * @param sortType The sorting order ("ASC" or "DESC")
-     * @return List of products for the specified page
-     */
-    public List<Product> getAllProductByPage(int indexPage, int pageSize, String sortType) {
+    public List<Product> getProductByCategoryIdByPage(String categoryId, int indexPage, int pageSize, String sortType) {
         List<Product> list = new ArrayList<>();
         if (!sortType.equalsIgnoreCase("ASC") && !sortType.equalsIgnoreCase("DESC")) {
             sortType = "ASC";
@@ -199,12 +169,25 @@ public class ProductDAO extends DBContext {
         String sql = "SELECT p.ProductID, p.ProductName, p.Image, p.Description, p.Recipe, p.Status, p.IsHot, "
                 + "c.CategoryID, c.CategoryName, c.Detail "
                 + "FROM [SWP391_SU24].[dbo].[Product] p "
-                + "JOIN [SWP391_SU24].[dbo].[Category] c ON p.CategoryID = c.CategoryID "
-                + "ORDER BY p.ProductID " + sortType + " "
+                + "JOIN [SWP391_SU24].[dbo].[Category] c ON p.CategoryID = c.CategoryID ";
+
+        if (categoryId != null && !categoryId.isEmpty()) {
+            sql += "WHERE p.CategoryID = ? ";
+        }
+
+        sql += "ORDER BY p.ProductID " + sortType + " "
                 + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
+
         try ( PreparedStatement st = connection.prepareStatement(sql)) {
-            st.setInt(1, (indexPage - 1) * pageSize);
-            st.setInt(2, pageSize);
+            int parameterIndex = 1;
+
+            if (categoryId != null && !categoryId.isEmpty()) {
+                st.setString(parameterIndex++, categoryId);
+            }
+
+            st.setInt(parameterIndex++, (indexPage - 1) * pageSize);
+            st.setInt(parameterIndex++, pageSize);
+
             try ( ResultSet rs = st.executeQuery()) {
                 while (rs.next()) {
                     Category category = new Category(
@@ -226,19 +209,43 @@ public class ProductDAO extends DBContext {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error retrieving products by page: " + e.getMessage());
+            System.err.println("Error retrieving products by category and page: " + e.getMessage());
         }
         return list;
     }
 
+    public int getTotalProductByCategoryId(String categoryId) {
+        String sql = "SELECT COUNT(*) "
+                + "FROM [SWP391_SU24].[dbo].[Product] ";
+        try {
+            if (categoryId != null && !categoryId.isEmpty()) {
+                sql += "WHERE CategoryID = ?";
+            }
+            PreparedStatement st = connection.prepareStatement(sql);
+
+            if (categoryId != null && !categoryId.isEmpty()) {
+                st.setString(1, categoryId);
+            }
+
+            try ( ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error retrieving total number of products: " + e.getMessage());
+        }
+        return 0;
+    }
+
     public static void main(String[] args) {
         ProductDAO dao = new ProductDAO();
-        List<Product> list = dao.getHotProducts();
+        List<Product> list = dao.getProductByCategoryIdByPage("", 1, 20, "ASC");
         Product p = dao.getProductById("1");
-        System.out.println(list);
+//        System.out.println(list);
         // Uncomment the following lines to print the list of products
-        // for (Product i : list) {
-        //     System.out.println(i);
-        // }
+        for (Product i : list) {
+            System.out.println(i);
+        }
     }
 }
