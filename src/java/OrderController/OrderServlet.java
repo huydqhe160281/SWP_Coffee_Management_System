@@ -15,8 +15,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import model.Category;
 import model.Order;
 import model.OrderDetail;
+import model.Product;
 
 /**
  *
@@ -36,22 +38,14 @@ public class OrderServlet extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         if (action == null) {
-            action = "list";
-        }
-
-        switch (action) {
-            case "list":
-                listOrders(request, response);
-                break;
-            case "view":
-                viewOrder(request, response);
-                break;
-            case "delete":
-                deleteOrder(request, response);
-                break;
-            default:
-                listOrders(request, response);
-                break;
+            List<Category> categories = orderDAO.getAllCategories();
+            request.setAttribute("categories", categories);
+            request.getRequestDispatcher("/order.jsp").forward(request, response);
+        } else if (action.equals("getProducts")) {
+            int categoryID = Integer.parseInt(request.getParameter("categoryID"));
+            List<Product> products = orderDAO.getProductsByCategory(categoryID);
+            request.setAttribute("products", products);
+            request.getRequestDispatcher("products.jsp").forward(request, response);
         }
     }
 
