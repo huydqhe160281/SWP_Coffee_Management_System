@@ -182,6 +182,17 @@
                                                                         <td>${account.email}</td>
                                                                         <td>${account.address}</td>
                                                                         <td>${account.status}</td>
+                                                                        <td class="text-right pt-3">
+                                                                                <i class="fa fa-eye icon-spacing" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="View" 
+                                                                                   onclick="window.location.href = '/account_view_detail?accountID=${account.accountID}'"></i>
+                                                                                <i class="fa fa-pencil-square-o icon-spacing" aria-hidden="true" 
+                                                                                   data-toggle="tooltip" data-placement=left title="Edit"
+                                                                                   onclick="window.location.href = '/account_update?accountID=${account.accountID}'"></i>
+                                                                                <i class="fa fa-trash-o icon-spacing" aria-hidden="true" 
+                                                                                   data-toggle="tooltip" data-placement="left" title="Delete"
+                                                                                   onclick="deleteAccount(${account.accountID}, '${account.name}')"></i>
+
+                                                                            </td>
                                                                     </tr>
                                                                 </c:forEach>
                                                             </table>
