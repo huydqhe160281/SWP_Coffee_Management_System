@@ -45,6 +45,10 @@
         <servlet-class>DiscountController.UpdateDiscountServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>OrderServlet</servlet-name>
+        <servlet-class>OrderController.OrderServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ViewDiscountServlet</servlet-name>
         <servlet-class>DiscountController.ViewDiscountServlet</servlet-class>
     </servlet>
@@ -143,6 +147,10 @@
     <servlet-mapping>
         <servlet-name>UpdateCategoryServlet</servlet-name>
         <url-pattern>/category_update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderServlet</servlet-name>
+        <url-pattern>/order</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DiscountServlet</servlet-name>
