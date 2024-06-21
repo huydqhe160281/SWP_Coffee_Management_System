@@ -155,7 +155,7 @@
                                                             <table class="table table-hover">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th>#</th>
+<!--                                                                        <th>#</th>-->
                                                                         <th>Name</th>
                                                                         <th>Contact</th>
                                                                         <th>Address</th>
@@ -165,7 +165,7 @@
                                                                 <tbody>
                                                                     <c:forEach items="${requestScope.suppliers}" var="supplier">
                                                                         <tr>
-                                                                            <th scope="row">${supplier.supplierID}</th>
+<!--                                                                            <th scope="row">${supplier.supplierID}</th>-->
                                                                             <td>${supplier.supplierName}</td>
                                                                             <td>${supplier.contact}</td>
                                                                             <td>${supplier.address}</td>
