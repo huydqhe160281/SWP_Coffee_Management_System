@@ -108,6 +108,10 @@
         <servlet-name>HomeForGuest</servlet-name>
         <servlet-class>homeController.HomeForGuest</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SizeServlet</servlet-name>
+        <servlet-class>sizeController.SizeServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductServlet</servlet-name>
         <url-pattern>/product</url-pattern>
@@ -211,6 +215,10 @@
     <servlet-mapping>
         <servlet-name>HomeForGuest</servlet-name>
         <url-pattern>/landing-page</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SizeServlet</servlet-name>
+        <url-pattern>/size</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
