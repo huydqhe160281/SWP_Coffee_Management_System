@@ -187,8 +187,8 @@
                                                             <h1>Account Details</h1>
                                                             <p>AccountID: <%= ((Account)request.getAttribute("account")).getAccountID() %></p>
                                                             <p>Username: <%= ((Account)request.getAttribute("account")).getUsername() %></p>
-                                                            <p>Name: <%= ((Account)request.getAttribute("account")).getName() %></p>
-                                                            <p>Phone: <%= ((Account)request.getAttribute("account")).getPhone() %></p>
+                                                            <p>Phone: <%= ((Account)request.getAttribute("account")).getName() %></p>
+                                                            <p>Name: <%= ((Account)request.getAttribute("account")).getPhone() %></p>
                                                             <p>Email: <%= ((Account)request.getAttribute("account")).getEmail() %></p>
                                                             <p>Address: <%= ((Account)request.getAttribute("account")).getAddress() %></p>
                                                             <p>Status: <%= ((Account)request.getAttribute("account")).isStatus() ? "<span class='status-active'>On going</span>" : "<span class='status-expired'>Out of date</span>" %></p>

@@ -100,8 +100,13 @@ public class AccountDAO extends DBContext{
     }
 
     public void editAccount(Account account) {
+        if (!checkAccountIDExists(account.getAccountID())) {
+            System.out.println("AccountID does not exist. Cannot edit.");
+            return;
+        }
+        
         String sql = "UPDATE Account SET Username = ?, Password = ?, Name = ?, Phone = ?, Email = ?, Address = ?, Status = ? WHERE AccountID = ?";
-        try ( PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, account.getUsername());
             ps.setString(2, account.getPassword());
             ps.setString(3, account.getName());
@@ -151,6 +156,38 @@ public class AccountDAO extends DBContext{
             e.printStackTrace();
         }
         return null;
+    }
+    public boolean checkAccountIDExists(int accountID) {
+        boolean exists = false;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            String query = "SELECT COUNT(*) FROM Account WHERE AccountID = ?";
+            stmt = connection.prepareStatement(query);
+            stmt.setInt(1, accountID);
+            rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                if (count > 0) {
+                    exists = true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Xử lý exception nếu cần
+        } finally {
+            // Đóng ResultSet, PreparedStatement nếu cần
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        return exists;
     }
     public static void main(String[] args) {
         AccountDAO accountDAO = new AccountDAO();

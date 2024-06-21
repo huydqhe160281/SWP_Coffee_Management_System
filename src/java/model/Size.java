@@ -6,12 +6,11 @@ package model;
 
 /**
  *
- * @author ADMIN
+ * @author Dinh Hai
  */
 public class Size {
-
-    private int sizeID;
-    private String type;
+    private int SizeID;
+    private String Type;
 
     public Size() {
     }

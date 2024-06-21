@@ -6,8 +6,8 @@ package dal;
 
 /**
  *
- * @author ADMIN
+ * @author Dinh Hai
  */
 public class SizeDAO {
-
+    
 }
