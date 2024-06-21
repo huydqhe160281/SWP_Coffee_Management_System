@@ -9,8 +9,8 @@ package model;
  * @author Dinh Hai
  */
 public class Size {
-    private int SizeID;
-    private String Type;
+    private int sizeID;
+    private String type;
 
     public Size() {
     }
