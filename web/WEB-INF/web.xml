@@ -121,8 +121,12 @@
         <servlet-class>AccountController.DeleteAccountServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>CreateSizeController</servlet-name>
-        <servlet-class>SizeController.CreateSizeController</servlet-class>
+        <servlet-name>SizeServlet</servlet-name>
+        <servlet-class>SizeController.SizeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateSizeServlet</servlet-name>
+        <servlet-class>SizeController.CreateSizeServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ProductServlet</servlet-name>
@@ -241,7 +245,11 @@
         <url-pattern>/account_delete</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>CreateSizeController</servlet-name>
+        <servlet-name>SizeServlet</servlet-name>
+        <url-pattern>/size</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateSizeServlet</servlet-name>
         <url-pattern>/size_create</url-pattern>
     </servlet-mapping>
     <session-config>

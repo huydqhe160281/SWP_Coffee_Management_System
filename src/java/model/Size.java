@@ -11,13 +11,15 @@ package model;
 public class Size {
     private int SizeID;
     private String Type;
+    private String Description;
 
     public Size() {
     }
 
-    public Size(int SizeID, String Type) {
+    public Size(int SizeID, String Type, String Description) {
         this.SizeID = SizeID;
         this.Type = Type;
+        this.Description = Description;
     }
 
     public int getSizeID() {
@@ -35,6 +37,15 @@ public class Size {
     public void setType(String Type) {
         this.Type = Type;
     }
+
+    public String getDescription() {
+        return Description;
+    }
+
+    public void setDescription(String Description) {
+        this.Description = Description;
+    }
+    
     
 }
 
