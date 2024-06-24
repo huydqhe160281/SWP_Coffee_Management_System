@@ -1,21 +1,20 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package SizeController;
 
+import dal.SizeDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Size;
 
 /**
  *
- * @author Dinh Hai
+ * Size Creation Servlet
  */
-public class CreateSizeController extends HttpServlet {
+public class CreateSizeServlet extends HttpServlet {
+
+    private final SizeDAO sizeDAO = new SizeDAO();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -29,17 +28,21 @@ public class CreateSizeController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet CreateSizeController</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet CreateSizeController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        try {
+            // TODO output your page here. You may use following sample code. 
+            // PrintWriter out = response.getWriter();
+            // out.println("<!DOCTYPE html>");
+            // out.println("<html>");
+            // out.println("<head>");
+            // out.println("<title>Servlet CreateSizeServlet</title>");            
+            // out.println("</head>");
+            // out.println("<body>");
+            // out.println("<h1>Servlet CreateSizeServlet at " + request.getContextPath() + "</h1>");
+            // out.println("</body>");
+            // out.println("</html>");
+            
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -55,7 +58,7 @@ public class CreateSizeController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        request.getRequestDispatcher("/createNewSize.jsp").forward(request, response);
     }
 
     /**
@@ -69,7 +72,19 @@ public class CreateSizeController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String type = request.getParameter("type");
+        String description = request.getParameter("description");
+        
+        // Tạo đối tượng Size từ thông tin lấy được
+        Size newSize = new Size();
+        newSize.setType(type);
+        newSize.setDescription(description);
+
+        // Gọi đến SizeDAO để thêm mới Size vào cơ sở dữ liệu
+        sizeDAO.addSize(newSize);
+
+        // Sau khi thêm mới, chuyển hướng về trang danh sách Size
+        response.sendRedirect(request.getContextPath() + "/sizes");
     }
 
     /**

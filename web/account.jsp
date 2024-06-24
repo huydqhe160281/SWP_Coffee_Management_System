@@ -188,10 +188,6 @@
                                                                                 <i class="fa fa-pencil-square-o icon-spacing" aria-hidden="true" 
                                                                                    data-toggle="tooltip" data-placement=left title="Edit"
                                                                                    onclick="window.location.href = '/account_update?accountID=${account.accountID}'"></i>
-                                                                                <i class="fa fa-trash-o icon-spacing" aria-hidden="true" 
-                                                                                   data-toggle="tooltip" data-placement="left" title="Delete"
-                                                                                   onclick="deleteAccount(${account.accountID}, '${account.name}')"></i>
-
                                                                             </td>
                                                                     </tr>
                                                                 </c:forEach>

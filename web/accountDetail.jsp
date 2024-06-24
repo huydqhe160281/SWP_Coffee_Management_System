@@ -191,7 +191,7 @@
                                                             <p>Name: <%= ((Account)request.getAttribute("account")).getPhone() %></p>
                                                             <p>Email: <%= ((Account)request.getAttribute("account")).getEmail() %></p>
                                                             <p>Address: <%= ((Account)request.getAttribute("account")).getAddress() %></p>
-                                                            <p>Status: <%= ((Account)request.getAttribute("account")).isStatus() ? "<span class='status-active'>On going</span>" : "<span class='status-expired'>Out of date</span>" %></p>
+                                                            <p>Status: <%= ((Account)request.getAttribute("account")).isStatus() ? "<span class='status-active'>Active</span>" : "<span class='status-expired'>Inactive</span>" %></p>
                                                             <a href="account" class="btn btn-secondary mt-3" style="float: right;">Back</a>
                                                         </div>
                                                     </div>
