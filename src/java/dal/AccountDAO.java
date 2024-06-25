@@ -46,8 +46,8 @@ public class AccountDAO extends DBContext {
                         rs.getInt("AccountID"),
                         rs.getString("Username"),
                         rs.getString("Password"),
-                        rs.getString("Phone"),
                         rs.getString("Name"),
+                        rs.getString("Phone"),
                         rs.getString("Email"),
                         rs.getString("Address"),
                         rs.getBoolean("Status"),
@@ -104,17 +104,6 @@ public class AccountDAO extends DBContext {
             e.printStackTrace();
         }
     }
-
-    public void deleteAccount(int AccountID) {
-        String sql = "DELETE FROM Account WHERE AccountID = ?";
-        try ( PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, AccountID);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public Account checkLogin(String username, String password) {
         String sql = "SELECT * FROM Account WHERE Username = ? AND Password = ?";
         try {
@@ -177,11 +166,11 @@ public class AccountDAO extends DBContext {
         return exists;
     }
 
-    public List<Account> searchAccountsByUsername(String text) {
+    public List<Account> searchAccountsByName(String text) {
         List<Account> list = new ArrayList<>();
         String sql = "SELECT AccountID, Username, Password, Name, Phone, Email, Address, Status, RoleID, CampusID "
                 + "FROM Account "
-                + "WHERE LOWER(Username) LIKE ?";
+                + "WHERE LOWER(Name) LIKE ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, "%" + text.toLowerCase() + "%"); // Case insensitive search

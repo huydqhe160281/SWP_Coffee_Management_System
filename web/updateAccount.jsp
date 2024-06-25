@@ -52,7 +52,7 @@
             background-clip: padding-box;
             border: 1px solid #ced4da;
             border-radius: .25rem;
-            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+            transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
         }
 
         .form-control:focus {
@@ -145,14 +145,16 @@
                                                         Username: <input type="text" name="username" value="<%= account.getUsername() %>" readonly required><br>
                                                         Password: <input type="password" name="password" value="<%= account.getPassword() %>" required><br>
                                                         Name: <input type="text" name="name" value="<%= account.getName() %>" required><br>
-                                                        Phone: <input type="tel" name="phone" value="<%= account.getPhone() %>" required><br>
-                                                        Email: <input type="email" name="email" value="<%= account.getEmail() %>" required><br>
+                                                        Phone: <input type="text" name="phone" value="<%= account.getPhone() %>" required><br>
+                                                        Email: <input type="text" name="email" value="<%= account.getEmail() %>" required><br>
                                                         Address: <input type="text" name="address" value="<%= account.getAddress() %>" required><br>
                                                         Status: 
                                                         <select name="status" required>
                                                             <option value="true" <%= account.isStatus() ? "selected" : "" %>>Active</option>
                                                             <option value="false" <%= !account.isStatus() ? "selected" : "" %>>Inactive</option>
                                                         </select><br>
+                                                        <input type="hidden" name="roleID" value="<%= account.getRoleID() %>" required><br>
+                                                        <input type="hidden" name="campusID" value="<%= account.getCampusID() %>" required><br>
                                                         <input type="submit" value="Update">
                                                     </form>
                                                     <% } else { %>
