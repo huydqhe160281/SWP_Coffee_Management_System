@@ -90,8 +90,8 @@
                                                                     <label class="float-label"><i class="fa fa-search m-r-10"></i>Search Field</label>
                                                                 </div>
                                                             </form>
-                                                            <form id="sizeForm" method="post" action="category_detail" class="mr-2">
-                                                                <select class="custom-select " id="inputGroupSelect01" name="categoryID" onchange="submitSizeForm()">
+                                                            <form id="categoryForm" method="post" action="category_detail" class="mr-2">
+                                                                <select class="custom-select " id="inputGroupSelect01" name="categoryID" onchange="submitCategoryForm()">
                                                                     <option value="" ${empty category.categoryID ? 'selected' : ''}>All Category</option>
                                                                     <c:forEach items="${requestScope.cList}" var="c">
                                                                         <option value="${c.categoryID}" ${category.categoryID == c.categoryID ? 'selected' : ''}>
@@ -99,7 +99,6 @@
                                                                         </option>
                                                                     </c:forEach>
                                                                 </select>
-
                                                             </form>
                                                         </div>
                                                         <button class="btn btn-primary waves-effect h-15" onclick="window.location.href = '/product_create'">
@@ -260,6 +259,9 @@
         <script>
             function submitSizeForm() {
                 document.getElementById('sizeForm').submit();
+            }
+            function submitCategoryForm() {
+                document.getElementById('categoryForm').submit();
             }
 
             document.addEventListener('DOMContentLoaded', function () {
