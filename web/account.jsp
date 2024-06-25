@@ -141,13 +141,10 @@
                                                 <div class="card-header">
                                                     <div class="d-flex justify-content-between align-items-center pt-3">
                                                         <div class="p-15 p-b-0 w-25">
-                                                            <form class="form-material" action="account_search" method="get">
-                                                                <div class="form-group form-primary">
-                                                                    <input type="text" name="text_search" class="form-control" value="${requestScope.text_search}"/>
-                                                                    <span class="form-bar"></span>
-                                                                    <label class="float-label"><i class="fa fa-search m-r-10"></i>Search</label>
-                                                                </div>
-                                                            </form>
+                                                            <form class="search-form" action="account_search" method="get">
+                                                                Name: <input type="text" name="name" placeholder="Search" />
+                                                            <button type="submit" style="border: none;background-color: #ffffff"><i class="fa fa-search m-r-10"></i></button>
+                                                        </form>
                                                         </div>
                                                         <button class="btn btn-primary waves-effect h-15" onclick="window.location.href = '/account_create'">
                                                             Add New
@@ -169,43 +166,48 @@
                                                     <div class="table-responsive">
                                                         <div class="container">
                                                             <table class="table table-hover">
-                                                                <tr>
-                                                                    <th>#</th>
-                                                                    <th>Username</th>
-                                                                    <th>Name</th>
-                                                                    <th>Phone</th>
-                                                                    <th>Email</th>
-                                                                    <th>Address</th>
-                                                                    <th>Status</th>
-                                                                    <th class="text-right">Action</th>
-                                                                </tr>
-                                                                <c:forEach items="${requestScope.accounts}" var="account">
+                                                                <thead>
                                                                     <tr>
-                                                                        <td>${account.accountID}</td>
-                                                                        <td>${account.username}</td>
-                                                                        <td>${account.name}</td>
-                                                                        <td>${account.phone}</td>
-                                                                        <td>${account.email}</td>
-                                                                        <td>${account.address}</td>
-                                                                        <td>
-                                                                            <c:choose>
-                                                                                <c:when test="${account.status eq 'true'}">
-                                                                                    <span class="status-active">Active</span>
-                                                                                </c:when>
-                                                                                <c:otherwise>
-                                                                                    <span class="status-inactive">Inactive</span>
-                                                                                </c:otherwise>
-                                                                            </c:choose>
-                                                                        </td>
-                                                                        <td class="text-right pt-3">
-                                                                            <i class="fa fa-eye icon-spacing" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="View" 
-                                                                               onclick="window.location.href = '/account_view_detail?accountID=${account.accountID}'"></i>
-                                                                            <i class="fa fa-pencil-square-o icon-spacing" aria-hidden="true" 
-                                                                               data-toggle="tooltip" data-placement=left title="Edit"
-                                                                               onclick="window.location.href = '/account_update?accountID=${account.accountID}'"></i>
-                                                                        </td>
+                                                                        <th>#</th>
+                                                                        <th>Username</th>
+                                                                        <th>Name</th>
+                                                                        <th>Phone</th>
+                                                                        <th>Email</th>
+                                                                        <th>Address</th>
+                                                                        <th>Status</th>
+                                                                        <th class="text-right">Action</th>
                                                                     </tr>
-                                                                </c:forEach>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <c:forEach items="${requestScope.accounts}" var="account">
+                                                                        <tr>
+                                                                            <td>${account.accountID}</td>
+                                                                            <td>${account.username}</td>
+                                                                            <td>${account.name}</td>
+                                                                            <td>${account.phone}</td>
+                                                                            <td>${account.email}</td>
+                                                                            <td>${account.address}</td>
+                                                                            <td>
+                                                                                <c:choose>
+                                                                                    <c:when test="${account.status}">
+                                                                                        <span class="status-active">Active</span>
+                                                                                    </c:when>
+                                                                                    <c:otherwise>
+                                                                                        <span class="status-inactive">Inactive</span>
+                                                                                    </c:otherwise>
+                                                                                </c:choose>
+                                                                            </td>
+                                                                            <td class="text-right pt-3">
+                                                                                <a href="/account_view_detail?accountID=${account.accountID}" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="left" title="View">
+                                                                                    <i class="fa fa-eye"></i>
+                                                                                </a>
+                                                                                <a href="/account_update?accountID=${account.accountID}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="left" title="Edit">
+                                                                                    <i class="fa fa-pencil-square-o"></i>
+                                                                                </a>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </c:forEach>
+                                                                </tbody>
                                                             </table>
                                                         </div>
                                                     </div>
