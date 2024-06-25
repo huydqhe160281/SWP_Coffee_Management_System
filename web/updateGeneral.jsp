@@ -94,29 +94,24 @@
                                                         <form name="generalForm" class="form-material" action="general_update" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
                                                             <div class="form-group form-default form-static-label">
                                                                 <input type="hidden" name="generalID" class="form-control" value="${generalInfo.generalID}" />
-                                                                <span class="form-bar"></span>
                                                             </div>
                                                             <div class="form-group form-default form-static-label">
                                                                 <input type="email" name="email" class="form-control" placeholder="Enter Email" value="${generalInfo.email}" />
-                                                                <span class="form-bar"></span>
                                                                 <label class="float-label">Email (exa@gmail.com)</label>
                                                                 <div id="email-error" class="text-danger"></div>
                                                             </div>
                                                             <div class="form-group form-default form-static-label">
                                                                 <input type="number" name="phone" class="form-control" placeholder="Enter Phone Number" value="${generalInfo.phone}" />
-                                                                <span class="form-bar"></span>
                                                                 <label class="float-label">Phone Number</label>
                                                                 <div id="phone-error" class="text-danger"></div>
                                                             </div>
                                                             <div class="form-group form-default form-static-label">
                                                                 <input type="text" name="nameApp" class="form-control" placeholder="Enter Name of App/Web" value="${generalInfo.nameApp}" />
-                                                                <span class="form-bar"></span>
                                                                 <label class="float-label">Name of App/Web</label>
                                                                 <div id="nameApp-error" class="text-danger"></div>
                                                             </div>
                                                             <div class="form-group form-default form-static-label">
                                                                 <input type="text" name="address" class="form-control" placeholder="Enter Address" value="${generalInfo.address}" />
-                                                                <span class="form-bar"></span>
                                                                 <label class="float-label">Address</label>
                                                                 <div id="address-error" class="text-danger"></div>
                                                             </div>
