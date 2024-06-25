@@ -37,7 +37,7 @@ public class LoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginServlet</title>");            
+            out.println("<title>Servlet LoginServlet</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet LoginServlet at " + request.getContextPath() + "</h1>");
@@ -74,16 +74,18 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        
+
         AccountDAO accountDAO = new AccountDAO();
         Account account = accountDAO.checkLogin(username, password);
-        
+
         if (account != null) {
             HttpSession session = request.getSession();
             session.setAttribute("account", account);
-            session.setMaxInactiveInterval(30 * 60); // 30 phút
-            
-            response.sendRedirect("index.html"); 
+            if (account.getRoleID() == 1) {
+                response.sendRedirect("index.html");
+            } else if (account.getRoleID() == 2) {
+
+            }
         } else {
             request.setAttribute("errorMessage", "Invalid username or password");
             request.getRequestDispatcher("login.jsp").forward(request, response);
