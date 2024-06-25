@@ -19,6 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class CreateNewProductServlet extends HttpServlet {
    
     /** 
+     * 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
