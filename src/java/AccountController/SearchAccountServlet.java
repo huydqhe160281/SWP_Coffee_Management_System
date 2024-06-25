@@ -1,4 +1,4 @@
-package accountController;
+package AccountController;
 
 import model.Account;
 import dal.AccountDAO;
@@ -19,7 +19,7 @@ public class SearchAccountServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try ( PrintWriter out = response.getWriter()) {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -35,20 +35,20 @@ public class SearchAccountServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String currentPath = request.getRequestURI();
-        request.setAttribute("currentPath", currentPath);
+        response.setContentType("text/html;charset=UTF-8");
 
-        request.setCharacterEncoding("UTF-8");
-        String text_search = request.getParameter("text_search");
+        String text_search = request.getParameter("name");
+        if (text_search == null) {
+            text_search = ""; // Default to empty string if null
+        }
+        text_search = text_search.trim(); // Remove leading/trailing whitespace
 
         AccountDAO accountDAO = new AccountDAO();
-        List<Account> accounts = accountDAO.searchAccountsByUsername(text_search);
-        
-        // Set attributes to be accessed in JSP
-        request.setAttribute("text_search", text_search);
+        List<Account> accounts = accountDAO.searchAccountsByName(text_search);
+
+        request.setAttribute("name", text_search);
         request.setAttribute("accounts", accounts);
-        
-        // Forward the request to account.jsp
+
         request.getRequestDispatcher("account.jsp").forward(request, response);
     }
 
