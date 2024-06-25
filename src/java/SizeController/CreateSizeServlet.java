@@ -1,41 +1,48 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
-package AccountController;
+package SizeController;
 
-import dal.AccountDAO;
+import dal.SizeDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Size;
 
 /**
  *
- * @author Dinh Hai
+ * Size Creation Servlet
  */
-public class DeleteAccountServlet extends HttpServlet {
-    private AccountDAO accountDAO;
+public class CreateSizeServlet extends HttpServlet {
 
-    public DeleteAccountServlet() {
-        this.accountDAO = new AccountDAO();
-    }
+    private final SizeDAO sizeDAO = new SizeDAO();
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet DeleteAccountServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet DeleteAccountServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        try {
+            // TODO output your page here. You may use following sample code. 
+            // PrintWriter out = response.getWriter();
+            // out.println("<!DOCTYPE html>");
+            // out.println("<html>");
+            // out.println("<head>");
+            // out.println("<title>Servlet CreateSizeServlet</title>");            
+            // out.println("</head>");
+            // out.println("<body>");
+            // out.println("<h1>Servlet CreateSizeServlet at " + request.getContextPath() + "</h1>");
+            // out.println("</body>");
+            // out.println("</html>");
+            
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -51,7 +58,7 @@ public class DeleteAccountServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doPost(request, response);
+        request.getRequestDispatcher("/createNewSize.jsp").forward(request, response);
     }
 
     /**
@@ -65,9 +72,15 @@ public class DeleteAccountServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int accountID = Integer.parseInt(request.getParameter("accountID"));
-        accountDAO.deleteAccount(accountID);
-        response.sendRedirect("discount");
+        String type = request.getParameter("type");
+        String description = request.getParameter("description");
+
+        Size size = new Size();
+        size.setType(type);
+        size.setDescription(description);
+
+        sizeDAO.addSize(size);
+         response.sendRedirect("size");
     }
 
     /**

@@ -9,15 +9,17 @@ package model;
  * @author Dinh Hai
  */
 public class Size {
-    private int sizeID;
-    private String type;
+    private int SizeID;
+    private String Type;
+    private String Description;
 
     public Size() {
     }
 
-    public Size(int sizeID, String type) {
-        this.sizeID = sizeID;
-        this.type = type;
+    public Size(int SizeID, String Type, String Description) {
+        this.SizeID = SizeID;
+        this.Type = Type;
+        this.Description = Description;
     }
 
     public int getSizeID() {
@@ -40,4 +42,14 @@ public class Size {
     public String toString() {
         return "Size{" + "sizeID=" + sizeID + ", type=" + type + '}';
     }
+
+    public String getDescription() {
+        return Description;
+    }
+
+    public void setDescription(String Description) {
+        this.Description = Description;
+    }
+    
+    
 }
