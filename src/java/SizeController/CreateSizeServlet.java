@@ -74,17 +74,13 @@ public class CreateSizeServlet extends HttpServlet {
             throws ServletException, IOException {
         String type = request.getParameter("type");
         String description = request.getParameter("description");
-        
-        // Tạo đối tượng Size từ thông tin lấy được
-        Size newSize = new Size();
-        newSize.setType(type);
-        newSize.setDescription(description);
 
-        // Gọi đến SizeDAO để thêm mới Size vào cơ sở dữ liệu
-        sizeDAO.addSize(newSize);
+        Size size = new Size();
+        size.setType(type);
+        size.setDescription(description);
 
-        // Sau khi thêm mới, chuyển hướng về trang danh sách Size
-        response.sendRedirect(request.getContextPath() + "/sizes");
+        sizeDAO.addSize(size);
+         response.sendRedirect("size");
     }
 
     /**

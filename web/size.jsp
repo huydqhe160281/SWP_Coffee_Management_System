@@ -166,12 +166,12 @@
                                                                         <td>${size.type}</td>
                                                                         <td>${size.description}</td>
                                                                         <td class="text-right pt-3">
-                                                                                <i class="fa fa-eye icon-spacing" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="View" 
-                                                                                   onclick="window.location.href = '/size_view_detail?accountID=${size.sizeID}'"></i>
-                                                                                <i class="fa fa-pencil-square-o icon-spacing" aria-hidden="true" 
-                                                                                   data-toggle="tooltip" data-placement=left title="Edit"
-                                                                                   onclick="window.location.href = '/size_update?accountID=${size.sizeID}'"></i>
-                                                                            </td>
+                                                                            <i class="fa fa-eye icon-spacing" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="View" 
+                                                                               onclick="window.location.href = '/size_view_detail?accountID=${size.sizeID}'"></i>
+                                                                            <i class="fa fa-pencil-square-o icon-spacing" aria-hidden="true" 
+                                                                               data-toggle="tooltip" data-placement=left title="Edit"
+                                                                               onclick="window.location.href = '/size_update?accountID=${size.sizeID}'"></i>
+                                                                        </td>
                                                                     </tr>
                                                                 </c:forEach>
                                                             </table>

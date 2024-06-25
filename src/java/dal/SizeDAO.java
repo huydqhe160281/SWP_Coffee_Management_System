@@ -56,12 +56,11 @@ public class SizeDAO extends DBContext {
 
     // Phương thức thêm mới Size vào DB
     public void addSize(Size size) {
-        String sql = "INSERT INTO Size (SizeID, Type, Description) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO Size (Type, Description) VALUES (?, ?)";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setInt(1, size.getSizeID());
-            ps.setString(2, size.getType());
-            ps.setString(3, size.getDescription());
+            ps.setString(1, size.getType());
+            ps.setString(2, size.getDescription());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
