@@ -1,6 +1,6 @@
 <%--
-    Document   : category
-    Created on : May 20, 2024, 8:38:20 PM
+    Document   : createNewProduct
+    Created on : Jun 25, 2024, 11:50:50 AM
     Author     : ADMIN
 --%>
 
@@ -46,19 +46,16 @@
                             <div class="page-header">
                                 <div class="page-block">
                                     <div class="row align-items-center">
-                                        <div class="col-md-8">
-                                            <div class="page-header-title">
-                                                <h5 class="m-b-10">General Management</h5>
-                                                <p class="m-b-0">Quản lý Thông tin chung</p>
-                                            </div>
-                                        </div>
                                         <div class="col-md-4">
                                             <ul class="breadcrumb">
                                                 <li class="breadcrumb-item">
                                                     <a href="index.html"> <i class="fa fa-home"></i> </a>
                                                 </li>
                                                 <li class="breadcrumb-item">
-                                                    <a href="/general">General Management</a>
+                                                    <a href="/product">Product Management</a>
+                                                </li>
+                                                <li class="breadcrumb-item">
+                                                    <a href="/product_create">Create New Product</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -74,7 +71,6 @@
                                         <!-- Page-body start -->
                                         <div class="page-body">
                                             <div class="card">
-
                                                 <!-- Sub header table start -->
                                                 <div class="card-header">
                                                     <div class="card-header-right">
@@ -88,70 +84,71 @@
                                                     </div>
                                                 </div>
                                                 <!-- Sub header table end -->
+
                                                 <div class="card-header">
                                                     <div class="card-block w-75 m-auto">
-                                                        <h3 class="text-center m-auto pb-5">Update General Information</h3>
-                                                        <form name="generalForm" class="form-material" action="general_update" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+                                                        <h3 class="text-center m-auto pb-5">Create New Product</h3>
+                                                        <% if (request.getAttribute("error") != null) { %>
+                                                        <div class="alert alert-danger">
+                                                            <%= request.getAttribute("error") %>
+                                                        </div>
+                                                        <% } %>
+                                                        <form name="productForm" class="form-material" action="product_create" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
                                                             <div class="form-group form-default form-static-label">
-                                                                <input type="hidden" name="generalID" class="form-control" value="${generalInfo.generalID}" />
+                                                                <input type="text" name="productName" class="form-control" required minlength="3" maxlength="50" />
+                                                                <label class="float-label">Product Name</label>
                                                             </div>
                                                             <div class="form-group form-default form-static-label">
-                                                                <input type="email" name="email" class="form-control" placeholder="Enter Email" value="${generalInfo.email}" />
-                                                                <label class="float-label">Email (exa@gmail.com)</label>
-                                                                <div id="email-error" class="text-danger"></div>
+                                                                <textarea name="description" class="form-control" required minlength="10" maxlength="500" style="height: 130px;"></textarea>
+                                                                <label class="float-label">Description</label>
                                                             </div>
                                                             <div class="form-group form-default form-static-label">
-                                                                <input type="number" name="phone" class="form-control" placeholder="Enter Phone Number" value="${generalInfo.phone}" />
-                                                                <label class="float-label">Phone Number</label>
-                                                                <div id="phone-error" class="text-danger"></div>
+                                                                <textarea name="recipe" class="form-control" required minlength="10" maxlength="1000" style="height: 130px;"></textarea>
+                                                                <label class="float-label">Recipe</label>
                                                             </div>
-                                                            <div class="form-group form-default form-static-label">
-                                                                <input type="text" name="nameApp" class="form-control" placeholder="Enter Name of App/Web" value="${generalInfo.nameApp}" />
-                                                                <label class="float-label">Name of App/Web</label>
-                                                                <div id="nameApp-error" class="text-danger"></div>
-                                                            </div>
-                                                            <div class="form-group form-default form-static-label">
-                                                                <input type="text" name="address" class="form-control" placeholder="Enter Address" value="${generalInfo.address}" />
-                                                                <label class="float-label">Address</label>
-                                                                <div id="address-error" class="text-danger"></div>
-                                                            </div>
-                                                            <div class="d-flex flex-row mb-3">
-                                                                <div class="form-group form-default form-static-label">
-                                                                    <div class="d-flex flex-column mr-3">
-                                                                        <div class="mb-2">Logo Image</div>
+
+                                                            <div class="d-flex ">
+                                                                <div class="form-group form-default form-static-label w-50 mr-5">
+                                                                    <div class="d-flex flex-column">
+                                                                        <div class="mb-2">Product Image</div>
                                                                         <div class="image-preview">
-                                                                            <img src="assets/images/${generalInfo.logoImage}" alt="Current Logo" style="max-width: 200px; max-height: 200px;" id="logo-preview" onclick="handleImageClick('logoImage')">
-                                                                            <div class="custom-file mb-2" id="logoInputWrapper" hidden>
-                                                                                <input type="file" class="custom-file-input" id="logoImage" name="logoImage" onchange="previewImage('logoImage', 'logo-preview')" accept="image/*">
-                                                                                <label class="custom-file-label" for="logoImage">Choose file</label>
+                                                                            <img src="" alt="Product Image" style="max-width: 200px; max-height: 200px;" id="image-preview" onclick="handleImageClick('image')">
+                                                                            <div class="custom-file mb-2" id="imageInputWrapper">
+                                                                                <input type="file" class="custom-file-input" id="image" name="image" onchange="previewImage('image', 'image-preview')" accept="image/*">
+                                                                                <label class="custom-file-label" for="image">Choose file</label>
                                                                             </div>
                                                                         </div>
-                                                                        <div id="logoImage-error" class="text-danger"></div>
+                                                                        <div id="image-error" class="text-danger"></div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="form-group form-default form-static-label">
-                                                                    <div class="d-flex flex-column mr-3">
-                                                                        <div class="mb-2">Favicon Image</div>
-                                                                        <div class="image-preview">
-                                                                            <img src="assets/images/${generalInfo.fivicoImage}" alt="Current Favicon" style="max-width: 200px; max-height: 200px;" id="favicon-preview" onclick="handleImageClick('fivicoImage')">
-                                                                            <div class="custom-file mb-2" id="faviconInputWrapper" hidden>
-                                                                                <input  type="file" class="custom-file-input" id="fivicoImage" name="fivicoImage" onchange="previewImage('fivicoImage', 'favicon-preview')" value="${generalInfo.fivicoImage}" accept="image/*">
-                                                                                <label class="custom-file-label" for="fivicoImage">Choose file</label>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div id="fivicoImage-error" class="text-danger"></div>
+                                                                <div class="d-flex flex-column w-50 ml-5">
+                                                                    <div class="form-group form-default form-static-label">
+                                                                        <select name="category" class="form-control" required>
+                                                                            <c:forEach var="category" items="${categories}">
+                                                                                <option value="${category.categoryID}">${category.categoryName}</option>
+                                                                            </c:forEach>
+                                                                        </select>
+
+                                                                        <label class="float-label">Category</label>
+                                                                    </div>
+                                                                    <div class="form-group form-default form-static-label">
+                                                                        <label>Status</label>
+                                                                        <input type="checkbox" name="status" />
+                                                                    </div>
+                                                                    <div class="form-group form-default form-static-label">
+                                                                        <label>Is Hot</label>
+                                                                        <input type="checkbox" name="isHot" />
                                                                     </div>
                                                                 </div>
                                                             </div>
+
                                                             <div class="form-group form-default">
-                                                                <button class="btn btn-primary w-100" type="submit">Update Now</button>
+                                                                <button class="btn btn-primary w-100" type="submit">Create New</button>
                                                             </div>
                                                         </form>
-
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- Hover table card end -->
                                         </div>
                                         <!-- Page-body end -->
                                     </div>
@@ -167,10 +164,6 @@
         </div>
 
         <script>
-            function submitSizeForm() {
-                document.getElementById('sizeForm').submit();
-            }
-
             function previewImage(inputId, previewId) {
                 var input = document.getElementById(inputId);
                 var preview = document.getElementById(previewId);
@@ -202,58 +195,50 @@
                 var input = document.getElementById(inputId);
                 input.click();
             }
+
             function validateForm() {
                 var isValid = true;
 
-                var email = document.forms["generalForm"]["email"].value;
-                var phone = document.forms["generalForm"]["phone"].value;
-                var nameApp = document.forms["generalForm"]["nameApp"].value;
-                var address = document.forms["generalForm"]["address"].value;
-                var logoImage = document.forms["generalForm"]["logoImage"].value;
-                var fivicoImage = document.forms["generalForm"]["fivicoImage"].value;
+                var productName = document.forms["productForm"]["productName"].value;
+                var description = document.forms["productForm"]["description"].value;
+                var recipe = document.forms["productForm"]["recipe"].value;
+                var image = document.forms["productForm"]["image"].value;
+                var category = document.forms["productForm"]["category"].value;
 
                 // Clear previous error messages
-                document.getElementById("email-error").innerHTML = "";
-                document.getElementById("phone-error").innerHTML = "";
-                document.getElementById("nameApp-error").innerHTML = "";
-                document.getElementById("address-error").innerHTML = "";
-                document.getElementById("logoImage-error").innerHTML = "";
-                document.getElementById("fivicoImage-error").innerHTML = "";
+                document.getElementById("productName-error").innerHTML = "";
+                document.getElementById("description-error").innerHTML = "";
+                document.getElementById("recipe-error").innerHTML = "";
+                document.getElementById("image-error").innerHTML = "";
+                document.getElementById("category-error").innerHTML = "";
 
-                // Email validation
-                var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-                if (!emailPattern.test(email)) {
-                    document.getElementById("email-error").innerHTML = "Please enter a valid email address.";
+                // ProductName validation
+                if (productName == "") {
+                    document.getElementById("productName-error").innerHTML = "Please enter the product name.";
                     isValid = false;
                 }
 
-                // Phone validation
-                if (phone == "" || isNaN(phone)) {
-                    document.getElementById("phone-error").innerHTML = "Please enter a valid phone number.";
+                // Description validation
+                if (description == "") {
+                    document.getElementById("description-error").innerHTML = "Please enter the description.";
                     isValid = false;
                 }
 
-                // NameApp validation
-                if (nameApp == "") {
-                    document.getElementById("nameApp-error").innerHTML = "Please enter the name of the app/web.";
+                // Recipe validation
+                if (recipe == "") {
+                    document.getElementById("recipe-error").innerHTML = "Please enter the recipe.";
                     isValid = false;
                 }
 
-                // Address validation
-                if (address == "") {
-                    document.getElementById("address-error").innerHTML = "Please enter an address.";
+                // Image validation
+                if (image == "") {
+                    document.getElementById("image-error").innerHTML = "Please upload a product image.";
                     isValid = false;
                 }
 
-                // LogoImage validation
-                if (logoImage == "") {
-                    document.getElementById("logoImage-error").innerHTML = "Please enter the logo image URL.";
-                    isValid = false;
-                }
-
-                // FivicoImage validation
-                if (fivicoImage == "") {
-                    document.getElementById("fivicoImage-error").innerHTML = "Please enter the favico URL.";
+                // Category validation
+                if (category == "") {
+                    document.getElementById("category-error").innerHTML = "Please select a category.";
                     isValid = false;
                 }
 
