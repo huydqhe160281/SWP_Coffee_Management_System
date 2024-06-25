@@ -23,19 +23,24 @@ public class Size {
     }
 
     public int getSizeID() {
-        return SizeID;
+        return sizeID;
     }
 
-    public void setSizeID(int SizeID) {
-        this.SizeID = SizeID;
+    public void setSizeID(int sizeID) {
+        this.sizeID = sizeID;
     }
 
     public String getType() {
-        return Type;
+        return type;
     }
 
-    public void setType(String Type) {
-        this.Type = Type;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return "Size{" + "sizeID=" + sizeID + ", type=" + type + '}';
     }
 
     public String getDescription() {
@@ -48,4 +53,3 @@ public class Size {
     
     
 }
-

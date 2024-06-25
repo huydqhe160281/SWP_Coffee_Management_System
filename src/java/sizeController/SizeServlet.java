@@ -2,23 +2,23 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package Authentication;
+package SizeController;
 
-import dal.AccountDAO;
+import dal.SizeDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import model.Account;
+import java.util.List;
+import model.Size;
 
 /**
  *
  * @author Dinh Hai
  */
-public class LoginServlet extends HttpServlet {
+public class SizeServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,17 +32,21 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet LoginServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet LoginServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        try {
+            // TODO output your page here. You may use following sample code. 
+            // PrintWriter out = response.getWriter();
+            // out.println("<!DOCTYPE html>");
+            // out.println("<html>");
+            // out.println("<head>");
+            // out.println("<title>Servlet SizeServlet</title>");            
+            // out.println("</head>");
+            // out.println("<body>");
+            // out.println("<h1>Servlet SizeServlet at " + request.getContextPath() + "</h1>");
+            // out.println("</body>");
+            // out.println("</html>");
+            
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -58,7 +62,10 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("login.jsp").forward(request, response);
+        SizeDAO sizeDAO = new SizeDAO();
+        List<Size> sizes = sizeDAO.getAllSizes();
+        request.setAttribute("sizes", sizes);
+        request.getRequestDispatcher("size.jsp").forward(request, response);
     }
 
     /**
@@ -72,24 +79,20 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+        // Lấy thông tin từ request để thêm mới Size
+        int sizeID = Integer.parseInt(request.getParameter("sizeID"));
+        String type = request.getParameter("type");
+        String description = request.getParameter("description");
 
-        AccountDAO accountDAO = new AccountDAO();
-        Account account = accountDAO.checkLogin(username, password);
+        // Tạo đối tượng Size từ thông tin lấy được
+        Size newSize = new Size(sizeID, type, description);
 
-        if (account != null) {
-            HttpSession session = request.getSession();
-            session.setAttribute("account", account);
-            if (account.getRoleID() == 1) {
-                response.sendRedirect("index.html");
-            } else if (account.getRoleID() == 2) {
+        // Gọi đến SizeDAO để thêm mới Size vào cơ sở dữ liệu
+        SizeDAO sizeDAO = new SizeDAO();
+        sizeDAO.addSize(newSize);
 
-            }
-        } else {
-            request.setAttribute("errorMessage", "Invalid username or password");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-        }
+        // Sau khi thêm mới, chuyển hướng về trang danh sách Size
+        response.sendRedirect(request.getContextPath() + "/sizes");
     }
 
     /**

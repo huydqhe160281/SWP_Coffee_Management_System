@@ -48,7 +48,7 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            width: 50%;
+            width: 100%;
             margin: auto;
         }
 
@@ -58,7 +58,10 @@
             width: 100%;
             padding: 10px;
             margin-bottom: 10px;
-            border: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+            border-left: none;
+            border-right:none;
+            border-top: none; 
             border-radius: 4px;
         }
 
@@ -66,14 +69,14 @@
             width: 100%;
             padding: 10px;
             color: white;
-            background-color: #5cb85c;
+            background-color: #448aff;
             border: none;
             border-radius: 4px;
             cursor: pointer;
         }
 
         .form-material input[type="submit"]:hover {
-            background-color: #45a045;
+            background-color: #2E64FE;
         }
 
         .alert-danger {
@@ -158,10 +161,10 @@
                                                         </div>
                                                         <% } %>
                                                         <form class="form-material" action="supplier_create" method="post">
-                                                            Supplier Name: <input type="text" name="supplierName" required><br>
-                                                            Contact: <input type="text" name="contact" required><br>
-                                                            Address: <input type="text" name="address" required><br>
-                                                            <input type="submit" value="Create">
+                                                            Supplier Name: <input type="text" class="form-control" name="supplierName" required><br>
+                                                            Contact: <input type="text" class="form-control" name="contact" required><br>
+                                                            Address: <input type="text" class="form-control" name="address" required><br>
+                                                            <input type="submit" class="btn btn-primary w-100" value="Create">
                                                         </form>
                                                         <a href="supplier" class="btn btn-secondary mt-3" style="float: right;">Back</a>
                                                     </div>

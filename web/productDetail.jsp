@@ -116,8 +116,8 @@
                                                                     </div>
                                                                     <div class="col-md-6">
                                                                         <h3 class="text-primary"><strong>${product.productName}</strong></h3>
-                                                                        <h5>Cost Price: <fmt:formatNumber value="${product.costPrice}" type="currency" pattern="###,### ₫" currencySymbol="₫" /></h5>
-                                                                        <h5>Price: <fmt:formatNumber value="${product.price}" type="currency" pattern="###,### ₫" currencySymbol="₫" /></h5>
+                                                                        <h5>Cost Price:</h5>
+                                                                        <h5>Price:</h5>
                                                                         <h5>Status: <c:choose>
                                                                                 <c:when test="${product.status}"><span class="badge badge-success">Đang bán</span></c:when>
                                                                                 <c:otherwise><span class="badge badge-danger">Dừng bán</span></c:otherwise>

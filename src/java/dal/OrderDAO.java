@@ -11,8 +11,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import model.Category;
 import model.Order;
 import model.OrderDetail;
+import model.Product;
 
 /**
  *
@@ -145,5 +147,51 @@ public class OrderDAO extends DBContext{
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    
+    public List<Category> getAllCategories() {
+        List<Category> categories = new ArrayList<>();
+        String query = "SELECT * FROM Category";
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Category category = new Category(
+                        rs.getInt("CategoryID"),
+                        rs.getString("CategoryName"),
+                        rs.getString("Detail")
+                );
+                categories.add(category);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return categories;
+    }
+
+    public List<Product> getProductsByCategory(int categoryID) {
+        List<Product> products = new ArrayList<>();
+        String query = "SELECT * FROM Product WHERE CategoryID = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setInt(1, categoryID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Product product = new Product(
+                        rs.getInt("ProductID"),
+                        rs.getString("ProductName"),
+                        rs.getDouble("UnitPrice"),
+                        rs.getString("Image"),
+                        rs.getString("Description"),
+                        rs.getString("Recipe"),
+                        rs.getBoolean("Status"),
+                        rs.getInt("CategoryID")
+                );
+                products.add(product);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return products;
     }
 }

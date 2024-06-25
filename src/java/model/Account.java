@@ -115,5 +115,23 @@ public class Account {
     public void setCampusID(int CampusID) {
         this.CampusID = CampusID;
     }
-    
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Account{");
+        sb.append("AccountID=").append(AccountID);
+        sb.append(", Username=").append(Username);
+        sb.append(", Password=").append(Password);
+        sb.append(", Name=").append(Name);
+        sb.append(", Phone=").append(Phone);
+        sb.append(", Email=").append(Email);
+        sb.append(", Address=").append(Address);
+        sb.append(", Status=").append(Status);
+        sb.append(", RoleID=").append(RoleID);
+        sb.append(", CampusID=").append(CampusID);
+        sb.append('}');
+        return sb.toString();
+    }
+
 }

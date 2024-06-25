@@ -45,6 +45,10 @@
         <servlet-class>DiscountController.UpdateDiscountServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>OrderServlet</servlet-name>
+        <servlet-class>OrderController.OrderServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ViewDiscountServlet</servlet-name>
         <servlet-class>DiscountController.ViewDiscountServlet</servlet-class>
     </servlet>
@@ -121,12 +125,16 @@
         <servlet-class>SizeController.SizeServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>CreateSizeServlet</servlet-name>
-        <servlet-class>SizeController.CreateSizeServlet</servlet-class>
+        <servlet-name>DeleteAccountServlet</servlet-name>
+        <servlet-class>AccountController.DeleteAccountServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>SearchAccountServlet</servlet-name>
         <servlet-class>AccountController.SearchAccountServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateNewProductServlet</servlet-name>
+        <servlet-class>productController.CreateNewProductServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ViewSizeServlet</servlet-name>
@@ -135,6 +143,10 @@
     <servlet>
         <servlet-name>UpdateSizeServlet</servlet-name>
         <servlet-class>SizeController.UpdateSizeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateSizeServlet</servlet-name>
+        <servlet-class>SizeController.CreateSizeServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ProductServlet</servlet-name>
@@ -155,6 +167,10 @@
     <servlet-mapping>
         <servlet-name>UpdateCategoryServlet</servlet-name>
         <url-pattern>/category_update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderServlet</servlet-name>
+        <url-pattern>/order</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DiscountServlet</servlet-name>
@@ -241,6 +257,10 @@
         <url-pattern>/landing-page</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>SizeServlet</servlet-name>
+        <url-pattern>/size</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>ViewAccountServlet</servlet-name>
         <url-pattern>/account_view_detail</url-pattern>
     </servlet-mapping>
@@ -249,12 +269,12 @@
         <url-pattern>/account_update</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>SizeServlet</servlet-name>
-        <url-pattern>/size</url-pattern>
+        <servlet-name>DeleteAccountServlet</servlet-name>
+        <url-pattern>/account_delete</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>CreateSizeServlet</servlet-name>
-        <url-pattern>/size_create</url-pattern>
+        <servlet-name>CreateNewProductServlet</servlet-name>
+        <url-pattern>/product_create</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SearchAccountServlet</servlet-name>
@@ -267,6 +287,10 @@
     <servlet-mapping>
         <servlet-name>UpdateSizeServlet</servlet-name>
         <url-pattern>/size_update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateSizeServlet</servlet-name>
+        <url-pattern>/size_create</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
