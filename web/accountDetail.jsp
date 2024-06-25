@@ -1,13 +1,6 @@
-<%-- 
-    Document   : accountDetail
-    Created on : 14-06-2024, 14:10:28
-    Author     : Dinh Hai
---%>
-
-<%@ page import="model.Account" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ page import="model.Account" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,6 +28,7 @@
     <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
     <link rel="stylesheet" type="text/css" href="assets/css/jquery.mCustomScrollbar.css" />
     <style>
+        /* Include styles from updateAccount.jsp */
         body {
             font-family: 'Open Sans', sans-serif;
             color: #333;
@@ -72,6 +66,19 @@
 
         .btn-back {
             float: right;
+            background-color: #007bff;
+            border-color: #007bff;
+            color: #fff;
+            padding: .375rem .75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            border-radius: .25rem;
+            cursor: pointer;
+        }
+
+        .btn-back:hover {
+            background-color: #0069d9;
+            border-color: #0062cc;
         }
 
         .status-active {
@@ -141,14 +148,35 @@
                                                 <div class="table-responsive">
                                                     <div class="container">
                                                         <h1>Account Details</h1>
-                                                        <p><strong>AccountID:</strong> <%= ((Account)request.getAttribute("account")).getAccountID() %></p>
-                                                        <p><strong>Username:</strong> <%= ((Account)request.getAttribute("account")).getUsername() %></p>
-                                                        <p><strong>Name:</strong> <%= ((Account)request.getAttribute("account")).getName() %></p>
-                                                        <p><strong>Phone:</strong> <%= ((Account)request.getAttribute("account")).getPhone() %></p>
-                                                        <p><strong>Email:</strong> <%= ((Account)request.getAttribute("account")).getEmail() %></p>
-                                                        <p><strong>Address:</strong> <%= ((Account)request.getAttribute("account")).getAddress() %></p>
-                                                        <p><strong>Status:</strong> <%= ((Account)request.getAttribute("account")).isStatus() ? "<span class='status-active'>Active</span>" : "<span class='status-expired'>Inactive</span>" %></p>
-                                                        <a href="account" class="btn btn-secondary btn-back mt-3">Back</a>
+                                                        <div class="form-group form-default">
+                                                            <label class="">Account ID: </label>
+                                                            <input type="text" name="username" class="form-control" value="<%= ((Account)request.getAttribute("account")).getAccountID() %>" readonly required>
+                                                        </div>
+                                                        <div class="form-group form-default">
+                                                            <label class="">Username: </label>
+                                                            <input type="text" name="username" class="form-control" value="<%= ((Account)request.getAttribute("account")).getUsername() %>" readonly required>
+                                                        </div>
+                                                        <div class="form-group form-default">
+                                                            <label class="">Name:</label>
+                                                            <input type="text" name="name" class="form-control" value="<%= ((Account)request.getAttribute("account")).getName() %>" readonly required>
+                                                        </div>
+                                                        <div class="form-group form-default">
+                                                            <label class="">Phone:</label>
+                                                            <input type="text" name="name" class="form-control" value="<%= ((Account)request.getAttribute("account")).getPhone() %>" readonly required>
+                                                        </div>
+                                                        <div class="form-group form-default">
+                                                            <label class="">Email:</label>
+                                                            <input type="text" name="name" class="form-control" value="<%= ((Account)request.getAttribute("account")).getEmail() %>" readonly required>
+                                                        </div>
+                                                        <div class="form-group form-default">
+                                                            <label class="">Address:</label>
+                                                            <input type="text" name="name" class="form-control" value="<%= ((Account)request.getAttribute("account")).getAddress() %>" readonly required>
+                                                        </div>
+                                                        <div class="form-group form-default">
+                                                            <label class="">Status</label>
+                                                            <input type="text" name="name" class="form-control" value="<%= ((Account)request.getAttribute("account")).isStatus() ? "Active" : "InActive" %>" readonly required>
+                                                        </div>
+                                                        <a href="account" class="btn btn-back mt-3">Back</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -183,4 +211,3 @@
     <script type="text/javascript" src="assets/js/script.js"></script>
 </body>
 </html>
-
