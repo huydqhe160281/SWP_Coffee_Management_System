@@ -119,7 +119,7 @@
                                                     <a href="index.html"> <i class="fa fa-home"></i> </a>
                                                 </li>
                                                 <li class="breadcrumb-item">
-                                                    <a href="/discount">Account Management</a>
+                                                    <a href="/account">Account Management</a>
                                                 </li>
                                                 <li class="breadcrumb-item">
                                                     <a href="/account_create">Create New Account</a>

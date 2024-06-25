@@ -10,45 +10,35 @@
 
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Coffee Management System</title>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<head>
+    <title>Coffee Management System - Account Details</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-        <meta name="keywords" content="bootstrap, bootstrap admin template, admin theme, admin dashboard, dashboard template, admin template, responsive" />
-        <meta name="author" content="Codedthemes" />
-        <!-- Favicon icon -->
-        <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet" />
-        <!-- waves.css -->
-        <link rel="stylesheet" href="assets/pages/waves/css/waves.min.css" type="text/css" media="all" />
-        <!-- Required Fremwork -->
-        <link rel="stylesheet" type="text/css" href="assets/css/bootstrap/css/bootstrap.min.css" />
-        <!-- waves.css -->
-        <link rel="stylesheet" href="assets/pages/waves/css/waves.min.css" type="text/css" media="all" />
-        <!-- themify-icons line icon -->
-        <link rel="stylesheet" type="text/css" href="assets/icon/themify-icons/themify-icons.css" />
-        <!-- Font Awesome -->
-        <link rel="stylesheet" type="text/css" href="assets/icon/font-awesome/css/font-awesome.min.css" />
-        <!-- ico font -->
-        <link rel="stylesheet" type="text/css" href="assets/icon/icofont/css/icofont.css" />
-        <!-- Style.css -->
-        <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
-        <link rel="stylesheet" type="text/css" href="assets/css/jquery.mCustomScrollbar.css" />
-    </head>
+    <meta name="keywords" content="bootstrap, bootstrap admin template, admin theme, admin dashboard, dashboard template, admin template, responsive" />
+    <meta name="author" content="Codedthemes" />
+    <!-- Favicon icon -->
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet" />
+    <!-- waves.css -->
+    <link rel="stylesheet" href="assets/pages/waves/css/waves.min.css" type="text/css" media="all" />
+    <!-- Required Fremwork -->
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap/css/bootstrap.min.css" />
+    <!-- themify-icons line icon -->
+    <link rel="stylesheet" type="text/css" href="assets/icon/themify-icons/themify-icons.css" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" type="text/css" href="assets/icon/font-awesome/css/font-awesome.min.css" />
+    <!-- ico font -->
+    <link rel="stylesheet" type="text/css" href="assets/icon/icofont/css/icofont.css" />
+    <!-- Style.css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/jquery.mCustomScrollbar.css" />
     <style>
-        .limit-detail {
-            max-width: 200px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
         body {
             font-family: 'Open Sans', sans-serif;
             color: #333;
             background-color: #f4f4f4;
-            margin: 0;
             padding: 20px;
         }
 
@@ -74,49 +64,16 @@
         }
 
         .table-responsive {
-            margin-top: 20px;
             background: #ffffff;
             border: 1px solid #ddd;
             padding: 20px;
             border-radius: 8px;
         }
 
-        input[type="text"], input[type="number"], input[type="date"], input[type="submit"] {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            display: inline-block;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
+        .btn-back {
+            float: right;
         }
 
-        input[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #45a049;
-        }
-
-        .alert-danger {
-            color: #721c24;
-            background-color: #f8d7da;
-            border-color: #f5c6cb;
-            padding: 10px;
-            margin-bottom: 20px;
-            border-radius: 4px;
-        }
-
-        .limit-detail {
-            max-width: 200px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
         .status-active {
             color: green;
         }
@@ -125,112 +82,105 @@
             color: red;
         }
     </style>
-    <body>
+</head>
+<body>
 
-        <!-- Pre-loader start -->
-        <jsp:include page="./common/reloading.jsp"/>
-        <!-- Pre-loader end -->
+    <!-- Pre-loader start -->
+    <jsp:include page="./common/reloading.jsp"/>
+    <!-- Pre-loader end -->
 
-        <div id="pcoded" class="pcoded">
-            <div class="pcoded-overlay-box"></div>
-            <div class="pcoded-container navbar-wrapper">
+    <div id="pcoded" class="pcoded">
+        <div class="pcoded-overlay-box"></div>
+        <div class="pcoded-container navbar-wrapper">
 
-                <!-- Heading start -->
-                <jsp:include page="./common/headingAdmin.jsp"/>
-                <!-- Heading end -->
+            <!-- Heading start -->
+            <jsp:include page="./common/headingAdmin.jsp"/>
+            <!-- Heading end -->
 
-                <div class="pcoded-main-container">
-                    <div class="pcoded-wrapper">
+            <div class="pcoded-main-container">
+                <div class="pcoded-wrapper">
 
-                        <!--Sidebar start-->
-                        <jsp:include page="./common/sidebarAdmin.jsp"/>
-                        <!--Sidebar end-->
+                    <!--Sidebar start-->
+                    <jsp:include page="./common/sidebarAdmin.jsp"/>
+                    <!--Sidebar end-->
 
-                        <div class="pcoded-content">
-                            <!-- Page-header start -->
-                            <div class="page-header">
-                                <div class="page-block">
-                                    <div class="row align-items-center">
-                                        <div class="col-md-8">
-                                            <div class="page-header-title">
-                                                <h5 class="m-b-10">Account Management</h5>
-                                                <p class="m-b-0">Quản lý Account</p>
-                                            </div>
+                    <div class="pcoded-content">
+                        <!-- Page-header start -->
+                        <div class="page-header">
+                            <div class="page-block">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <div class="page-header-title">
+                                            <h5 class="m-b-10">Account Management</h5>
+                                            <p class="m-b-0">Quản lý Account</p>
                                         </div>
-                                        <div class="col-md-4">
-                                            <ul class="breadcrumb">
-                                                <li class="breadcrumb-item">
-                                                    <a href="index.html"> <i class="fa fa-home"></i> </a>
-                                                </li>
-                                                <li class="breadcrumb-item">
-                                                    <a href="/discount">Account Management</a>
-                                                </li>
-                                            </ul>
-                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item">
+                                                <a href="index.html"> <i class="fa fa-home"></i> </a>
+                                            </li>
+                                            <li class="breadcrumb-item">
+                                                <a href="/discount">Account Management</a>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
-                            <!-- Page-header end -->
+                        </div>
+                        <!-- Page-header end -->
 
-                            <div class="pcoded-inner-content">
-                                <!-- Main-body start -->
-                                <div class="main-body">
-                                    <div class="page-wrapper">
-                                        <!-- Page-body start -->
-                                        <div class="page-body">
-                                            <div class="card">                                              
-                                                <!-- Sub header table end -->
-
-                                                <div class="card-block table-border-style">
-                                                    <div class="table-responsive">
-                                                        <div class="container">
-                                                            <h1>Account Details</h1>
-                                                            <p>AccountID: <%= ((Account)request.getAttribute("account")).getAccountID() %></p>
-                                                            <p>Username: <%= ((Account)request.getAttribute("account")).getUsername() %></p>
-                                                            <p>Phone: <%= ((Account)request.getAttribute("account")).getName() %></p>
-                                                            <p>Name: <%= ((Account)request.getAttribute("account")).getPhone() %></p>
-                                                            <p>Email: <%= ((Account)request.getAttribute("account")).getEmail() %></p>
-                                                            <p>Address: <%= ((Account)request.getAttribute("account")).getAddress() %></p>
-                                                            <p>Status: <%= ((Account)request.getAttribute("account")).isStatus() ? "<span class='status-active'>On going</span>" : "<span class='status-expired'>Out of date</span>" %></p>
-                                                            <a href="account" class="btn btn-secondary mt-3" style="float: right;">Back</a>
-                                                        </div>
+                        <div class="pcoded-inner-content">
+                            <!-- Main-body start -->
+                            <div class="main-body">
+                                <div class="page-wrapper">
+                                    <!-- Page-body start -->
+                                    <div class="page-body">
+                                        <div class="card">                                              
+                                            <div class="card-block table-border-style">
+                                                <div class="table-responsive">
+                                                    <div class="container">
+                                                        <h1>Account Details</h1>
+                                                        <p><strong>AccountID:</strong> <%= ((Account)request.getAttribute("account")).getAccountID() %></p>
+                                                        <p><strong>Username:</strong> <%= ((Account)request.getAttribute("account")).getUsername() %></p>
+                                                        <p><strong>Name:</strong> <%= ((Account)request.getAttribute("account")).getName() %></p>
+                                                        <p><strong>Phone:</strong> <%= ((Account)request.getAttribute("account")).getPhone() %></p>
+                                                        <p><strong>Email:</strong> <%= ((Account)request.getAttribute("account")).getEmail() %></p>
+                                                        <p><strong>Address:</strong> <%= ((Account)request.getAttribute("account")).getAddress() %></p>
+                                                        <p><strong>Status:</strong> <%= ((Account)request.getAttribute("account")).isStatus() ? "<span class='status-active'>Active</span>" : "<span class='status-expired'>Inactive</span>" %></p>
+                                                        <a href="account" class="btn btn-secondary btn-back mt-3">Back</a>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- Hover table card end -->
                                         </div>
-                                        <!-- Page-body end -->
                                     </div>
+                                    <!-- Page-body end -->
                                 </div>
-                                <!-- Main-body end -->
-
-                                <div id="styleSelector"></div>
                             </div>
+                            <!-- Main-body end -->
+
+                            <div id="styleSelector"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <script type="text/javascript">
-
-
-        </script>
-
-
-        <!-- Required Jquery -->
-        <script type="text/javascript" src="assets/js/jquery/jquery.min.js"></script>
-        <script type="text/javascript" src="assets/js/jquery-ui/jquery-ui.min.js"></script>
-        <script type="text/javascript" src="assets/js/popper.js/popper.min.js"></script>
-        <script type="text/javascript" src="assets/js/bootstrap/js/bootstrap.min.js"></script>
-        <!-- waves js -->
-        <script src="assets/pages/waves/js/waves.min.js"></script>
-        <!-- jquery slimscroll js -->
-        <script type="text/javascript" src="assets/js/jquery-slimscroll/jquery.slimscroll.js"></script>
-        <!-- Custom js -->
-        <script src="assets/js/pcoded.min.js"></script>
-        <script src="assets/js/vertical/vertical-layout.min.js"></script>
-        <script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
-        <script type="text/javascript" src="assets/js/script.js"></script>
-    </body>
+    <!-- Required Jquery -->
+    <script type="text/javascript" src="assets/js/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="assets/js/jquery-ui/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="assets/js/popper.js/popper.min.js"></script>
+    <script type="text/javascript" src="assets/js/bootstrap/js/bootstrap.min.js"></script>
+    <!-- waves js -->
+    <script src="assets/pages/waves/js/waves.min.js"></script>
+    <!-- jquery slimscroll js -->
+    <script type="text/javascript" src="assets/js/jquery-slimscroll/jquery.slimscroll.js"></script>
+    <!-- Custom js -->
+    <script src="assets/js/pcoded.min.js"></script>
+    <script src="assets/js/vertical/vertical-layout.min.js"></script>
+    <script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script type="text/javascript" src="assets/js/script.js"></script>
+</body>
 </html>
+

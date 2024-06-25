@@ -125,12 +125,16 @@
         <servlet-class>AccountController.UpdateAccountServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>DeleteAccountServlet</servlet-name>
-        <servlet-class>AccountController.DeleteAccountServlet</servlet-class>
+        <servlet-name>SizeServlet</servlet-name>
+        <servlet-class>SizeController.SizeServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>CreateSizeController</servlet-name>
-        <servlet-class>SizeController.CreateSizeController</servlet-class>
+        <servlet-name>CreateSizeServlet</servlet-name>
+        <servlet-class>SizeController.CreateSizeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchAccountServlet</servlet-name>
+        <servlet-class>AccountController.SearchAccountServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>CreateNewProductServlet</servlet-name>
@@ -257,16 +261,20 @@
         <url-pattern>/account_update</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>DeleteAccountServlet</servlet-name>
-        <url-pattern>/account_delete</url-pattern>
+        <servlet-name>SizeServlet</servlet-name>
+        <url-pattern>/size</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>CreateSizeController</servlet-name>
+        <servlet-name>CreateSizeServlet</servlet-name>
         <url-pattern>/size_create</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CreateNewProductServlet</servlet-name>
         <url-pattern>/product_create</url-pattern>
+    </servlet-mapping>  
+    <servlet-mapping>
+        <servlet-name>SearchAccountServlet</servlet-name>
+        <url-pattern>/account_search</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
