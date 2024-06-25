@@ -6,7 +6,7 @@
 
 <%@ page import="java.util.Date" %>
 <%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="model.Discount" %>
+<%@ page import="model.Account" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -75,6 +75,12 @@
         .status-expired {
             color: red; /* Sets the text color to red */
         }
+        .status-active {
+            color: green; /* Màu chữ xanh cho trạng thái Active */
+        }
+        .status-inactive {
+            color: red; /* Màu chữ đỏ cho trạng thái Inactive */
+        }
     </style>
     <body>
 
@@ -114,7 +120,7 @@
                                                     <a href="index.html"> <i class="fa fa-home"></i> </a>
                                                 </li>
                                                 <li class="breadcrumb-item">
-                                                    <a href="/discount">Account Management</a>
+                                                    <a href="/account">Account Management</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -135,11 +141,11 @@
                                                 <div class="card-header">
                                                     <div class="d-flex justify-content-between align-items-center pt-3">
                                                         <div class="p-15 p-b-0 w-25">
-                                                            <form class="form-material" action="search_category" method="get">
+                                                            <form class="form-material" action="account_search" method="get">
                                                                 <div class="form-group form-primary">
                                                                     <input type="text" name="text_search" class="form-control" value="${requestScope.text_search}"/>
                                                                     <span class="form-bar"></span>
-                                                                    <label class="float-label"><i class="fa fa-search m-r-10"></i>Search Friend</label>
+                                                                    <label class="float-label"><i class="fa fa-search m-r-10"></i>Search</label>
                                                                 </div>
                                                             </form>
                                                         </div>
@@ -181,14 +187,23 @@
                                                                         <td>${account.phone}</td>
                                                                         <td>${account.email}</td>
                                                                         <td>${account.address}</td>
-                                                                        <td>${account.status}</td>
+                                                                        <td>
+                                                                            <c:choose>
+                                                                                <c:when test="${account.status eq 'true'}">
+                                                                                    <span class="status-active">Active</span>
+                                                                                </c:when>
+                                                                                <c:otherwise>
+                                                                                    <span class="status-inactive">Inactive</span>
+                                                                                </c:otherwise>
+                                                                            </c:choose>
+                                                                        </td>
                                                                         <td class="text-right pt-3">
-                                                                                <i class="fa fa-eye icon-spacing" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="View" 
-                                                                                   onclick="window.location.href = '/account_view_detail?accountID=${account.accountID}'"></i>
-                                                                                <i class="fa fa-pencil-square-o icon-spacing" aria-hidden="true" 
-                                                                                   data-toggle="tooltip" data-placement=left title="Edit"
-                                                                                   onclick="window.location.href = '/account_update?accountID=${account.accountID}'"></i>
-                                                                            </td>
+                                                                            <i class="fa fa-eye icon-spacing" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="View" 
+                                                                               onclick="window.location.href = '/account_view_detail?accountID=${account.accountID}'"></i>
+                                                                            <i class="fa fa-pencil-square-o icon-spacing" aria-hidden="true" 
+                                                                               data-toggle="tooltip" data-placement=left title="Edit"
+                                                                               onclick="window.location.href = '/account_update?accountID=${account.accountID}'"></i>
+                                                                        </td>
                                                                     </tr>
                                                                 </c:forEach>
                                                             </table>

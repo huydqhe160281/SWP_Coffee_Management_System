@@ -189,6 +189,35 @@ public class AccountDAO extends DBContext{
         
         return exists;
     }
+    public List<Account> searchAccountsByUsername(String text) {
+        List<Account> list = new ArrayList<>();
+        String sql = "SELECT AccountID, Username, Password, Name, Phone, Email, Address, Status, RoleID, CampusID " +
+                     "FROM Accounts " +
+                     "WHERE LOWER(Username) LIKE ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, "%" + text.toLowerCase() + "%"); // Case insensitive search
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Account account = new Account(
+                        rs.getInt("AccountID"),
+                        rs.getString("Username"),
+                        rs.getString("Password"),
+                        rs.getString("Name"),
+                        rs.getString("Phone"),
+                        rs.getString("Email"),
+                        rs.getString("Address"),
+                        rs.getBoolean("Status"),
+                        rs.getInt("RoleID"),
+                        rs.getInt("CampusID")
+                );
+                list.add(account);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle exception properly in your application
+        }
+        return list;
+    }
     public static void main(String[] args) {
         AccountDAO accountDAO = new AccountDAO();
         Account acc = new Account(0, "Username", "Password", "Name", "Phone", "Email", "Address", true, 2, 1);

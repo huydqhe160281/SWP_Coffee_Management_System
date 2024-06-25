@@ -44,6 +44,13 @@
         </ul>
         <div class="pcoded-navigation-label">Management</div>
         <ul class="pcoded-item pcoded-left-item">
+            <li class="${fn:contains(currentPath, '/account') ? 'active' : ''}">
+                <a href="/account" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-receipt"></i><b>B</b></span>
+                    <span class="pcoded-mtext">Account Management</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
             <li class="${fn:contains(currentPath, '/category') ? 'active' : ''}">
                 <a href="/category" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-receipt"></i><b>B</b></span>
@@ -69,6 +76,13 @@
                 <a href="/ingredient" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-receipt"></i><b>B</b></span>
                     <span class="pcoded-mtext">Ingredient Management</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class="${fn:contains(currentPath, '/size') ? 'active' : ''}">
+                <a href="/size" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-receipt"></i><b>B</b></span>
+                    <span class="pcoded-mtext">Size Management</span>
                     <span class="pcoded-mcaret"></span>
                 </a>
             </li>
