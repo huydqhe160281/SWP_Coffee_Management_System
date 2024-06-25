@@ -128,6 +128,14 @@
         <servlet-name>SearchAccountServlet</servlet-name>
         <servlet-class>AccountController.SearchAccountServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewSizeServlet</servlet-name>
+        <servlet-class>SizeController.ViewSizeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateSizeServlet</servlet-name>
+        <servlet-class>SizeController.UpdateSizeServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductServlet</servlet-name>
         <url-pattern>/product</url-pattern>
@@ -251,6 +259,14 @@
     <servlet-mapping>
         <servlet-name>SearchAccountServlet</servlet-name>
         <url-pattern>/account_search</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewSizeServlet</servlet-name>
+        <url-pattern>/size_view_detail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateSizeServlet</servlet-name>
+        <url-pattern>/size_update</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
