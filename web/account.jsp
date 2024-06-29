@@ -142,7 +142,7 @@
                                                     <div class="d-flex justify-content-between align-items-center pt-3">
                                                         <div class="p-15 p-b-0 w-25">
                                                             <form class="search-form" action="account_search" method="get">
-                                                                Name: <input type="text" name="name" placeholder="Search" />
+                                                                Search: <input type="text" name="name" placeholder="Name" />
                                                             <button type="submit" style="border: none;background-color: #ffffff"><i class="fa fa-search m-r-10"></i></button>
                                                         </form>
                                                         </div>
@@ -193,7 +193,7 @@
                                                                                         <span class="status-active">Active</span>
                                                                                     </c:when>
                                                                                     <c:otherwise>
-                                                                                        <span class="status-inactive">Inactive</span>
+                                                                                        <span class="status-inactive">InActive</span>
                                                                                     </c:otherwise>
                                                                                 </c:choose>
                                                                             </td>

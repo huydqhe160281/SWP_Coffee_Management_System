@@ -164,7 +164,7 @@
                                                         <form class="form-material" action="account_create" method="post">
                                                             Username: <input type="text" name="username" required><br>
                                                             Password: <input type="text" name="password" required><br>
-                                                            Fullname: <input type="text" name="name" required><br>
+                                                            Name: <input type="text" name="name" required><br>
                                                             Phone: <input type="text" name="phone" required><br>
                                                             Email: <input type="text" name="email" required><br>
                                                             Address: <input type="text" name="address" required><br>
