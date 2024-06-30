@@ -120,11 +120,11 @@
         <servlet-name>UpdateAccountServlet</servlet-name>
         <servlet-class>AccountController.UpdateAccountServlet</servlet-class>
     </servlet>
-      <servlet>
+    <servlet>
         <servlet-name>SizeServlet</servlet-name>
         <servlet-class>SizeController.SizeServlet</servlet-class>
     </servlet>
-       <servlet>
+    <servlet>
         <servlet-name>CreateSizeServlet</servlet-name>
         <servlet-class>SizeController.CreateSizeServlet</servlet-class>
     </servlet>
@@ -143,6 +143,10 @@
     <servlet>
         <servlet-name>CreateNewProductServlet</servlet-name>
         <servlet-class>productController.CreateNewProductServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetProductByCategoryOrder</servlet-name>
+        <servlet-class>OrderController.GetProductByCategoryOrder</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ProductServlet</servlet-name>
@@ -264,7 +268,6 @@
         <servlet-name>UpdateAccountServlet</servlet-name>
         <url-pattern>/account_update</url-pattern>
     </servlet-mapping>
-    
     <servlet-mapping>
         <servlet-name>DeleteAccountServlet</servlet-name>
         <url-pattern>/account_delete</url-pattern>
@@ -280,6 +283,10 @@
     <servlet-mapping>
         <servlet-name>SearchAccountServlet</servlet-name>
         <url-pattern>/account_search</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetProductByCategoryOrder</servlet-name>
+        <url-pattern>/get_product_by_category_in_order</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
