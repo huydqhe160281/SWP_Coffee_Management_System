@@ -4,7 +4,9 @@
  */
 package OrderController;
 
+import dal.CategoryDAO;
 import dal.OrderDAO;
+import dal.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -19,6 +21,7 @@ import model.Category;
 import model.Order;
 import model.OrderDetail;
 import model.Product;
+import model.ProductOrder;
 
 /**
  *
@@ -26,27 +29,29 @@ import model.Product;
  */
 public class OrderServlet extends HttpServlet {
 
+    private CategoryDAO categoryDAO;
+    private ProductDAO productDAO;
     private OrderDAO orderDAO;
 
     @Override
     public void init() {
+        categoryDAO = new CategoryDAO();
+        productDAO = new ProductDAO();
         orderDAO = new OrderDAO();
+
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String action = request.getParameter("action");
-        if (action == null) {
-            List<Category> categories = orderDAO.getAllCategories();
-            request.setAttribute("categories", categories);
-            request.getRequestDispatcher("/order.jsp").forward(request, response);
-        } else if (action.equals("getProducts")) {
             int categoryID = Integer.parseInt(request.getParameter("categoryID"));
-            List<Product> products = orderDAO.getProductsByCategory(categoryID);
+            List<Product> products = productDAO.getProductByCategoryId(categoryID);
+
+            List<Category> categories = categoryDAO.getAllCategory(); // Lấy lại danh mục
+            request.setAttribute("categories", categories);
             request.setAttribute("products", products);
-            request.getRequestDispatcher("products.jsp").forward(request, response);
-        }
+            request.setAttribute("tag", categories);
+            request.getRequestDispatcher("order.jsp").forward(request, response);
     }
 
     private void listOrders(HttpServletRequest request, HttpServletResponse response)
@@ -73,7 +78,6 @@ public class OrderServlet extends HttpServlet {
         response.sendRedirect("order?action=list");
     }
 
-    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -91,7 +95,7 @@ public class OrderServlet extends HttpServlet {
                 break;
         }
     }
-    
+
     private void addOrder(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         int accountId = Integer.parseInt(request.getParameter("accountId"));

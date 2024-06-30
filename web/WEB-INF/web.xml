@@ -137,6 +137,10 @@
         <servlet-class>productController.CreateNewProductServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>GetProductByCategoryOrder</servlet-name>
+        <servlet-class>OrderController.GetProductByCategoryOrder</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ViewSizeServlet</servlet-name>
         <servlet-class>SizeController.ViewSizeServlet</servlet-class>
     </servlet>
@@ -279,6 +283,10 @@
     <servlet-mapping>
         <servlet-name>SearchAccountServlet</servlet-name>
         <url-pattern>/account_search</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetProductByCategoryOrder</servlet-name>
+        <url-pattern>/get_product_by_category_in_order</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ViewSizeServlet</servlet-name>
