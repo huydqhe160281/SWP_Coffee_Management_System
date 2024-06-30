@@ -125,16 +125,8 @@
         <servlet-class>SizeController.SizeServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>CreateSizeServlet</servlet-name>
-        <servlet-class>SizeController.CreateSizeServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>DeleteAccountServlet</servlet-name>
         <servlet-class>AccountController.DeleteAccountServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>CreateSizeController</servlet-name>
-        <servlet-class>SizeController.CreateSizeController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>SearchAccountServlet</servlet-name>
@@ -147,6 +139,18 @@
     <servlet>
         <servlet-name>GetProductByCategoryOrder</servlet-name>
         <servlet-class>OrderController.GetProductByCategoryOrder</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewSizeServlet</servlet-name>
+        <servlet-class>SizeController.ViewSizeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateSizeServlet</servlet-name>
+        <servlet-class>SizeController.UpdateSizeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateSizeServlet</servlet-name>
+        <servlet-class>SizeController.CreateSizeServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ProductServlet</servlet-name>
@@ -273,10 +277,6 @@
         <url-pattern>/account_delete</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>CreateSizeController</servlet-name>
-        <url-pattern>/size_create</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>CreateNewProductServlet</servlet-name>
         <url-pattern>/product_create</url-pattern>
     </servlet-mapping>
@@ -287,6 +287,18 @@
     <servlet-mapping>
         <servlet-name>GetProductByCategoryOrder</servlet-name>
         <url-pattern>/get_product_by_category_in_order</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewSizeServlet</servlet-name>
+        <url-pattern>/size_view_detail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateSizeServlet</servlet-name>
+        <url-pattern>/size_update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateSizeServlet</servlet-name>
+        <url-pattern>/size_create</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

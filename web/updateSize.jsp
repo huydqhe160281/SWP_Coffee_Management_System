@@ -1,3 +1,9 @@
+<%-- 
+    Document   : updateSize
+    Created on : 25-06-2024, 14:25:25
+    Author     : Dinh Hai
+--%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -20,7 +26,7 @@
     <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
     <link rel="stylesheet" type="text/css" href="assets/css/jquery.mCustomScrollbar.css" />
     <style>
-        /* Include styles from updateCategory.jsp */
+        /* Include styles from updateAccount.jsp */
         .limit-detail {
             max-width: 200px;
             overflow: hidden;
@@ -102,10 +108,10 @@
                                         <a href="index.html"> <i class="fa fa-home"></i> </a>
                                     </li>
                                     <li class="breadcrumb-item">
-                                        <a href="/account">Account Management</a>
+                                        <a href="/size">Size Management</a>
                                     </li>
                                     <li class="breadcrumb-item">
-                                        <a href="/updateAccount">Update Account</a>
+                                        <a href="/updateSize">Update Size</a>
                                     </li>
                                 </ul>
                             </div>
@@ -117,48 +123,23 @@
                                         <div class="card">
                                             <div class="card-header">
                                                 <div class="card-block w-75 m-auto">
-                                                    <c:set value="${requestScope.account}" var="a"/>
-                                                    <h3 class="text-center m-auto pb-5">Update Account</h3>
+                                                    <c:set value="${requestScope.size}" var="s"/>
+                                                    <h3 class="text-center m-auto pb-5">Update Size</h3>
                                                     <% if (request.getAttribute("error") != null) { %>
                                                         <div class="alert alert-danger">
                                                             <%= request.getAttribute("error") %>
                                                         </div>
                                                     <% } %>
-                                                    <form class="form-material" action="account_update" method="post">
-                                                        <input type="hidden" name="accountID" value="${a.accountID}">
+                                                    <form class="form-material" action="size_update" method="post">
+                                                        <input type="hidden" name="sizeID" value="${s.sizeID}">
                                                         <div class="form-group form-default">
-                                                            <label class="">Username</label>
-                                                            <input type="text" name="username" class="form-control" value="${a.username}" readonly required>
+                                                            <label class="">Type</label>
+                                                            <input type="text" name="type" class="form-control" value="${s.type}" required>
                                                         </div>
                                                         <div class="form-group form-default">
-                                                            <label class="">Password</label>
-                                                            <input type="password" name="password" class="form-control" value="${a.password}" required>
+                                                            <label class="">Description</label>
+                                                            <textarea name="description" class="form-control" rows="3" required>${s.description}</textarea>
                                                         </div>
-                                                        <div class="form-group form-default">
-                                                            <label class="">Name</label>
-                                                            <input type="text" name="name" class="form-control" value="${a.name}" required>
-                                                        </div>
-                                                        <div class="form-group form-default">
-                                                            <label class="">Phone</label>
-                                                            <input type="text" name="phone" class="form-control" value="${a.phone}" required>
-                                                        </div>
-                                                        <div class="form-group form-default">
-                                                            <label class="">Email</label>
-                                                            <input type="text" name="email" class="form-control" value="${a.email}" required>
-                                                        </div>
-                                                        <div class="form-group form-default">
-                                                            <label class="">Address</label>
-                                                            <input type="text" name="address" class="form-control" value="${a.address}" required>
-                                                        </div>
-                                                        <div class="form-group form-default">
-                                                            <label class="">Status</label>
-                                                            <select name="status" class="form-control" required>
-                                                                <option value="true" ${a.status ? 'selected' : ''}>Active</option>
-                                                                <option value="false" ${!a.status ? 'selected' : ''}>InActive</option>
-                                                            </select>
-                                                        </div>
-                                                            <input type="hidden" name="roleID" class="form-control" value="${a.roleID}" required>
-                                                            <input type="hidden" name="campusID" class="form-control" value="${a.campusID}" required>
                                                         <div class="form-group form-default text-center">
                                                             <button type="submit" class="btn btn-primary">UPDATE</button>
                                                         </div>
