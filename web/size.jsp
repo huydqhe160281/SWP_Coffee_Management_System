@@ -1,9 +1,12 @@
 <%-- 
-    Document   : createNewAccount
-    Created on : 28-05-2024, 23:00:10
+    Document   : size
+    Created on : 24-06-2024, 23:54:38
     Author     : Dinh Hai
 --%>
 
+<%@ page import="java.util.Date" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="model.Discount" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -43,48 +46,34 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
-        .form-material {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            width: 100%;
-            margin: auto;
+        .search-form {
+            display: flex;
+            align-items: center; /* Căn chỉnh các phần tử theo trục dọc */
+            gap: 10px; /* Khoảng cách giữa các phần tử */
         }
-
-        /* Tăng độ rõ ràng và đẹp mắt cho các trường nhập liệu */
-        .form-material input[type="text"],
-        .form-material input[type="number"],
-        .form-material input[type="date"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+        .search-form input[type="text"],
+        .search-form input[type="number"],
+        .search-form input[type="date"] {
+            flex: 1; /* Mỗi input sẽ có độ rộng bằng nhau */
+            padding: 2px; /* Padding cho input để tăng kích thước click */
+            margin: 0 2px; /* Khoảng cách giữa các input */
         }
-
-        /* Nút gửi với hiệu ứng hover */
-        .form-material input[type="submit"] {
-            width: 100%;
-            padding: 10px;
-            color: white;
-            background-color: #5cb85c;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
+        .search-form input[type="submit"] {
+            padding: 10px 20px; /* Padding cho nút submit để dễ dàng click */
+            cursor: pointer; /* Con trỏ chuột khi di chuyển vào nút */
+            background-color: #007bff; /* Màu nền cho nút */
+            color: white; /* Màu chữ cho nút */
+            border: none; /* Bỏ đường viền */
+            border-radius: 3px;
         }
-
-        .form-material input[type="submit"]:hover {
-            background-color: #45a045;
+        .search-form input[type="submit"]:hover {
+            background-color: #0056b3; /* Màu khi hover */
         }
-
-        /* Hiệu ứng cho các thông báo lỗi */
-        .alert-danger {
-            color: white;
-            background-color: #f44336;
-            padding: 10px;
-            border-radius: 4px;
-            margin-bottom: 20px;
+        .status-active {
+            color: green; /* Sets the text color to green */
+        }
+        .status-expired {
+            color: red; /* Sets the text color to red */
         }
     </style>
     <body>
@@ -113,16 +102,19 @@
                             <div class="page-header">
                                 <div class="page-block">
                                     <div class="row align-items-center">
+                                        <div class="col-md-8">
+                                            <div class="page-header-title">
+                                                <h5 class="m-b-10">Size Management</h5>
+                                                <p class="m-b-0">Quản lý Size</p>
+                                            </div>
+                                        </div>
                                         <div class="col-md-4">
                                             <ul class="breadcrumb">
                                                 <li class="breadcrumb-item">
                                                     <a href="index.html"> <i class="fa fa-home"></i> </a>
                                                 </li>
                                                 <li class="breadcrumb-item">
-                                                    <a href="/account">Account Management</a>
-                                                </li>
-                                                <li class="breadcrumb-item">
-                                                    <a href="/account_create">Create New Account</a>
+                                                    <a href="/discount">Size Management</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -131,7 +123,6 @@
                             </div>
                             <!-- Page-header end -->
 
-
                             <div class="pcoded-inner-content">
                                 <!-- Main-body start -->
                                 <div class="main-body">
@@ -139,8 +130,15 @@
                                         <!-- Page-body start -->
                                         <div class="page-body">
                                             <div class="card">
+
                                                 <!-- Sub header table start -->
                                                 <div class="card-header">
+                                                    <div class="d-flex justify-content-between align-items-center pt-3">
+                                                        <button class="btn btn-primary waves-effect h-15" onclick="window.location.href = '/size_create'">
+                                                            Add New
+                                                        </button>
+                                                    </div>
+
                                                     <div class="card-header-right">
                                                         <ul class="list-unstyled card-option">
                                                             <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -152,27 +150,36 @@
                                                     </div>
                                                 </div>
                                                 <!-- Sub header table end -->
-
-                                                <div class="card-header">
-                                                    <div class="card-block w-75 m-auto">
-                                                        <h3 class="text-center m-auto pb-5">Create New Account</h3>
-                                                        <% if (request.getAttribute("error") != null) { %>
-                                                        <div class="alert alert-danger">
-                                                            <%= request.getAttribute("error") %>
+                                                <div class="card-block table-border-style">
+                                                    <div class="table-responsive">
+                                                        <div class="container">
+                                                            <table class="table table-hover">
+                                                                <tr>
+                                                                    <th>#</th>
+                                                                    <th>Type</th>
+                                                                    <th>Description</th>
+                                                                    <th class="text-right">Action</th>
+                                                                </tr>
+                                                                <c:forEach items="${requestScope.sizes}" var="size">
+                                                                    <tr>
+                                                                        <td>${size.sizeID}</td>
+                                                                        <td>${size.type}</td>
+                                                                        <td>${size.description}</td>
+                                                                        <td class="text-right pt-3">
+                                                                            <i class="fa fa-eye icon-spacing" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="View" 
+                                                                               onclick="window.location.href = '/size_view_detail?sizeID=${size.sizeID}'"></i>
+                                                                            <i class="fa fa-pencil-square-o icon-spacing" aria-hidden="true" 
+                                                                               data-toggle="tooltip" data-placement=left title="Edit"
+                                                                               onclick="window.location.href = '/size_update?sizeID=${size.sizeID}'"></i>
+                                                                        </td>
+                                                                    </tr>
+                                                                </c:forEach>
+                                                            </table>
                                                         </div>
-                                                        <% } %>
-                                                        <form class="form-material" action="account_create" method="post">
-                                                            Username: <input type="text" name="username" required><br>
-                                                            Password: <input type="text" name="password" required><br>
-                                                            Name: <input type="text" name="name" required><br>
-                                                            Phone: <input type="text" name="phone" required><br>
-                                                            Email: <input type="text" name="email" required><br>
-                                                            Address: <input type="text" name="address" required><br>
-                                                            <input type="submit" value="Create">
-                                                        </form>
                                                     </div>
-                                                </div>
+                                                </div>   
                                             </div>
+                                            <!-- Hover table card end -->
                                         </div>
                                         <!-- Page-body end -->
                                     </div>

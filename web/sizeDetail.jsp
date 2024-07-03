@@ -1,10 +1,10 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="model.Account" %>
+<%@ page import="model.Size" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Coffee Management System - Account Details</title>
+    <title>Size Management System - Size Details</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -28,7 +28,7 @@
     <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
     <link rel="stylesheet" type="text/css" href="assets/css/jquery.mCustomScrollbar.css" />
     <style>
-        /* Include styles from updateAccount.jsp */
+        /* Include styles from sizeDetail.jsp */
         body {
             font-family: 'Open Sans', sans-serif;
             color: #333;
@@ -80,14 +80,6 @@
             background-color: #0069d9;
             border-color: #0062cc;
         }
-
-        .status-active {
-            color: green;
-        }
-
-        .status-expired {
-            color: red;
-        }
     </style>
 </head>
 <body>
@@ -118,8 +110,8 @@
                                 <div class="row align-items-center">
                                     <div class="col-md-8">
                                         <div class="page-header-title">
-                                            <h5 class="m-b-10">Account Management</h5>
-                                            <p class="m-b-0">Quản lý Account</p>
+                                            <h5 class="m-b-10">Size Management</h5>
+                                            <p class="m-b-0">Quản lý Size</p>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -128,7 +120,7 @@
                                                 <a href="index.html"> <i class="fa fa-home"></i> </a>
                                             </li>
                                             <li class="breadcrumb-item">
-                                                <a href="/discount">Account Management</a>
+                                                <a href="/size">Size Management</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -147,36 +139,20 @@
                                             <div class="card-block table-border-style">
                                                 <div class="table-responsive">
                                                     <div class="container">
-                                                        <h1>Account Details</h1>
+                                                        <h1>Size Details</h1>
                                                         <div class="form-group form-default">
-                                                            <label class="">Account ID: </label>
-                                                            <input type="text" name="username" class="form-control" value="<%= ((Account)request.getAttribute("account")).getAccountID() %>" readonly required>
+                                                            <label class="">Size ID: </label>
+                                                            <input type="text" name="sizeID" class="form-control" value="<%= ((Size)request.getAttribute("size")).getSizeID() %>" readonly required>
                                                         </div>
                                                         <div class="form-group form-default">
-                                                            <label class="">Username: </label>
-                                                            <input type="text" name="username" class="form-control" value="<%= ((Account)request.getAttribute("account")).getUsername() %>" readonly required>
+                                                            <label class="">Type: </label>
+                                                            <input type="text" name="type" class="form-control" value="<%= ((Size)request.getAttribute("size")).getType() %>" readonly required>
                                                         </div>
                                                         <div class="form-group form-default">
-                                                            <label class="">Name:</label>
-                                                            <input type="text" name="name" class="form-control" value="<%= ((Account)request.getAttribute("account")).getName() %>" readonly required>
+                                                            <label class="">Description:</label>
+                                                            <input type="text" name="description" class="form-control" value="<%= ((Size)request.getAttribute("size")).getDescription() %>" readonly required>
                                                         </div>
-                                                        <div class="form-group form-default">
-                                                            <label class="">Phone:</label>
-                                                            <input type="text" name="name" class="form-control" value="<%= ((Account)request.getAttribute("account")).getPhone() %>" readonly required>
-                                                        </div>
-                                                        <div class="form-group form-default">
-                                                            <label class="">Email:</label>
-                                                            <input type="text" name="name" class="form-control" value="<%= ((Account)request.getAttribute("account")).getEmail() %>" readonly required>
-                                                        </div>
-                                                        <div class="form-group form-default">
-                                                            <label class="">Address:</label>
-                                                            <input type="text" name="name" class="form-control" value="<%= ((Account)request.getAttribute("account")).getAddress() %>" readonly required>
-                                                        </div>
-                                                        <div class="form-group form-default">
-                                                            <label class="">Status</label>
-                                                            <input type="text" name="name" class="form-control" value="<%= ((Account)request.getAttribute("account")).isStatus() ? "Active" : "InActive" %>" readonly required>
-                                                        </div>
-                                                        <a href="account" class="btn btn-back mt-3">Back</a>
+                                                        <a href="size" class="btn btn-back mt-3">Back</a>
                                                     </div>
                                                 </div>
                                             </div>

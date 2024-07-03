@@ -11,13 +11,15 @@ package model;
 public class Size {
     private int sizeID;
     private String type;
+    private String description;
 
     public Size() {
     }
 
-    public Size(int sizeID, String type) {
+    public Size(int sizeID, String type, String description) {
         this.sizeID = sizeID;
         this.type = type;
+        this.description = description;
     }
 
     public int getSizeID() {
@@ -36,8 +38,12 @@ public class Size {
         this.type = type;
     }
 
-    @Override
-    public String toString() {
-        return "Size{" + "sizeID=" + sizeID + ", type=" + type + '}';
+    public String getDescription() {
+        return description;
     }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
 }

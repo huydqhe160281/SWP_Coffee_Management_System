@@ -121,10 +121,6 @@
         <servlet-class>homeController.HomeForGuest</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>SizeServlet</servlet-name>
-        <servlet-class>sizeController.SizeServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ViewAccountServlet</servlet-name>
         <servlet-class>AccountController.ViewAccountServlet</servlet-class>
     </servlet>
@@ -133,16 +129,32 @@
         <servlet-class>AccountController.UpdateAccountServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>SizeServlet</servlet-name>
+        <servlet-class>SizeController.SizeServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>DeleteAccountServlet</servlet-name>
         <servlet-class>AccountController.DeleteAccountServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>CreateSizeController</servlet-name>
-        <servlet-class>SizeController.CreateSizeController</servlet-class>
+        <servlet-name>SearchAccountServlet</servlet-name>
+        <servlet-class>AccountController.SearchAccountServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>CreateNewProductServlet</servlet-name>
         <servlet-class>productController.CreateNewProductServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewSizeServlet</servlet-name>
+        <servlet-class>SizeController.ViewSizeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateSizeServlet</servlet-name>
+        <servlet-class>SizeController.UpdateSizeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateSizeServlet</servlet-name>
+        <servlet-class>SizeController.CreateSizeServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ProductServlet</servlet-name>
@@ -269,12 +281,24 @@
         <url-pattern>/account_delete</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>CreateSizeController</servlet-name>
-        <url-pattern>/size_create</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>CreateNewProductServlet</servlet-name>
         <url-pattern>/product_create</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchAccountServlet</servlet-name>
+        <url-pattern>/account_search</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewSizeServlet</servlet-name>
+        <url-pattern>/size_view_detail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateSizeServlet</servlet-name>
+        <url-pattern>/size_update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateSizeServlet</servlet-name>
+        <url-pattern>/size_create</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dal;
 
 import common.DBContext;
@@ -12,13 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Account;
 
-/**
- *
- * @author Dinh Hai
- */
-public class AccountDAO extends DBContext{
-    public List<Account> getAllAccounts() {
+public class AccountDAO extends DBContext {
 
+    public List<Account> getAllAccounts() {
         List<Account> accounts = new ArrayList<>();
         String sql = "SELECT * FROM Account";
         try {
@@ -54,8 +46,8 @@ public class AccountDAO extends DBContext{
                         rs.getInt("AccountID"),
                         rs.getString("Username"),
                         rs.getString("Password"),
-                        rs.getString("Phone"),
                         rs.getString("Name"),
+                        rs.getString("Phone"),
                         rs.getString("Email"),
                         rs.getString("Address"),
                         rs.getBoolean("Status"),
@@ -70,29 +62,19 @@ public class AccountDAO extends DBContext{
     }
 
     public void addAccount(Account account) {
-        String sql = "INSERT INTO [dbo].[Account]\n" +
-"           ([Username]\n" +
-"           ,[Password]\n" +
-"           ,[Name]\n" +
-"           ,[Phone]\n" +
-"           ,[Email]\n" +
-"           ,[Address]\n" +
-"           ,[Status]\n" +
-"           ,[RoleID]\n" +
-"           ,[CampusID])\n" +
-"     VALUES\n" +
-"           (?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO Account (Username, Password, Name, Phone, Email, Address, Status, RoleID, CampusID) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
-                ps.setString(1, account.getUsername());
-                ps.setString(2, account.getPassword());
-                ps.setString(3, account.getName());
-                ps.setString(4, account.getPhone());
-                ps.setString(5, account.getEmail());
-                ps.setString(6, account.getAddress());
-                ps.setBoolean(7, account.isStatus());
-                ps.setInt(8, account.getRoleID());
-                ps.setInt(9, account.getCampusID());
+            ps.setString(1, account.getUsername());
+            ps.setString(2, account.getPassword());
+            ps.setString(3, account.getName());
+            ps.setString(4, account.getPhone());
+            ps.setString(5, account.getEmail());
+            ps.setString(6, account.getAddress());
+            ps.setBoolean(7, account.isStatus());
+            ps.setInt(8, account.getRoleID());
+            ps.setInt(9, account.getCampusID());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -104,9 +86,9 @@ public class AccountDAO extends DBContext{
             System.out.println("AccountID does not exist. Cannot edit.");
             return;
         }
-        
-        String sql = "UPDATE Account SET Username = ?, Password = ?, Name = ?, Phone = ?, Email = ?, Address = ?, Status = ? WHERE AccountID = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+
+        String sql = "UPDATE Account SET Username = ?, Password = ?, Name = ?, Phone = ?, Email = ?, Address = ?, Status = ?, RoleID = ?, CampusID = ? WHERE AccountID = ?";
+        try ( PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, account.getUsername());
             ps.setString(2, account.getPassword());
             ps.setString(3, account.getName());
@@ -114,23 +96,14 @@ public class AccountDAO extends DBContext{
             ps.setString(5, account.getEmail());
             ps.setString(6, account.getAddress());
             ps.setBoolean(7, account.isStatus());
-            ps.setInt(8, account.getAccountID());
+            ps.setInt(8, account.getRoleID());
+            ps.setInt(9, account.getCampusID());
+            ps.setInt(10, account.getAccountID());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
-    public void deleteAccount(int AccountID) {
-        String sql = "DELETE FROM Account WHERE AccountID = ?";
-        try ( PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, AccountID);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public Account checkLogin(String username, String password) {
         String sql = "SELECT * FROM Account WHERE Username = ? AND Password = ?";
         try {
@@ -157,17 +130,18 @@ public class AccountDAO extends DBContext{
         }
         return null;
     }
+
     public boolean checkAccountIDExists(int accountID) {
         boolean exists = false;
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        
+
         try {
             String query = "SELECT COUNT(*) FROM Account WHERE AccountID = ?";
             stmt = connection.prepareStatement(query);
             stmt.setInt(1, accountID);
             rs = stmt.executeQuery();
-            
+
             if (rs.next()) {
                 int count = rs.getInt(1);
                 if (count > 0) {
@@ -176,23 +150,49 @@ public class AccountDAO extends DBContext{
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            // Xử lý exception nếu cần
         } finally {
-            // Đóng ResultSet, PreparedStatement nếu cần
             try {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-        
+
         return exists;
     }
-    public static void main(String[] args) {
-        AccountDAO accountDAO = new AccountDAO();
-        Account acc = new Account(0, "Username", "Password", "Name", "Phone", "Email", "Address", true, 2, 1);
-        accountDAO.addAccount(acc);
-        //System.out.println(accounts);
+
+    public List<Account> searchAccountsByName(String text) {
+        List<Account> list = new ArrayList<>();
+        String sql = "SELECT AccountID, Username, Password, Name, Phone, Email, Address, Status, RoleID, CampusID "
+                + "FROM Account "
+                + "WHERE LOWER(Name) LIKE ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, "%" + text.toLowerCase() + "%"); // Case insensitive search
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Account account = new Account(
+                        rs.getInt("AccountID"),
+                        rs.getString("Username"),
+                        rs.getString("Password"),
+                        rs.getString("Name"),
+                        rs.getString("Phone"),
+                        rs.getString("Email"),
+                        rs.getString("Address"),
+                        rs.getBoolean("Status"),
+                        rs.getInt("RoleID"),
+                        rs.getInt("CampusID")
+                );
+                list.add(account);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 }
