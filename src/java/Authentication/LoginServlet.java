@@ -81,10 +81,12 @@ public class LoginServlet extends HttpServlet {
         if (account != null) {
             HttpSession session = request.getSession();
             session.setAttribute("account", account);
+            session.setAttribute("role", account.getRoleID());
+
             if (account.getRoleID() == 1) {
                 response.sendRedirect("index.html");
             } else if (account.getRoleID() == 2) {
-
+                response.sendRedirect("home");
             }
         } else {
             request.setAttribute("errorMessage", "Invalid username or password");
