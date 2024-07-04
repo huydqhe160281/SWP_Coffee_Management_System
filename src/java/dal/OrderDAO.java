@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dal;
 
 import common.DBContext;
@@ -15,17 +11,19 @@ import model.Category;
 import model.Order;
 import model.OrderDetail;
 import model.Product;
+import model.ProductOrder;
 
 /**
  *
- * @author Namqd
+ * @author Nam
  */
-public class OrderDAO extends DBContext{
+public class OrderDAO extends DBContext {
+
     public List<Order> getAllOrders() {
         List<Order> orders = new ArrayList<>();
-        String sql = "SELECT o.OrderID, o.AccountID, a.Name AS AccountName, o.OrderDate " +
-                     "FROM [Order] o " +
-                     "JOIN Account a ON o.AccountID = a.AccountID";
+        String sql = "SELECT o.OrderID, o.AccountID, a.Name AS AccountName, o.OrderDate "
+                + "FROM [Order] o "
+                + "JOIN Account a ON o.AccountID = a.AccountID";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
@@ -45,11 +43,11 @@ public class OrderDAO extends DBContext{
     }
 
     public Order getOrderById(int orderId) {
-        String sql = "SELECT o.OrderID, o.AccountID, a.Name AS AccountName, o.OrderDate " +
-                     "FROM [Order] o " +
-                     "JOIN Account a ON o.AccountID = a.AccountID " +
-                     "WHERE o.OrderID = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        String sql = "SELECT o.OrderID, o.AccountID, a.Name AS AccountName, o.OrderDate "
+                + "FROM [Order] o "
+                + "JOIN Account a ON o.AccountID = a.AccountID "
+                + "WHERE o.OrderID = ?";
+        try ( PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, orderId);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -68,13 +66,12 @@ public class OrderDAO extends DBContext{
 
     public List<OrderDetail> getOrderDetailsByOrderId(int orderId) {
         List<OrderDetail> orderDetails = new ArrayList<>();
-        String sql = "SELECT od.OrderID, od.ProductID, p.ProductName, od.UnitPrice, od.Quantity, od.Note, d.Value AS DiscountValue "
-                +    ", d.DiscountID" +
-                     "FROM OrderDetail od " +
-                     "JOIN Product p ON od.ProductID = p.ProductID " +
-                     "LEFT JOIN Discount d ON od.DiscountID = d.DiscountID " +
-                     "WHERE od.OrderID = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        String sql = "SELECT od.OrderID, od.ProductID, p.ProductName, od.UnitPrice, od.Quantity, od.Note, d.Value AS DiscountValue, d.DiscountID "
+                + "FROM OrderDetail od "
+                + "JOIN Product p ON od.ProductID = p.ProductID "
+                + "LEFT JOIN Discount d ON od.DiscountID = d.DiscountID "
+                + "WHERE od.OrderID = ?";
+        try ( PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, orderId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -86,7 +83,7 @@ public class OrderDAO extends DBContext{
                         rs.getInt("Quantity"),
                         rs.getString("Note"),
                         rs.getInt("DiscountID"),
-                        rs.getInt("Value")
+                        rs.getInt("DiscountValue")
                 );
                 orderDetails.add(orderDetail);
             }
@@ -98,11 +95,11 @@ public class OrderDAO extends DBContext{
 
     public void addOrder(Order order) {
         String sql = "INSERT INTO [Order] (AccountID, OrderDate) VALUES (?, ?)";
-        try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try ( PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, order.getAccountID());
             ps.setDate(2, new java.sql.Date(order.getOrderDate().getTime()));
             ps.executeUpdate();
-            
+
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {
                 order.setOrderID(rs.getInt(1));
@@ -114,8 +111,8 @@ public class OrderDAO extends DBContext{
 
     public void addOrderDetail(OrderDetail orderDetail) {
         String sql = "INSERT INTO OrderDetail (OrderID, ProductID, UnitPrice, Quantity, Note, DiscountID) "
-                   + "VALUES (?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                + "VALUES (?, ?, ?, ?, ?, ?)";
+        try ( PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, orderDetail.getOrderID());
             ps.setInt(2, orderDetail.getProductID());
             ps.setDouble(3, orderDetail.getUnitPrice());
@@ -130,7 +127,7 @@ public class OrderDAO extends DBContext{
 
     public void deleteOrder(int orderId) {
         String sql = "DELETE FROM [Order] WHERE OrderID = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try ( PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, orderId);
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -140,7 +137,7 @@ public class OrderDAO extends DBContext{
 
     public void deleteOrderDetail(int orderId, int productId) {
         String sql = "DELETE FROM OrderDetail WHERE OrderID = ? AND ProductID = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try ( PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, orderId);
             ps.setInt(2, productId);
             ps.executeUpdate();
@@ -148,7 +145,7 @@ public class OrderDAO extends DBContext{
             e.printStackTrace();
         }
     }
-    
+
     public List<Category> getAllCategories() {
         List<Category> categories = new ArrayList<>();
         String query = "SELECT * FROM Category";
@@ -169,29 +166,79 @@ public class OrderDAO extends DBContext{
         return categories;
     }
 
-    public List<Product> getProductsByCategory(int categoryID) {
-        List<Product> products = new ArrayList<>();
-        String query = "SELECT * FROM Product WHERE CategoryID = ?";
+    public List<ProductOrder> getProductsByCategory(int categoryID) {
+        List<ProductOrder> products = new ArrayList<>();
+        String sql = "SELECT p.ProductID, p.ProductName, ps.Price "
+                + "FROM Product p "
+                + "JOIN ProductSize ps ON p.ProductID = ps.ProductID "
+                + "WHERE p.CategoryID = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, categoryID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ProductOrder product = new ProductOrder(
+                        rs.getInt("ProductID"),
+                        rs.getString("ProductName"),
+                        rs.getDouble("Price")
+                );
+                products.add(product);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return products;
+    }
+
+    public List<ProductOrder> getProductsByCategoryWithPrice(int categoryID) {
+        List<ProductOrder> products = new ArrayList<>();
+        String query = "SELECT p.ProductID, p.ProductName, p.Image, p.Description, p.Recipe, p.Status, p.isHot, p.CategoryID, ps.SizeID, ps.Price, s.Type AS SizeType "
+                + "FROM Product p "
+                + "JOIN ProductSize ps ON p.ProductID = ps.ProductID "
+                + "JOIN Size s ON ps.SizeID = s.SizeID "
+                + "WHERE p.CategoryID = ?";
         try {
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setInt(1, categoryID);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Product product = new Product(
-                        rs.getInt("ProductID"),
-                        rs.getString("ProductName"),
-                        rs.getDouble("UnitPrice"),
-                        rs.getString("Image"),
-                        rs.getString("Description"),
-                        rs.getString("Recipe"),
-                        rs.getBoolean("Status"),
-                        rs.getInt("CategoryID")
-                );
+                ProductOrder product = new ProductOrder();
+                product.setProductID(rs.getInt("ProductID"));
+                product.setProductName(rs.getString("ProductName"));
+
+                product.setPrice(rs.getDouble("Price"));
                 products.add(product);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return products;
+    }
+
+    private List<ProductOrder> getDummyProducts(int categoryID) {
+        // This method returns dummy products for demonstration purposes.
+        List<ProductOrder> products = new ArrayList<>();
+        for (int i = 1; i <= 5; i++) {
+            products.add(new ProductOrder(i, "Product " + categoryID + "-" + i, categoryID * 10.0 + i));
+        }
+        return products;
+    }
+    
+    public static void main(String[] args) {
+        int categoryID = 1;
+        OrderDAO dao = new OrderDAO();
+        ProductDAO pdao = new ProductDAO();
+        List<Product> products = pdao.getProductByCategoryId(categoryID);
+
+        // In ra danh sách sản phẩm để kiểm tra
+        if (products != null && !products.isEmpty()) {
+            for (Product product : products) {
+                System.out.println("Product ID: " + product.getProductID());
+                System.out.println("Product Name: " + product.getProductName());
+                System.out.println("-----------------------------");
+            }
+        } else {
+            System.out.println("No products found for category ID: " + categoryID);
+        }
     }
 }
