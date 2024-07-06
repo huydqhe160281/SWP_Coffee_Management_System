@@ -45,5 +45,11 @@ public class Size {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Override
+    public String toString() {
+        return "Size{" + "sizeID=" + sizeID + ", type=" + type + ", description=" + description + '}';
+    }
+
     
 }
