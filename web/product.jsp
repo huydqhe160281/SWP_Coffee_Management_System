@@ -90,11 +90,11 @@
                                                                     <label class="float-label"><i class="fa fa-search m-r-10"></i>Search Field</label>
                                                                 </div>
                                                             </form>
-                                                            <form id="categoryForm" method="post" action="category_detail" class="mr-2">
+                                                            <form id="productForm" method="get" action="product" class="mr-2">
                                                                 <select class="custom-select " id="inputGroupSelect01" name="categoryID" onchange="submitCategoryForm()">
                                                                     <option value="" ${empty category.categoryID ? 'selected' : ''}>All Category</option>
                                                                     <c:forEach items="${requestScope.cList}" var="c">
-                                                                        <option value="${c.categoryID}" ${category.categoryID == c.categoryID ? 'selected' : ''}>
+                                                                        <option value="${c.categoryID}" ${categoryID == c.categoryID ? 'selected' : ''}>
                                                                         <a href="/category_detail?categoryID=${c.categoryID}">${c.categoryName}</a>
                                                                         </option>
                                                                     </c:forEach>
@@ -129,11 +129,10 @@
                                                                             </a>
                                                                         </th>
                                                                         <th>Product Name</th>
-                                                                        <th>Price</th>
                                                                         <th>Description</th>
                                                                         <th>Recipe</th>
-                                                                        <th>Status</th>
-                                                                        <th>IsHot</th>
+                                                                        <th class="text-center">Status</th>
+                                                                        <th class="text-center">IsHot</th>
                                                                         <th class="text-right">Action</th>
                                                                     </tr>
                                                                 </thead>
@@ -142,7 +141,6 @@
                                                                         <tr>
                                                                             <th scope="row">${p.productID}</th>
                                                                             <td>${p.productName}</td>
-                                                                            <td></td>
                                                                             <td class="limit-detail" style="cursor: pointer" data-toggle="tooltip" data-placement="top"
                                                                                 title="${p.description}"
                                                                                 data-template='<div class="tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner" style="max-width: 400px; white-space: pre-wrap;"></div></div>'>
@@ -153,25 +151,18 @@
                                                                                 data-template='<div class="tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner" style="max-width: 400px; white-space: pre-wrap;"></div></div>'>
                                                                                 ${p.recipe}
                                                                             </td>
-                                                                            <td>
-                                                                                <span class="${p.status ? 'badge badge-pill badge-success' : 'badge badge-pill badge-danger'}">
+                                                                            <td class="text-center">
+                                                                                <span class="${p.status ? 'badge badge-pill badge-success' : 'badge badge-pill badge-danger'}" style="cursor: pointer"
+                                                                                      onclick="toggleStatus(${p.productID}, 'status', ${p.status ? 'false' : 'true'})">
                                                                                     ${p.status ? 'On sale' : 'Stopped selling'}
                                                                                 </span>
                                                                             </td>
-
-                                                                            <td>
-                                                                                <span class="${p.isHot ? 'badge badge-pill badge-success' : 'badge badge-pill badge-danger'}">
+                                                                            <td class="text-center">
+                                                                                <span class="${p.isHot ? 'badge badge-pill badge-success' : 'badge badge-pill badge-danger'}" style="cursor: pointer"
+                                                                                      onclick="toggleStatus(${p.productID}, 'isHot', ${p.isHot ? 'false' : 'true'})">
                                                                                     ${p.isHot ? 'Active' : 'Deactive'}
                                                                                 </span>
                                                                             </td>
-                                                                            <!--                                                                            <td class="text-right pt-3">
-                                                                                                                                                            <i class="fa fa-eye icon-spacing" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="View" 
-                                                                                                                                                               onclick="window.location.href = '/product_detail?productID=${p.productID}'"></i>
-                                                                                                                                                            <i class="fa fa-pencil-square-o icon-spacing" aria-hidden="true" 
-                                                                                                                                                               data-toggle="tooltip" data-placement=left title="Edit"
-                                                                                                                                                               onclick="window.location.href = '/product_update?productID=${p.productID}'"></i>
-                                                                                                                                                            <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#confirmModal" data-product-id="${p.productID}">Change Status</button>
-                                                                                                                                                        </td>-->
                                                                             <td class="text-right pt-3">
                                                                                 <i class="fa fa-eye icon-spacing" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="View" 
                                                                                    onclick="window.location.href = '/product_detail?productID=${p.productID}'"></i>
@@ -183,6 +174,7 @@
                                                                     </c:forEach>
                                                                 </tbody>
                                                             </table>
+
                                                             <div class="d-flex justify-content-end">
                                                                 <form id="sizeForm" method="get" action="product" class="mr-2">
                                                                     <div class="input-group mb-3">
@@ -202,17 +194,17 @@
                                                                     <ul class="pagination">
                                                                         <c:if test="${indexPage > 1}">
                                                                             <li class="page-item">
-                                                                                <a class="page-link" href="?indexPage=${indexPage - 1}&sizePage=${sizePage}" tabindex="-1">Previous</a>
+                                                                                <a class="page-link" href="?indexPage=${indexPage - 1}&sizePage=${sizePage}&categoryID=${categoryID}" tabindex="-1">Previous</a>
                                                                             </li>
                                                                         </c:if>
                                                                         <c:forEach var="i" begin="1" end="${endPage}">
                                                                             <li class="page-item ${i == indexPage ? 'active' : ''}">
-                                                                                <a class="page-link" href="product?indexPage=${i}&sizePage=${sizePage}">${i} <c:if test="${i == indexPage}"><span class="sr-only">(current)</span></c:if></a>
+                                                                                <a class="page-link" href="?indexPage=${i}&sizePage=${sizePage}&categoryID=${categoryID}">${i} <c:if test="${i == indexPage}"><span class="sr-only">(current)</span></c:if></a>
                                                                                 </li>
                                                                         </c:forEach>
                                                                         <c:if test="${indexPage < endPage}">
                                                                             <li class="page-item">
-                                                                                <a class="page-link" href="product?indexPage=${indexPage + 1}&sizePage=${sizePage}">Next</a>
+                                                                                <a class="page-link" href="?indexPage=${indexPage + 1}&sizePage=${sizePage}&categoryID=${categoryID}">Next</a>
                                                                             </li>
                                                                         </c:if>
                                                                     </ul>
@@ -261,7 +253,20 @@
                 document.getElementById('sizeForm').submit();
             }
             function submitCategoryForm() {
-                document.getElementById('categoryForm').submit();
+                document.getElementById('productForm').submit();
+            }
+            function toggleStatus(productId, field, newValue) {
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", "/product_status", true); 
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        location.reload();
+                    }
+                };
+
+                xhr.send("productId=" + productId + "&field=" + field + "&newValue=" + newValue);
             }
 
             document.addEventListener('DOMContentLoaded', function () {

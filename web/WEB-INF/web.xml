@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
-    <filter>
+       <filter>
         <filter-name>routerFilter</filter-name>
         <filter-class>filter.routerFilter</filter-class>
     </filter>
@@ -160,6 +160,10 @@
         <servlet-name>CreateSizeServlet</servlet-name>
         <servlet-class>SizeController.CreateSizeServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ChangeStatusProductServlet</servlet-name>
+        <servlet-class>productController.ChangeStatusProductServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductServlet</servlet-name>
         <url-pattern>/product</url-pattern>
@@ -307,6 +311,10 @@
     <servlet-mapping>
         <servlet-name>CreateSizeServlet</servlet-name>
         <url-pattern>/size_create</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangeStatusProductServlet</servlet-name>
+        <url-pattern>/product_status</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

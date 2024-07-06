@@ -4,6 +4,8 @@
  */
 package model;
 
+import java.util.List;
+
 /**
  *
  * @author ADMIN
@@ -18,11 +20,12 @@ public class Product {
     private boolean status;
     private boolean isHot;
     private Category category;
+    private List<ProductSize> productSizes;
 
     public Product() {
     }
 
-    public Product(int productID, String productName, String image, String description, String recipe, boolean status, boolean isHot, Category category) {
+    public Product(int productID, String productName, String image, String description, String recipe, boolean status, boolean isHot, Category category, List<ProductSize> productSizes) {
         this.productID = productID;
         this.productName = productName;
         this.image = image;
@@ -31,6 +34,7 @@ public class Product {
         this.status = status;
         this.isHot = isHot;
         this.category = category;
+        this.productSizes = productSizes;
     }
 
     public int getProductID() {
@@ -97,9 +101,17 @@ public class Product {
         this.category = category;
     }
 
+    public List<ProductSize> getProductSizes() {
+        return productSizes;
+    }
+
+    public void setProductSizes(List<ProductSize> productSizes) {
+        this.productSizes = productSizes;
+    }
+
     @Override
     public String toString() {
-        return "Product{" + "productID=" + productID + ", productName=" + productName + ", image=" + image + ", description=" + description + ", recipe=" + recipe + ", status=" + status + ", isHot=" + isHot + ", category=" + category + '}';
+        return "Product{" + "productID=" + productID + ", productName=" + productName + ", image=" + image + ", description=" + description + ", recipe=" + recipe + ", status=" + status + ", isHot=" + isHot + ", category=" + category + ", productSizes=" + productSizes + '}';
     }
 
 }

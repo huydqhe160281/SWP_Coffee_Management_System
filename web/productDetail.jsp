@@ -33,6 +33,21 @@
             .product-info {
                 padding: 20px;
             }
+            @keyframes fire {
+                0% {
+                    color: #f00;
+                }
+                50% {
+                    color: #fff;
+                }
+                100% {
+                    color: #f00;
+                }
+            }
+
+            .fire {
+                animation: fire 1s infinite;
+            }
 
         </style>
     </head>
@@ -112,19 +127,38 @@
                                                             <c:when test="${product != null}">
                                                                 <div class="d-flex flex-row align-items-center">
                                                                     <div class="col-md-6 d-flex justify-content-center">
-                                                                        <img src="${product.image ? product.image :  "/assets/images/noimage.jpg"}" class="img-fluid rounded product-image w-75" alt="${product.productName}">
+                                                                        <img src="${product.image ? product.image :  '/assets/images/noimage.jpg'}" class="img-fluid rounded product-image w-75" alt="${product.productName}">
                                                                     </div>
                                                                     <div class="col-md-6">
-                                                                        <h3 class="text-primary"><strong>${product.productName}</strong></h3>
-                                                                        <h5>Cost Price:</h5>
-                                                                        <h5>Price:</h5>
-                                                                        <h5>Status: <c:choose>
+                                                                        <h3 class="text-primary"><strong>${product.productName}</strong> ${product.isHot? '<span class="badge badge-pill badge-danger fire">Hot</span>':''}</h3>
+                                                                        <h5>Status: 
+                                                                            <c:choose>
                                                                                 <c:when test="${product.status}"><span class="badge badge-success">Đang bán</span></c:when>
                                                                                 <c:otherwise><span class="badge badge-danger">Dừng bán</span></c:otherwise>
                                                                             </c:choose>
                                                                         </h5>
                                                                         <h5>Danh mục: ${product.category.categoryName}</h5>
-                                                                        <h5>Chi tiết danh mục:</h5> <p>${product.category.detail}</p>
+                                                                        <h5>Chi tiết danh mục:</h5>
+                                                                        <p>${product.category.detail}</p>
+                                                                        <c:if test="${not empty product.productSizes}">
+                                                                            <h5>Product Sizes:</h5>
+                                                                            <table class="table table-bordered w-25">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>Type</th>
+                                                                                        <th>Price</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <c:forEach var="productSize" items="${product.productSizes}">
+                                                                                        <tr>
+                                                                                            <td>${productSize.size.type}</td>
+                                                                                            <td>${productSize.price}</td>
+                                                                                        </tr>
+                                                                                    </c:forEach>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </c:if>
                                                                     </div>
                                                                 </div>
                                                                 <div class="row detail-section">
@@ -133,6 +167,7 @@
                                                                         <p>${product.description}</p>
                                                                         <h5>Recipe</h5>
                                                                         <p>${product.recipe}</p>
+
                                                                     </div>
                                                                 </div>
                                                             </c:when>
@@ -140,6 +175,7 @@
                                                                 <jsp:include page="./common/noDataLog.jsp"/>
                                                             </c:otherwise>
                                                         </c:choose>
+
                                                     </div>
                                                 </div>
 

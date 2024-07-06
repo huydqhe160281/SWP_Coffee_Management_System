@@ -8,11 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Category;
 import model.Product;
+import model.ProductSize;
+import model.Size;
 
-/**
- * Data Access Object for Product Handles database operations related to Product
- *
- */
 public class ProductDAO extends DBContext {
 
     public List<Product> getAllProduct() {
@@ -28,6 +26,7 @@ public class ProductDAO extends DBContext {
                         rs.getString("CategoryName"),
                         rs.getString("Detail")
                 );
+                List<ProductSize> productSizes = getProductSizesByProductId(rs.getInt("ProductID"));
                 Product p = new Product(
                         rs.getInt("ProductID"),
                         rs.getString("ProductName"),
@@ -36,7 +35,8 @@ public class ProductDAO extends DBContext {
                         rs.getString("Recipe"),
                         rs.getBoolean("Status"),
                         rs.getBoolean("IsHot"),
-                        category
+                        category,
+                        productSizes
                 );
                 list.add(p);
             }
@@ -62,6 +62,7 @@ public class ProductDAO extends DBContext {
                         rs.getString("CategoryName"),
                         rs.getString("Detail")
                 );
+                List<ProductSize> productSizes = getProductSizesByProductId(rs.getInt("ProductID"));
                 Product p = new Product(
                         rs.getInt("ProductID"),
                         rs.getString("ProductName"),
@@ -70,7 +71,8 @@ public class ProductDAO extends DBContext {
                         rs.getString("Recipe"),
                         rs.getBoolean("Status"),
                         rs.getBoolean("IsHot"),
-                        category
+                        category,
+                        productSizes
                 );
                 hotProducts.add(p);
             }
@@ -96,6 +98,7 @@ public class ProductDAO extends DBContext {
                             rs.getString("CategoryName"),
                             rs.getString("Detail")
                     );
+                    List<ProductSize> productSizes = getProductSizesByProductId(rs.getInt("ProductID"));
                     Product p = new Product(
                             rs.getInt("ProductID"),
                             rs.getString("ProductName"),
@@ -104,7 +107,8 @@ public class ProductDAO extends DBContext {
                             rs.getString("Recipe"),
                             rs.getBoolean("Status"),
                             rs.getBoolean("IsHot"),
-                            category
+                            category,
+                            productSizes
                     );
                     list.add(p);
                 }
@@ -131,6 +135,7 @@ public class ProductDAO extends DBContext {
                             rs.getString("CategoryName"),
                             rs.getString("Detail")
                     );
+                    List<ProductSize> productSizes = getProductSizesByProductId(rs.getInt("ProductID"));
                     product = new Product(
                             rs.getInt("ProductID"),
                             rs.getString("ProductName"),
@@ -139,7 +144,8 @@ public class ProductDAO extends DBContext {
                             rs.getString("Recipe"),
                             rs.getBoolean("Status"),
                             rs.getBoolean("IsHot"),
-                            category
+                            category,
+                            productSizes
                     );
                 }
             }
@@ -195,6 +201,7 @@ public class ProductDAO extends DBContext {
                             rs.getString("CategoryName"),
                             rs.getString("Detail")
                     );
+                    List<ProductSize> productSizes = getProductSizesByProductId(rs.getInt("ProductID"));
                     Product p = new Product(
                             rs.getInt("ProductID"),
                             rs.getString("ProductName"),
@@ -203,7 +210,8 @@ public class ProductDAO extends DBContext {
                             rs.getString("Recipe"),
                             rs.getBoolean("Status"),
                             rs.getBoolean("IsHot"),
-                            category
+                            category,
+                            productSizes
                     );
                     list.add(p);
                 }
@@ -238,12 +246,52 @@ public class ProductDAO extends DBContext {
         return 0;
     }
 
+    private List<ProductSize> getProductSizesByProductId(int productId) {
+        List<ProductSize> productSizes = new ArrayList<>();
+        String sql = "SELECT ps.ProductID, ps.SizeID, ps.Price, s.SizeID, s.Description, s.Type "
+                + "FROM [SWP391_SU24].[dbo].[ProductSize] ps "
+                + "JOIN [SWP391_SU24].[dbo].[Size] s ON ps.SizeID = s.SizeID "
+                + "WHERE ps.ProductID = ?";
+        try ( PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, productId);
+            try ( ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    Size size = new Size(
+                            rs.getInt("SizeID"),
+                            rs.getString("Type"),
+                            rs.getString("Description")
+                    );
+                    ProductSize productSize = new ProductSize(
+                            rs.getInt("ProductID"),
+                            rs.getInt("SizeID"),
+                            rs.getDouble("Price"),
+                            size
+                    );
+                    productSizes.add(productSize);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error retrieving product sizes: " + e.getMessage());
+        }
+        return productSizes;
+    }
+
+    public void updateProductStatus(int productId, String field, boolean newValue) {
+        String sql = "UPDATE [SWP391_SU24].[dbo].[Product] SET " + field + " = ? WHERE ProductID = ?";
+        try ( PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setBoolean(1, newValue);
+            st.setInt(2, productId);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Error updating product status: " + e.getMessage());
+        }
+    }
+
+
     public static void main(String[] args) {
         ProductDAO dao = new ProductDAO();
         List<Product> list = dao.getProductByCategoryIdByPage("", 1, 20, "ASC");
         Product p = dao.getProductById("1");
-//        System.out.println(list);
-        // Uncomment the following lines to print the list of products
         for (Product i : list) {
             System.out.println(i);
         }

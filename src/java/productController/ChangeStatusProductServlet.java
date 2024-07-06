@@ -4,8 +4,6 @@
  */
 package productController;
 
-import common.DBContext;
-import dal.CategoryDAO;
 import dal.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,15 +11,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import model.Category;
-import model.Product;
 
 /**
  *
  * @author ADMIN
  */
-public class ProductServlet extends HttpServlet {
+public class ChangeStatusProductServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,10 +35,10 @@ public class ProductServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ProductServlet</title>");
+            out.println("<title>Servlet ChangeStatusProductServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h5>Servlet ProductServlet at " + request.getContextPath() + "</h5>");
+            out.println("<h1>Servlet ChangeStatusProductServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -61,52 +56,7 @@ public class ProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String currentPath = request.getRequestURI();
-        request.setAttribute("currentPath", currentPath);
-        ProductDAO productDAO = new ProductDAO();
-        CategoryDAO categoryDAO = new CategoryDAO();
-
-        String indexPage_raw = request.getParameter("indexPage");
-        String sizePage_raw = request.getParameter("sizePage");
-        String sortType = request.getParameter("sortType");
-        String categoryID = request.getParameter("categoryID");
-
-        // Kiểm tra và gán giá trị mặc định nếu cần
-        if (categoryID == null) {
-            categoryID = "";
-        }
-        if (indexPage_raw == null) {
-            indexPage_raw = "1";
-        }
-        if (sizePage_raw == null) {
-            sizePage_raw = "5";
-        }
-        if (sortType == null) {
-            sortType = "asc";
-        }
-
-        int indexPage = Integer.parseInt(indexPage_raw);
-        int sizePage = Integer.parseInt(sizePage_raw);
-        int count = productDAO.getTotalProductByCategoryId(categoryID);
-
-        int endPage = count / sizePage;
-        if (count % sizePage != 0) {
-            endPage++;
-        }
-
-        // Lấy danh sách các Category đã được sắp xếp
-        List<Product> pList = productDAO.getProductByCategoryIdByPage(categoryID, indexPage, sizePage, sortType);
-        List<Category> cList = categoryDAO.getAllCategory();
-        List<Category> cListFormat;
-
-        request.setAttribute("indexPage", indexPage);
-        request.setAttribute("endPage", endPage);
-        request.setAttribute("sizePage", sizePage);
-        request.setAttribute("categoryID", categoryID);
-        request.setAttribute("sortType", sortType);
-        request.setAttribute("pList", pList);
-        request.setAttribute("cList", cList);
-        request.getRequestDispatcher("product.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -120,8 +70,14 @@ public class ProductServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String productID = request.getParameter("productID");
-        System.out.println(productID);
+        ProductDAO productDAO = new ProductDAO();
+        int productId = Integer.parseInt(request.getParameter("productId"));
+        String field = request.getParameter("field");
+        boolean newValue = Boolean.parseBoolean(request.getParameter("newValue"));
+
+        productDAO.updateProductStatus(productId, field, newValue);
+
+        response.setStatus(HttpServletResponse.SC_OK);
     }
 
     /**
