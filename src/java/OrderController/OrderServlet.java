@@ -21,7 +21,8 @@ import model.Category;
 import model.Order;
 import model.OrderDetail;
 import model.Product;
-import model.ProductOrder;
+import model.ProductSize;
+import model.Size;
 
 /**
  *
@@ -44,14 +45,32 @@ public class OrderServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            int categoryID = Integer.parseInt(request.getParameter("categoryID"));
-            List<Product> products = productDAO.getProductByCategoryId(categoryID);
+        String categoryIDParam = request.getParameter("categoryID");
+        String productIDParam = request.getParameter("productID");
 
-            List<Category> categories = categoryDAO.getAllCategory(); // Lấy lại danh mục
+        if (categoryIDParam != null && !categoryIDParam.isEmpty()) {
+            try {
+                int categoryID = Integer.parseInt(categoryIDParam);
+                List<ProductSize> products = orderDAO.getProductsByCategory(categoryID);
+                List<Category> categories = categoryDAO.getAllCategory();
+                request.setAttribute("categories", categories);
+                request.setAttribute("products", products);
+                request.setAttribute("selectedCategoryID", categoryID); // Lưu trữ categoryID đã chọn
+                if (productIDParam != null && !productIDParam.isEmpty()) {
+                    int productID = Integer.parseInt(productIDParam);
+                    List<String> sizes = orderDAO.getSizesByProduct(productID);
+                    request.setAttribute("sizes", sizes);
+                    request.setAttribute("selectedProductID", productID); // Lưu trữ productID đã chọn
+                }
+                request.getRequestDispatcher("order.jsp").forward(request, response);
+            } catch (NumberFormatException e) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "CategoryID and ProductID must be valid integers.");
+            }
+        } else {
+            List<Category> categories = categoryDAO.getAllCategory();
             request.setAttribute("categories", categories);
-            request.setAttribute("products", products);
-            request.setAttribute("tag", categories);
             request.getRequestDispatcher("order.jsp").forward(request, response);
+        }
     }
 
     private void listOrders(HttpServletRequest request, HttpServletResponse response)

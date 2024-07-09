@@ -10,8 +10,8 @@ import java.util.List;
 import model.Category;
 import model.Order;
 import model.OrderDetail;
-import model.Product;
-import model.ProductOrder;
+import model.ProductSize;
+import model.Size;
 
 /**
  *
@@ -166,20 +166,35 @@ public class OrderDAO extends DBContext {
         return categories;
     }
 
-    public List<ProductOrder> getProductsByCategory(int categoryID) {
-        List<ProductOrder> products = new ArrayList<>();
-        String sql = "SELECT p.ProductID, p.ProductName, ps.Price "
+    public List<ProductSize> getProductsByCategory(int categoryID) {
+        List<ProductSize> products = new ArrayList<>();
+        String sql = "SELECT * "
                 + "FROM Product p "
                 + "JOIN ProductSize ps ON p.ProductID = ps.ProductID "
+                + "JOIN Category c ON p.CategoryID = c.CategoryID "
+                + "JOIN Size s ON ps.SizeID = s.SizeID "
                 + "WHERE p.CategoryID = ?";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, categoryID);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                ProductOrder product = new ProductOrder(
+                Category category = new Category(
+                        rs.getInt("CategoryID"),
+                        rs.getString("CategoryName"),
+                        rs.getString("Detail")
+                );
+                ProductSize product = new ProductSize(
                         rs.getInt("ProductID"),
                         rs.getString("ProductName"),
+                        rs.getString("Image"),
+                        rs.getString("Description"),
+                        rs.getString("Recipe"),
+                        rs.getBoolean("Status"),
+                        rs.getBoolean("isHot"),
+                        category,
+                        rs.getInt("SizeID"),
+                        rs.getString("Type"),
                         rs.getDouble("Price")
                 );
                 products.add(product);
@@ -190,55 +205,22 @@ public class OrderDAO extends DBContext {
         return products;
     }
 
-    public List<ProductOrder> getProductsByCategoryWithPrice(int categoryID) {
-        List<ProductOrder> products = new ArrayList<>();
-        String query = "SELECT p.ProductID, p.ProductName, p.Image, p.Description, p.Recipe, p.Status, p.isHot, p.CategoryID, ps.SizeID, ps.Price, s.Type AS SizeType "
-                + "FROM Product p "
-                + "JOIN ProductSize ps ON p.ProductID = ps.ProductID "
+    public List<String> getSizesByProduct(int productID) {
+        List<String> sizes = new ArrayList<>();
+        String sql = "SELECT * "
+                + "FROM ProductSize ps "
                 + "JOIN Size s ON ps.SizeID = s.SizeID "
-                + "WHERE p.CategoryID = ?";
+                + "WHERE ps.ProductID = ?";
         try {
-            PreparedStatement ps = connection.prepareStatement(query);
-            ps.setInt(1, categoryID);
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, productID);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                ProductOrder product = new ProductOrder();
-                product.setProductID(rs.getInt("ProductID"));
-                product.setProductName(rs.getString("ProductName"));
-
-                product.setPrice(rs.getDouble("Price"));
-                products.add(product);
+                sizes.add(rs.getString("Type"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return products;
-    }
-
-    private List<ProductOrder> getDummyProducts(int categoryID) {
-        // This method returns dummy products for demonstration purposes.
-        List<ProductOrder> products = new ArrayList<>();
-        for (int i = 1; i <= 5; i++) {
-            products.add(new ProductOrder(i, "Product " + categoryID + "-" + i, categoryID * 10.0 + i));
-        }
-        return products;
-    }
-    
-    public static void main(String[] args) {
-        int categoryID = 1;
-        OrderDAO dao = new OrderDAO();
-        ProductDAO pdao = new ProductDAO();
-        List<Product> products = pdao.getProductByCategoryId(categoryID);
-
-        // In ra danh sách sản phẩm để kiểm tra
-        if (products != null && !products.isEmpty()) {
-            for (Product product : products) {
-                System.out.println("Product ID: " + product.getProductID());
-                System.out.println("Product Name: " + product.getProductName());
-                System.out.println("-----------------------------");
-            }
-        } else {
-            System.out.println("No products found for category ID: " + categoryID);
-        }
+        return sizes;
     }
 }
