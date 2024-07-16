@@ -48,6 +48,11 @@
             .fire {
                 animation: fire 1s infinite;
             }
+            .custom-image {
+                width: 95%;
+                height: 400px;
+                object-fit: cover;
+            }
 
         </style>
     </head>
@@ -127,7 +132,7 @@
                                                             <c:when test="${product != null}">
                                                                 <div class="d-flex flex-row align-items-center">
                                                                     <div class="col-md-6 d-flex justify-content-center">
-                                                                        <img src="${product.image ? product.image :  '/assets/images/noimage.jpg'}" class="img-fluid rounded product-image w-75" alt="${product.productName}">
+                                                                        <img src="/assets/images/${!empty product.image ? product.image :  'noimage.jpg'}" class="img-fluid rounded product-image custom-image" alt="${product.productName}">
                                                                     </div>
                                                                     <div class="col-md-6">
                                                                         <h3 class="text-primary"><strong>${product.productName}</strong> ${product.isHot? '<span class="badge badge-pill badge-danger fire">Hot</span>':''}</h3>

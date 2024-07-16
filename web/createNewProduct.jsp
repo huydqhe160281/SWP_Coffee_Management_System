@@ -94,6 +94,7 @@
                                                         </div>
                                                         <% } %>
                                                         <form name="productForm" class="form-material" action="product_create" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+                                                            <!-- Existing fields -->
                                                             <div class="form-group form-default form-static-label">
                                                                 <input type="text" name="productName" class="form-control" required minlength="3" maxlength="50" />
                                                                 <label class="float-label">Product Name</label>
@@ -106,38 +107,48 @@
                                                                 <textarea name="recipe" class="form-control" required minlength="10" maxlength="1000" style="height: 130px;"></textarea>
                                                                 <label class="float-label">Recipe</label>
                                                             </div>
-
-                                                            <div class="d-flex ">
-                                                                <div class="form-group form-default form-static-label w-50 mr-5">
-                                                                    <div class="d-flex flex-column">
-                                                                        <div class="mb-2">Product Image</div>
-                                                                        <div class="image-preview">
-                                                                            <img src="" alt="Product Image" style="max-width: 200px; max-height: 200px;" id="image-preview" onclick="handleImageClick('image')">
-                                                                            <div class="custom-file mb-2" id="imageInputWrapper">
-                                                                                <input type="file" class="custom-file-input" id="image" name="image" onchange="previewImage('image', 'image-preview')" accept="image/*">
-                                                                                <label class="custom-file-label" for="image">Choose file</label>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div id="image-error" class="text-danger"></div>
+                                                            <!-- Dynamic Size and Price Fields -->
+                                                            <div class="form-group form-default">
+                                                                <c:forEach var="size" items="${sList}">
+                                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                        <input type="hidden" name="sizeId" value="${size.sizeID}">
+                                                                        <input type="number" name="price" class="form-control" placeholder="Price for size ${size.type}" required>
                                                                     </div>
+                                                                </c:forEach>
+                                                            </div>
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="form-group form-default form-static-label w-50 mr-5">
+                                                                    <div class="image-preview">
+                                                                        <img src="" alt="Product Image" style="max-width: 200px; max-height: 200px;" id="image-preview" onclick="handleImageClick('image')">
+                                                                        <div class="custom-file mb-2" id="imageInputWrapper">
+                                                                            <input type="file" class="custom-file-input" id="image" name="image" onchange="previewImage('image', 'image-preview')" accept="image/*">
+                                                                            <label class="custom-file-label" for="image">Choose file</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div id="image-error" class="text-danger"></div>
                                                                 </div>
-                                                                <div class="d-flex flex-column w-50 ml-5">
-                                                                    <div class="form-group form-default form-static-label">
+                                                                <div class="d-flex flex-row w-50 ml-5 justify-content-around">
+                                                                    <div class="form-group form-default form-static-label w-75 mr-5">
                                                                         <select name="category" class="form-control" required>
-                                                                            <c:forEach var="category" items="${categories}">
+                                                                            <c:forEach var="category" items="${cList}">
                                                                                 <option value="${category.categoryID}">${category.categoryName}</option>
                                                                             </c:forEach>
                                                                         </select>
-
                                                                         <label class="float-label">Category</label>
                                                                     </div>
-                                                                    <div class="form-group form-default form-static-label">
-                                                                        <label>Status</label>
-                                                                        <input type="checkbox" name="status" />
+                                                                    <div class="checkbox-fade fade-in-primary mr-5">
+                                                                        <label>
+                                                                            <input name="status" type="checkbox" value="true">
+                                                                            <span class="cr"><i class="cr-icon icofont icofont-ui-check txt-primary"></i></span>
+                                                                            <span class="text-inverse">Status</span>
+                                                                        </label>
                                                                     </div>
-                                                                    <div class="form-group form-default form-static-label">
-                                                                        <label>Is Hot</label>
-                                                                        <input type="checkbox" name="isHot" />
+                                                                    <div class="checkbox-fade fade-in-primary">
+                                                                        <label>
+                                                                            <input name="isHot" type="checkbox" value="true">
+                                                                            <span class="cr"><i class="cr-icon icofont icofont-ui-check txt-primary"></i></span>
+                                                                            <span class="text-inverse">IsHot</span>
+                                                                        </label>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -146,6 +157,7 @@
                                                                 <button class="btn btn-primary w-100" type="submit">Create New</button>
                                                             </div>
                                                         </form>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -197,52 +209,52 @@
             }
 
             function validateForm() {
-                var isValid = true;
-
-                var productName = document.forms["productForm"]["productName"].value;
-                var description = document.forms["productForm"]["description"].value;
-                var recipe = document.forms["productForm"]["recipe"].value;
-                var image = document.forms["productForm"]["image"].value;
-                var category = document.forms["productForm"]["category"].value;
-
-                // Clear previous error messages
-                document.getElementById("productName-error").innerHTML = "";
-                document.getElementById("description-error").innerHTML = "";
-                document.getElementById("recipe-error").innerHTML = "";
-                document.getElementById("image-error").innerHTML = "";
-                document.getElementById("category-error").innerHTML = "";
-
-                // ProductName validation
-                if (productName == "") {
-                    document.getElementById("productName-error").innerHTML = "Please enter the product name.";
-                    isValid = false;
-                }
-
-                // Description validation
-                if (description == "") {
-                    document.getElementById("description-error").innerHTML = "Please enter the description.";
-                    isValid = false;
-                }
-
-                // Recipe validation
-                if (recipe == "") {
-                    document.getElementById("recipe-error").innerHTML = "Please enter the recipe.";
-                    isValid = false;
-                }
-
-                // Image validation
-                if (image == "") {
-                    document.getElementById("image-error").innerHTML = "Please upload a product image.";
-                    isValid = false;
-                }
-
-                // Category validation
-                if (category == "") {
-                    document.getElementById("category-error").innerHTML = "Please select a category.";
-                    isValid = false;
-                }
-
-                return isValid;
+//                var isValid = true;
+//
+//                var productName = document.forms["productForm"]["productName"].value;
+//                var description = document.forms["productForm"]["description"].value;
+//                var recipe = document.forms["productForm"]["recipe"].value;
+//                var image = document.forms["productForm"]["image"].value;
+//                var category = document.forms["productForm"]["category"].value;
+//
+//                // Clear previous error messages
+//                document.getElementById("productName-error").innerHTML = "";
+//                document.getElementById("description-error").innerHTML = "";
+//                document.getElementById("recipe-error").innerHTML = "";
+//                document.getElementById("image-error").innerHTML = "";
+//                document.getElementById("category-error").innerHTML = "";
+//
+//                // ProductName validation
+//                if (productName == "") {
+//                    document.getElementById("productName-error").innerHTML = "Please enter the product name.";
+//                    isValid = false;
+//                }
+//
+//                // Description validation
+//                if (description == "") {
+//                    document.getElementById("description-error").innerHTML = "Please enter the description.";
+//                    isValid = false;
+//                }
+//
+//                // Recipe validation
+//                if (recipe == "") {
+//                    document.getElementById("recipe-error").innerHTML = "Please enter the recipe.";
+//                    isValid = false;
+//                }
+//
+//                // Image validation
+//                if (image == "") {
+//                    document.getElementById("image-error").innerHTML = "Please upload a product image.";
+//                    isValid = false;
+//                }
+//
+//                // Category validation
+//                if (category == "") {
+//                    document.getElementById("category-error").innerHTML = "Please select a category.";
+//                    isValid = false;
+//                }
+//
+//                return isValid;
             }
         </script>
 

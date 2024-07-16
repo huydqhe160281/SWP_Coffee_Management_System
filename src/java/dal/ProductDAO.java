@@ -4,6 +4,7 @@ import common.DBContext;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import model.Category;
@@ -287,11 +288,68 @@ public class ProductDAO extends DBContext {
         }
     }
 
+    public void createNewProduct(Product product, List<ProductSize> productSizes) {
+        String insertProductSQL = "INSERT INTO [SWP391_SU24].[dbo].[Product] "
+                + "(ProductName, Image, Description, Recipe, Status, IsHot, CategoryID) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        String insertProductSizeSQL = "INSERT INTO [SWP391_SU24].[dbo].[ProductSize] "
+                + "(ProductID, SizeID, Price) VALUES (?, ?, ?)";
+
+        try {
+            connection.setAutoCommit(false); // Start transaction
+
+            // Insert product and get generated ProductID
+            try ( PreparedStatement st = connection.prepareStatement(insertProductSQL, Statement.RETURN_GENERATED_KEYS)) {
+                st.setString(1, product.getProductName());
+                st.setString(2, product.getImage());
+                st.setString(3, product.getDescription());
+                st.setString(4, product.getRecipe());
+                st.setBoolean(5, product.isStatus());
+                st.setBoolean(6, product.isIsHot());
+                st.setInt(7, product.getCategory().getCategoryID());
+                st.executeUpdate();
+
+                try ( ResultSet rs = st.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        product.setProductID(rs.getInt(1));
+                    }
+                }
+            }
+
+            // Insert ProductSizes
+            try ( PreparedStatement st = connection.prepareStatement(insertProductSizeSQL)) {
+                for (ProductSize ps : productSizes) {
+                    st.setInt(1, product.getProductID());
+                    st.setInt(2, ps.getSize().getSizeID());
+                    st.setDouble(3, ps.getPrice());
+                    st.addBatch();
+                }
+                st.executeBatch();
+            }
+
+            connection.commit(); // Commit transaction
+        } catch (SQLException e) {
+            try {
+                connection.rollback(); // Rollback transaction on error
+            } catch (SQLException ex) {
+                System.err.println("Error rolling back transaction: " + ex.getMessage());
+            }
+            System.err.println("Error creating new product: " + e.getMessage());
+        } finally {
+            try {
+                connection.setAutoCommit(true); // Reset auto-commit
+            } catch (SQLException e) {
+                System.err.println("Error resetting auto-commit: " + e.getMessage());
+            }
+        }
+    }
 
     public static void main(String[] args) {
         ProductDAO dao = new ProductDAO();
         List<Product> list = dao.getProductByCategoryIdByPage("", 1, 20, "ASC");
         Product p = dao.getProductById("1");
+
         for (Product i : list) {
             System.out.println(i);
         }
