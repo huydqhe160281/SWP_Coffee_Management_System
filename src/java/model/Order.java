@@ -15,15 +15,19 @@ public class Order {
     private int accountID;
     private String accountName;
     private Date orderDate;
+    private boolean status;
+    private boolean cancelled;
 
     public Order() {
     }
 
-    public Order(int orderID, int accountID, String accountName, Date orderDate) {
+    public Order(int orderID, int accountID, String accountName, Date orderDate, boolean status, boolean cancelled) {
         this.orderID = orderID;
         this.accountID = accountID;
         this.accountName = accountName;
         this.orderDate = orderDate;
+        this.status = status;
+        this.cancelled = cancelled;
     }
 
     public int getOrderID() {
@@ -58,5 +62,20 @@ public class Order {
         this.orderDate = orderDate;
     }
 
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public boolean isCancelled() {
+        return cancelled;
+    }
+
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
+    }
     
 }

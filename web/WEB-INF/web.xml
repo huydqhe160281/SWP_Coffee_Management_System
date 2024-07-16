@@ -164,6 +164,14 @@
         <servlet-name>ChangeStatusProductServlet</servlet-name>
         <servlet-class>productController.ChangeStatusProductServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ListOrderServlet</servlet-name>
+        <servlet-class>OrderController.ListOrderServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OrderDetailServlet</servlet-name>
+        <servlet-class>OrderController.OrderDetailServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductServlet</servlet-name>
         <url-pattern>/product</url-pattern>
@@ -315,6 +323,14 @@
     <servlet-mapping>
         <servlet-name>ChangeStatusProductServlet</servlet-name>
         <url-pattern>/product_status</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListOrderServlet</servlet-name>
+        <url-pattern>/order_list</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderDetailServlet</servlet-name>
+        <url-pattern>/order_detail</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
