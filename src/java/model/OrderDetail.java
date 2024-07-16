@@ -95,5 +95,5 @@ public class OrderDetail {
     public void setValue(int value) {
         this.value = value;
     }
-    
+ 
 }

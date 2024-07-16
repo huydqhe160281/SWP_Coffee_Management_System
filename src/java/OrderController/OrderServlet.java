@@ -13,6 +13,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -73,22 +74,14 @@ public class OrderServlet extends HttpServlet {
         }
     }
 
-    private void listOrders(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        List<Order> orders = orderDAO.getAllOrders();
-        request.setAttribute("orders", orders);
-        request.getRequestDispatcher("order.jsp").forward(request, response);
-    }
+//    private void listOrders(HttpServletRequest request, HttpServletResponse response)
+//            throws ServletException, IOException, SQLException {
+//        List<Order> orders = orderDAO.getAllOrders();
+//        request.setAttribute("orders", orders);
+//        request.getRequestDispatcher("order.jsp").forward(request, response);
+//    }
 
-    private void viewOrder(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        int orderId = Integer.parseInt(request.getParameter("orderId"));
-        Order order = orderDAO.getOrderById(orderId);
-        List<OrderDetail> orderDetails = orderDAO.getOrderDetailsByOrderId(orderId);
-        request.setAttribute("order", order);
-        request.setAttribute("orderDetails", orderDetails);
-        request.getRequestDispatcher("orderDetail.jsp").forward(request, response);
-    }
+    
 
     private void deleteOrder(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
@@ -100,19 +93,19 @@ public class OrderServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String action = request.getParameter("action");
-        if (action == null) {
-            action = "list";
-        }
-
-        switch (action) {
-            case "add":
-                addOrder(request, response);
-                break;
-            default:
-                listOrders(request, response);
-                break;
-        }
+//        String action = request.getParameter("action");
+//        if (action == null) {
+//            action = "list";
+//        }
+//
+//        switch (action) {
+//            case "add":
+//                addOrder(request, response);
+//                break;
+//            default:
+//                listOrders(request, response);
+//                break;
+//        }
     }
 
     private void addOrder(HttpServletRequest request, HttpServletResponse response)

@@ -1,5 +1,5 @@
 <%-- 
-    Document   : orderDetail
+    Document   : listOrder
     Created on : July 16, 2024
     Author     : Namqd
 --%>
@@ -115,6 +115,18 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
+        .status-paid {
+            color: green;
+        }
+        .status-unpaid {
+            color: red;
+        }
+        .status-cancelled {
+            color: red;
+        }
+        .status-ordered {
+            color: green;
+        }
     </style>
     <body>
 
@@ -175,30 +187,82 @@
                                                 <div class="card-block table-border-style">
                                                     <div class="table-responsive">
                                                         <div class="container">
-                                                            <h1>Order Details</h1>
-
+                                                            <h1>Order List</h1>
                                                             <table class="table">
-
-                                                                <tr>
-                                                                    <th>Product Name</th>
-                                                                    <th>Unit Price</th>
-                                                                    <th>Quantity</th>
-                                                                    <th>Note</th>
-                                                                    <th>Discount ID</th>
-                                                                    <th>Discount Value</th>
-                                                                </tr>
-                                                                <c:forEach var="detail" items="${orderDetails}">
+                                                                <thead>
                                                                     <tr>
-                                                                        <td>${detail.productName}</td>
-                                                                        <td>${detail.unitPrice}</td>
-                                                                        <td>${detail.quantity}</td>
-                                                                        <td>${detail.note}</td>
-                                                                        <td>${detail.discountID}</td>
-                                                                        <td>${detail.value}</td>
+                                                                        <th>Staff order</th>
+                                                                        <th>OrderDate</th>
+                                                                        <th>Status</th>
+                                                                        <th>Cancelled</th>
+                                                                        <th>Actions</th>
                                                                     </tr>
-                                                                </c:forEach>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <c:forEach var="order" items="${listOrders}">
+                                                                        <tr>
+                                                                            <td>${order.accountName}</td>
+                                                                            <td>${order.orderDate}</td>
+                                                                            <td>
+                                                                                <c:choose>
+                                                                                    <c:when test="${order.status}">
+                                                                                        <span class="status-paid">Paid</span>
+                                                                                    </c:when>
+                                                                                    <c:otherwise>
+                                                                                        <span class="status-unpaid">Unpaid</span>
+                                                                                    </c:otherwise>
+                                                                                </c:choose>
+                                                                            </td>
+                                                                            <td>
+                                                                                <c:choose>
+                                                                                    <c:when test="${order.cancelled}">
+                                                                                        <span class="status-cancelled">Cancelled</span>
+                                                                                    </c:when>
+                                                                                    <c:otherwise>
+                                                                                        <span class="status-ordered">Ordered</span>
+                                                                                    </c:otherwise>
+                                                                                </c:choose>
+                                                                            </td>
+                                                                            <td><a href="/order_detail?orderId=${order.orderID}" class="btn btn-primary">Details</a></td>
+                                                                        </tr>
+                                                                    </c:forEach>
+                                                                </tbody>
                                                             </table>
-                                                            <a href="/order_list" class="btn btn-secondary mt-3" style="float: right;">Back</a>
+                                                            <div class="d-flex justify-content-end">
+                                                                <form id="sizeForm" method="get" action="listOrder" class="mr-2">
+                                                                    <div class="input-group mb-3">
+                                                                        <div class="input-group-prepend">
+                                                                            <label class="input-group-text" for="inputGroupSelect01">Size</label>
+                                                                        </div>
+                                                                        <select class="custom-select w-25" id="inputGroupSelect01" name="pageSize" onchange="submitSizeForm()">
+                                                                            <option value="2" ${pageSize == 2 ? 'selected' : ''}>2</option>
+                                                                            <option value="5" ${pageSize == 5 ? 'selected' : ''}>5</option>
+                                                                            <option value="10" ${pageSize == 10 ? 'selected' : ''}>10</option>
+                                                                            <option value="20" ${pageSize == 20 ? 'selected' : ''}>20</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <input type="hidden" name="indexPage" value="${indexPage}" />
+                                                                </form>
+                                                                <nav aria-label="...">
+                                                                    <ul class="pagination">
+                                                                        <c:if test="${indexPage > 1}">
+                                                                            <li class="page-item">
+                                                                                <a class="page-link" href="?indexPage=${indexPage - 1}&pageSize=${pageSize}" tabindex="-1">Previous</a>
+                                                                            </li>
+                                                                        </c:if>
+                                                                        <c:forEach var="i" begin="1" end="${endPage}">
+                                                                            <li class="page-item ${i == indexPage ? 'active' : ''}">
+                                                                                <a class="page-link" href="?indexPage=${i}&pageSize=${pageSize}">${i} <c:if test="${i == indexPage}"><span class="sr-only">(current)</span></c:if></a>
+                                                                                </li>
+                                                                        </c:forEach>
+                                                                        <c:if test="${indexPage < endPage}">
+                                                                            <li class="page-item">
+                                                                                <a class="page-link" href="?indexPage=${indexPage + 1}&pageSize=${pageSize}">Next</a>
+                                                                            </li>
+                                                                        </c:if>
+                                                                    </ul>
+                                                                </nav>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -219,8 +283,9 @@
         </div>
 
         <script type="text/javascript">
-
-
+            function submitSizeForm() {
+                document.getElementById('sizeForm').submit();
+            }
         </script>
 
 

@@ -1,3 +1,11 @@
+<%-- 
+    Document   : chart-morris
+    Created on : Jul 16, 2024, 11:10:26 AM
+    Author     : Namqd
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,9 +14,9 @@
     <!-- HTML5 Shim and Respond.js IE10 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 10]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-      <![endif]-->
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
     <!-- Meta -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
@@ -18,19 +26,20 @@
     <meta name="author" content="Codedthemes" />
     <!-- Favicon icon -->
     <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+    <!-- Google font-->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet">
     <!-- waves.css -->
     <link rel="stylesheet" href="assets/pages/waves/css/waves.min.css" type="text/css" media="all">
     <!-- Required Fremwork -->
     <link rel="stylesheet" type="text/css" href="assets/css/bootstrap/css/bootstrap.min.css">
-    <!-- waves.css -->
-    <link rel="stylesheet" href="assets/pages/waves/css/waves.min.css" type="text/css" media="all">
     <!-- themify-icons line icon -->
     <link rel="stylesheet" type="text/css" href="assets/icon/themify-icons/themify-icons.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" type="text/css" href="assets/icon/font-awesome/css/font-awesome.min.css">
     <!-- ico font -->
     <link rel="stylesheet" type="text/css" href="assets/icon/icofont/css/icofont.css">
+    <!-- morris chart -->
+    <link rel="stylesheet" type="text/css" href="assets/css/morris.js/css/morris.css">
     <!-- Style.css -->
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <link rel="stylesheet" type="text/css" href="assets/css/jquery.mCustomScrollbar.css">
@@ -111,7 +120,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="index.jsp">
+                        <a href="index.html">
                             <img class="img-fluid" src="assets/images/logo.png" alt="Theme-Logo" />
                         </a>
                         <a class="mobile-options waves-effect waves-light">
@@ -245,7 +254,7 @@
                             <div class="pcoded-navigation-label">Navigation</div>
                             <ul class="pcoded-item pcoded-left-item">
                                 <li class="">
-                                    <a href="index.jsp" class="waves-effect waves-dark">
+                                    <a href="index.html" class="waves-effect waves-dark">
                                         <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
                                         <span class="pcoded-mtext">Dashboard</span>
                                         <span class="pcoded-mcaret"></span>
@@ -339,7 +348,7 @@
                             </ul>
                             <div class="pcoded-navigation-label">Tables</div>
                             <ul class="pcoded-item pcoded-left-item">
-                                <li class="active">
+                                <li class="">
                                     <a href="bs-basic-table.html" class="waves-effect waves-dark">
                                         <span class="pcoded-micon"><i class="ti-receipt"></i><b>B</b></span>
                                         <span class="pcoded-mtext">Table</span>
@@ -349,8 +358,8 @@
                             </ul>
                             <div class="pcoded-navigation-label">Chart And Maps</div>
                             <ul class="pcoded-item pcoded-left-item">
-                                <li class="">
-                                    <a href="chart-morris.jsp" class="waves-effect waves-dark">
+                                <li class="active">
+                                    <a href="chart-morris.html" class="waves-effect waves-dark">
                                         <span class="pcoded-micon"><i class="ti-bar-chart-alt"></i><b>C</b></span>
                                         <span class="pcoded-mtext">Charts</span>
                                         <span class="pcoded-mcaret"></span>
@@ -406,18 +415,18 @@
                                 <div class="row align-items-center">
                                     <div class="col-md-8">
                                         <div class="page-header-title">
-                                            <h5 class="m-b-10">Bootstrap Basic Tables</h5>
+                                            <h5 class="m-b-10">Morris Chart</h5>
                                             <p class="m-b-0">Lorem Ipsum is simply dummy text of the printing</p>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <ul class="breadcrumb">
                                             <li class="breadcrumb-item">
-                                                <a href="index.jsp"> <i class="fa fa-home"></i> </a>
+                                                <a href="index.html"> <i class="fa fa-home"></i> </a>
                                             </li>
-                                            <li class="breadcrumb-item"><a href="#!">Bootstrap Tables</a>
+                                            <li class="breadcrumb-item"><a href="#!">Chart</a>
                                             </li>
-                                            <li class="breadcrumb-item"><a href="#!">Basic Tables</a>
+                                            <li class="breadcrumb-item"><a href="#!">Morris Chart</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -429,341 +438,90 @@
                             <!-- Main-body start -->
                             <div class="main-body">
                                 <div class="page-wrapper">
-                                    <!-- Page-body start -->
                                     <div class="page-body">
-                                        <!-- Basic table card start -->
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h5>Basic Table</h5>
-                                                <span>use class <code>table</code> inside table element</span>
-                                                <div class="card-header-right">
-                                                    <ul class="list-unstyled card-option">
-                                                        <li><i class="fa fa fa-wrench open-card-option"></i></li>
-                                                        <li><i class="fa fa-window-maximize full-card"></i></li>
-                                                        <li><i class="fa fa-minus minimize-card"></i></li>
-                                                        <li><i class="fa fa-refresh reload-card"></i></li>
-                                                        <li><i class="fa fa-trash close-card"></i></li>
-                                                    </ul>
+                                        <div class="row">
+                                            <!-- SITE VISIT CHART start -->
+                                            <div class="col-md-12 col-lg-6">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h5>Site Visit Chart</h5>
+                                                        <span>lorem ipsum dolor sit amet, consectetur adipisicing elit</span>
+                                                    </div>
+                                                    <div class="card-block">
+                                                        <div id="morris-site-visit"></div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="card-block table-border-style">
-                                                <div class="table-responsive">
-                                                    <table class="table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>#</th>
-                                                                <th>First Name</th>
-                                                                <th>Last Name</th>
-                                                                <th>Username</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <th scope="row">1</th>
-                                                                <td>Mark</td>
-                                                                <td>Otto</td>
-                                                                <td>@mdo</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row">2</th>
-                                                                <td>Jacob</td>
-                                                                <td>Thornton</td>
-                                                                <td>@fat</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row">3</th>
-                                                                <td>Larry</td>
-                                                                <td>the Bird</td>
-                                                                <td>@twitter</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
+                                            <!-- SITE VISIT CHART Ends -->
+                                            <!-- Bar Chart start -->
+                                            <div class="col-md-12 col-lg-6">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h5>Bar Chart</h5>
+                                                        <span>lorem ipsum dolor sit amet, consectetur adipisicing elit</span>
+                                                    </div>
+                                                    <div class="card-block">
+                                                        <div id="morris-bar-chart"></div>
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <!-- Bar Chart Ends -->
+                                            <!-- EXTRA AREA CHART start -->
+                                            <div class="col-lg-12">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h5>Extra Area Chart</h5>
+                                                        <span>lorem ipsum dolor sit amet, consectetur adipisicing elit</span>
+                                                    </div>
+                                                    <div class="card-block">
+                                                        <div id="morris-extra-area"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- EXTRA AREA CHART Ends -->
+                                            <!-- Area Chart start -->
+                                            <div class="col-lg-12">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h5>Area Chart</h5>
+                                                        <span>lorem ipsum dolor sit amet, consectetur adipisicing elit</span>
+                                                    </div>
+                                                    <div class="card-block">
+                                                        <div id="area-example"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Area Chart Ends -->
+                                            <!-- LINE CHART start -->
+                                            <div class="col-md-12 col-lg-6">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h5>Line Chart</h5>
+                                                        <span>lorem ipsum dolor sit amet, consectetur adipisicing elit</span>
+                                                    </div>
+                                                    <div class="card-block">
+                                                        <div id="line-example"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- LINE CHART Ends -->
+                                            <!-- Donut chart start -->
+                                            <div class="col-md-12 col-lg-6">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h5>Donut Chart</h5>
+                                                        <span>lorem ipsum dolor sit amet, consectetur adipisicing elit</span>
+                                                    </div>
+                                                    <div class="card-block">
+                                                        <div id="donut-example"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Donut chart Ends -->
                                         </div>
-                                        <!-- Basic table card end -->
-                                        <!-- Inverse table card start -->
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h5>Dark Table</h5>
-                                                <span>use class <code>table-dark</code> inside table element</span>
-                                                <div class="card-header-right">
-                                                    <ul class="list-unstyled card-option">
-                                                        <li><i class="fa fa fa-wrench open-card-option"></i></li>
-                                                        <li><i class="fa fa-window-maximize full-card"></i></li>
-                                                        <li><i class="fa fa-minus minimize-card"></i></li>
-                                                        <li><i class="fa fa-refresh reload-card"></i></li>
-                                                        <li><i class="fa fa-trash close-card"></i></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="card-block table-border-style">
-                                                <div class="table-responsive">
-                                                    <table class="table table-dark">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>#</th>
-                                                                <th>First Name</th>
-                                                                <th>Last Name</th>
-                                                                <th>Username</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <th scope="row">1</th>
-                                                                <td>Mark</td>
-                                                                <td>Otto</td>
-                                                                <td>@mdo</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row">2</th>
-                                                                <td>Jacob</td>
-                                                                <td>Thornton</td>
-                                                                <td>@fat</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row">3</th>
-                                                                <td>Larry</td>
-                                                                <td>the Bird</td>
-                                                                <td>@twitter</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Inverse table card end -->
-                                        <!-- Hover table card start -->
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h5>Hover Table</h5>
-                                                <span>use class <code>table-hover</code> inside table element</span>
-                                                <div class="card-header-right">
-                                                    <ul class="list-unstyled card-option">
-                                                        <li><i class="fa fa fa-wrench open-card-option"></i></li>
-                                                        <li><i class="fa fa-window-maximize full-card"></i></li>
-                                                        <li><i class="fa fa-minus minimize-card"></i></li>
-                                                        <li><i class="fa fa-refresh reload-card"></i></li>
-                                                        <li><i class="fa fa-trash close-card"></i></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="card-block table-border-style">
-                                                <div class="table-responsive">
-                                                    <table class="table table-hover">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>#</th>
-                                                                <th>First Name</th>
-                                                                <th>Last Name</th>
-                                                                <th>Username</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <th scope="row">1</th>
-                                                                <td>Mark</td>
-                                                                <td>Otto</td>
-                                                                <td>@mdo</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row">2</th>
-                                                                <td>Jacob</td>
-                                                                <td>Thornton</td>
-                                                                <td>@fat</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row">3</th>
-                                                                <td>Larry</td>
-                                                                <td>the Bird</td>
-                                                                <td>@twitter</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Hover table card end -->
-                                        <!-- Contextual classes table starts -->
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h5>Contextual Classes</h5>
-                                                <span>For Make row Contextual add Contextual class like <code>.table-success</code> in <code> tr tag</code> and For cell add Contextual class in <code> td or th tag</code> . </span>
-                                                <div class="card-header-right">
-                                                    <ul class="list-unstyled card-option">
-                                                        <li><i class="fa fa fa-wrench open-card-option"></i></li>
-                                                        <li><i class="fa fa-window-maximize full-card"></i></li>
-                                                        <li><i class="fa fa-minus minimize-card"></i></li>
-                                                        <li><i class="fa fa-refresh reload-card"></i></li>
-                                                        <li><i class="fa fa-trash close-card"></i></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="card-block table-border-style">
-                                                <div class="table-responsive">
-                                                    <table class="table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>#</th>
-                                                                <th>First Name</th>
-                                                                <th>Last Name</th>
-                                                                <th>Username</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr class="table-active">
-                                                                <th scope="row">1</th>
-                                                                <td>Mark</td>
-                                                                <td>Otto</td>
-                                                                <td>@mdo</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row">2</th>
-                                                                <td>Jacob</td>
-                                                                <td>Thornton</td>
-                                                                <td>@fat</td>
-                                                            </tr>
-                                                            <tr class="table-success">
-                                                                <th scope="row">3</th>
-                                                                <td>Larry</td>
-                                                                <td>the Bird</td>
-                                                                <td>@twitter</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row">4</th>
-                                                                <td>Larry</td>
-                                                                <td>the Bird</td>
-                                                                <td>@twitter</td>
-                                                            </tr>
-                                                            <tr class="table-warning">
-                                                                <th scope="row">5</th>
-                                                                <td>Larry</td>
-                                                                <td>the Bird</td>
-                                                                <td>@twitter</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row">6</th>
-                                                                <td>Larry</td>
-                                                                <td>the Bird</td>
-                                                                <td>@twitter</td>
-                                                            </tr>
-                                                            <tr class="table-danger">
-                                                                <th scope="row">7</th>
-                                                                <td>Larry</td>
-                                                                <td>the Bird</td>
-                                                                <td>@twitter</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row">8</th>
-                                                                <td>Larry</td>
-                                                                <td>the Bird</td>
-                                                                <td>@twitter</td>
-                                                            </tr>
-                                                            <tr class="table-info">
-                                                                <th scope="row">9</th>
-                                                                <td>Larry</td>
-                                                                <td>the Bird</td>
-                                                                <td>@twitter</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Contextual classes table ends -->
-                                        <!-- Background Utilities table start -->
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h5>Background Utilities</h5>
-                                                <span>Regular table background variants are not available with the inverse table, however, you may use <code>text or background utilities</code> to achieve similar styles.</span>
-                                                <div class="card-header-right">
-                                                    <ul class="list-unstyled card-option">
-                                                        <li><i class="fa fa fa-wrench open-card-option"></i></li>
-                                                        <li><i class="fa fa-window-maximize full-card"></i></li>
-                                                        <li><i class="fa fa-minus minimize-card"></i></li>
-                                                        <li><i class="fa fa-refresh reload-card"></i></li>
-                                                        <li><i class="fa fa-trash close-card"></i></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="card-block table-border-style">
-                                                <div class="table-responsive">
-                                                    <table class="table table-inverse">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>#</th>
-                                                                <th>First Name</th>
-                                                                <th>Last Name</th>
-                                                                <th>Username</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr class="bg-primary">
-                                                                <th scope="row">1</th>
-                                                                <td>Mark</td>
-                                                                <td>Otto</td>
-                                                                <td>@mdo</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row">2</th>
-                                                                <td>Jacob</td>
-                                                                <td>Thornton</td>
-                                                                <td>@fat</td>
-                                                            </tr>
-                                                            <tr class="bg-success">
-                                                                <th scope="row">3</th>
-                                                                <td>Larry</td>
-                                                                <td>the Bird</td>
-                                                                <td>@twitter</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row">4</th>
-                                                                <td>Larry</td>
-                                                                <td>the Bird</td>
-                                                                <td>@twitter</td>
-                                                            </tr>
-                                                            <tr class="bg-warning">
-                                                                <th scope="row">5</th>
-                                                                <td>Larry</td>
-                                                                <td>the Bird</td>
-                                                                <td>@twitter</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row">6</th>
-                                                                <td>Larry</td>
-                                                                <td>the Bird</td>
-                                                                <td>@twitter</td>
-                                                            </tr>
-                                                            <tr class="bg-danger">
-                                                                <th scope="row">7</th>
-                                                                <td>Larry</td>
-                                                                <td>the Bird</td>
-                                                                <td>@twitter</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row">8</th>
-                                                                <td>Larry</td>
-                                                                <td>the Bird</td>
-                                                                <td>@twitter</td>
-                                                            </tr>
-                                                            <tr class="bg-info">
-                                                                <th scope="row">9</th>
-                                                                <td>Larry</td>
-                                                                <td>the Bird</td>
-                                                                <td>@twitter</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Background Utilities table end -->
                                     </div>
-                                    <!-- Page-body end -->
                                 </div>
                             </div>
-                            <!-- Main-body end -->
-
                             <div id="styleSelector">
 
                             </div>
@@ -774,49 +532,51 @@
         </div>
     </div>
 
+
+
     <!-- Warning Section Starts -->
     <!-- Older IE warning message -->
     <!--[if lt IE 10]>
-    <div class="ie-warning">
-        <h1>Warning!!</h1>
-        <p>You are using an outdated version of Internet Explorer, please upgrade <br/>to any of the following web browsers to access this website.</p>
-        <div class="iew-container">
-            <ul class="iew-download">
-                <li>
-                    <a href="http://www.google.com/chrome/">
-                        <img src="assets/images/browser/chrome.png" alt="Chrome">
-                        <div>Chrome</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="https://www.mozilla.org/en-US/firefox/new/">
-                        <img src="assets/images/browser/firefox.png" alt="Firefox">
-                        <div>Firefox</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="http://www.opera.com">
-                        <img src="assets/images/browser/opera.png" alt="Opera">
-                        <div>Opera</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="https://www.apple.com/safari/">
-                        <img src="assets/images/browser/safari.png" alt="Safari">
-                        <div>Safari</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">
-                        <img src="assets/images/browser/ie.png" alt="">
-                        <div>IE (9 & above)</div>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <p>Sorry for the inconvenience!</p>
+<div class="ie-warning">
+    <h1>Warning!!</h1>
+    <p>You are using an outdated version of Internet Explorer, please upgrade <br/>to any of the following web browsers to access this website.</p>
+    <div class="iew-container">
+        <ul class="iew-download">
+            <li>
+                <a href="http://www.google.com/chrome/">
+                    <img src="assets/images/browser/chrome.png" alt="Chrome">
+                    <div>Chrome</div>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.mozilla.org/en-US/firefox/new/">
+                    <img src="assets/images/browser/firefox.png" alt="Firefox">
+                    <div>Firefox</div>
+                </a>
+            </li>
+            <li>
+                <a href="http://www.opera.com">
+                    <img src="assets/images/browser/opera.png" alt="Opera">
+                    <div>Opera</div>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.apple.com/safari/">
+                    <img src="assets/images/browser/safari.png" alt="Safari">
+                    <div>Safari</div>
+                </a>
+            </li>
+            <li>
+                <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">
+                    <img src="assets/images/browser/ie.png" alt="">
+                    <div>IE (9 & above)</div>
+                </a>
+            </li>
+        </ul>
     </div>
-    <![endif]-->
+    <p>Sorry for the inconvenience!</p>
+</div>
+<![endif]-->
     <!-- Warning Section Ends -->
     <!-- Required Jquery -->
     <script type="text/javascript" src="assets/js/jquery/jquery.min.js "></script>
@@ -827,7 +587,11 @@
     <script src="assets/pages/waves/js/waves.min.js"></script>
     <!-- jquery slimscroll js -->
     <script type="text/javascript" src="assets/js/jquery-slimscroll/jquery.slimscroll.js"></script>
+    <!-- Morris Chart js -->
+    <script src="assets/js/raphael/raphael.min.js"></script>
+    <script src="assets/js/morris.js/morris.js"></script>
     <!-- Custom js -->
+    <script src="assets/pages/chart/morris/morris-custom-chart.js"></script>
     <script src="assets/js/pcoded.min.js"></script>
     <script src="assets/js/vertical/vertical-layout.min.js"></script>
     <script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
@@ -835,3 +599,4 @@
 </body>
 
 </html>
+

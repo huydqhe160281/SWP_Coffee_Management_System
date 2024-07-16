@@ -19,78 +19,105 @@ import model.Size;
  */
 public class OrderDAO extends DBContext {
 
-    public List<Order> getAllOrders() {
+    public List<Order> getAllOrders() throws SQLException {
         List<Order> orders = new ArrayList<>();
-        String sql = "SELECT o.OrderID, o.AccountID, a.Name AS AccountName, o.OrderDate "
-                + "FROM [Order] o "
-                + "JOIN Account a ON o.AccountID = a.AccountID";
-        try {
-            PreparedStatement ps = connection.prepareStatement(sql);
+        String query = "SELECT o.OrderID, o.AccountID, a.Name AS AccountName, o.OrderDate, o.status, o.cancelled "
+                     + "FROM [Order] o "
+                     + "JOIN Account a ON o.AccountID = a.AccountID";
+        Statement stmt = connection.createStatement();
+        ResultSet rs = stmt.executeQuery(query);
+
+        while (rs.next()) {
+            Order order = new Order();
+            order.setOrderID(rs.getInt("OrderID"));
+            order.setAccountID(rs.getInt("AccountID"));
+            order.setAccountName(rs.getString("AccountName"));
+            order.setOrderDate(rs.getDate("OrderDate"));
+            order.setStatus(rs.getBoolean("status"));
+            order.setCancelled(rs.getBoolean("cancelled"));
+            orders.add(order);
+        }
+
+        return orders;
+    }
+
+    public List<Order> getOrdersByPage(int indexPage, int pageSize) throws SQLException {
+        List<Order> orders = new ArrayList<>();
+        String query = "SELECT o.OrderID, o.AccountID, a.Name AS AccountName, o.OrderDate, o.status, o.cancelled "
+                     + "FROM [Order] o "
+                     + "JOIN Account a ON o.AccountID = a.AccountID "
+                     + "ORDER BY o.OrderID "
+                     + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, (indexPage - 1) * pageSize);
+            ps.setInt(2, pageSize);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Order order = new Order(
-                        rs.getInt("OrderID"),
-                        rs.getInt("AccountID"),
-                        rs.getString("AccountName"),
-                        rs.getDate("OrderDate")
-                );
+                Order order = new Order();
+                order.setOrderID(rs.getInt("OrderID"));
+                order.setAccountID(rs.getInt("AccountID"));
+                order.setAccountName(rs.getString("AccountName"));
+                order.setOrderDate(rs.getDate("OrderDate"));
+                order.setStatus(rs.getBoolean("status"));
+                order.setCancelled(rs.getBoolean("cancelled"));
                 orders.add(order);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return orders;
     }
 
-    public Order getOrderById(int orderId) {
-        String sql = "SELECT o.OrderID, o.AccountID, a.Name AS AccountName, o.OrderDate "
-                + "FROM [Order] o "
-                + "JOIN Account a ON o.AccountID = a.AccountID "
-                + "WHERE o.OrderID = ?";
-        try ( PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, orderId);
-            ResultSet rs = ps.executeQuery();
+    
+    public int getTotalOrders() throws SQLException {
+        String query = "SELECT COUNT(*) FROM [Order]";
+        try (Statement stmt = connection.createStatement()) {
+            ResultSet rs = stmt.executeQuery(query);
             if (rs.next()) {
-                return new Order(
-                        rs.getInt("OrderID"),
-                        rs.getInt("AccountID"),
-                        rs.getString("AccountName"),
-                        rs.getDate("OrderDate")
-                );
+                return rs.getInt(1);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return null;
+        return 0;
     }
 
-    public List<OrderDetail> getOrderDetailsByOrderId(int orderId) {
-        List<OrderDetail> orderDetails = new ArrayList<>();
-        String sql = "SELECT od.OrderID, od.ProductID, p.ProductName, od.UnitPrice, od.Quantity, od.Note, d.Value AS DiscountValue, d.DiscountID "
-                + "FROM OrderDetail od "
-                + "JOIN Product p ON od.ProductID = p.ProductID "
-                + "LEFT JOIN Discount d ON od.DiscountID = d.DiscountID "
-                + "WHERE od.OrderID = ?";
-        try ( PreparedStatement ps = connection.prepareStatement(sql)) {
+    public List<OrderDetail> getOrderDetails(int orderId) {
+        List<OrderDetail> details = new ArrayList<>();
+        String query = "SELECT od.OrderID, od.ProductID, p.ProductName, od.UnitPrice, od.Quantity, od.Note, od.DiscountID, d.Value "
+                     + "FROM OrderDetail od "
+                     + "JOIN Product p ON od.ProductID = p.ProductID "
+                     + "LEFT JOIN Discount d ON od.DiscountID = d.DiscountID "
+                     + "WHERE od.OrderID = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
             ps.setInt(1, orderId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                OrderDetail orderDetail = new OrderDetail(
-                        rs.getInt("OrderID"),
-                        rs.getInt("ProductID"),
-                        rs.getString("ProductName"),
-                        rs.getDouble("UnitPrice"),
-                        rs.getInt("Quantity"),
-                        rs.getString("Note"),
-                        rs.getInt("DiscountID"),
-                        rs.getInt("DiscountValue")
-                );
-                orderDetails.add(orderDetail);
+                OrderDetail detail = new OrderDetail();
+                detail.setOrderID(rs.getInt("OrderID"));
+                detail.setProductID(rs.getInt("ProductID"));
+                detail.setProductName(rs.getString("ProductName"));
+                detail.setUnitPrice(rs.getDouble("UnitPrice"));
+                detail.setQuantity(rs.getInt("Quantity"));
+                detail.setNote(rs.getString("Note"));
+                detail.setDiscountID(rs.getInt("DiscountID"));
+                detail.setValue(rs.getInt("Value"));
+                details.add(detail);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return orderDetails;
+        return details;
+    }
+
+    public String getAccountNameByOrderId(int orderId) throws SQLException {
+        String query = "SELECT a.Name FROM [Order] o JOIN Account a ON o.AccountID = a.AccountID WHERE o.OrderID = ?";
+        PreparedStatement pstmt = connection.prepareStatement(query);
+        pstmt.setInt(1, orderId);
+        ResultSet rs = pstmt.executeQuery();
+
+        if (rs.next()) {
+            return rs.getString("Name");
+        }
+
+        return null;
     }
 
     public void addOrder(Order order) {

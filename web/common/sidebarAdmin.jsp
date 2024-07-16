@@ -79,6 +79,13 @@
                     <span class="pcoded-mcaret"></span>
                 </a>
             </li>
+            <li class="${fn:contains(currentPath, '/order_list') ? 'active' : ''}">
+                <a href="/order_list" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-receipt"></i><b>B</b></span>
+                    <span class="pcoded-mtext">Order Management</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
             <li class="${fn:contains(currentPath, '/size') ? 'active' : ''}">
                 <a href="/size" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-receipt"></i><b>B</b></span>
