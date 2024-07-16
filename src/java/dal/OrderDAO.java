@@ -195,7 +195,10 @@ public class OrderDAO extends DBContext {
 
     public List<ProductSize> getProductsByCategory(int categoryID) {
         List<ProductSize> products = new ArrayList<>();
-        String sql = "SELECT * "
+        String sql = "SELECT p.ProductID, p.ProductName, p.Image, p.Description, p.Recipe, p.Status, p.IsHot, "
+                + "c.CategoryID, c.CategoryName, c.Detail, "
+                + "ps.SizeID, ps.Price, "
+                + "s.SizeID AS sizeId, s.Type AS sizeType, s.Description AS sizeDescription "
                 + "FROM Product p "
                 + "JOIN ProductSize ps ON p.ProductID = ps.ProductID "
                 + "JOIN Category c ON p.CategoryID = c.CategoryID "
@@ -211,18 +214,16 @@ public class OrderDAO extends DBContext {
                         rs.getString("CategoryName"),
                         rs.getString("Detail")
                 );
+                Size size = new Size(
+                        rs.getInt("sizeId"),
+                        rs.getString("sizeType"),
+                        rs.getString("sizeDescription")
+                );
                 ProductSize product = new ProductSize(
                         rs.getInt("ProductID"),
-                        rs.getString("ProductName"),
-                        rs.getString("Image"),
-                        rs.getString("Description"),
-                        rs.getString("Recipe"),
-                        rs.getBoolean("Status"),
-                        rs.getBoolean("isHot"),
-                        category,
                         rs.getInt("SizeID"),
-                        rs.getString("Type"),
-                        rs.getDouble("Price")
+                        rs.getDouble("Price"),
+                        size
                 );
                 products.add(product);
             }

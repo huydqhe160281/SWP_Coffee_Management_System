@@ -249,31 +249,24 @@ public class ProductDAO extends DBContext {
 
     private List<ProductSize> getProductSizesByProductId(int productId) {
         List<ProductSize> productSizes = new ArrayList<>();
-        String sql = "SELECT ps.ProductID, ps.SizeID, ps.Price, p.ProductName, p.Image, p.Description as ProductDescription, "
-                + "p.Recipe, p.Status, p.IsHot, c.CategoryID, c.CategoryName, s.SizeID, s.Description as SizeDescription, s.Type "
+        String sql = "SELECT ps.ProductID, ps.SizeID, ps.Price, s.SizeID, s.Description, s.Type "
                 + "FROM [SWP391_SU24].[dbo].[ProductSize] ps "
-                + "JOIN [SWP391_SU24].[dbo].[Product] p ON ps.ProductID = p.ProductID "
                 + "JOIN [SWP391_SU24].[dbo].[Size] s ON ps.SizeID = s.SizeID "
-                + "JOIN [SWP391_SU24].[dbo].[Category] c ON p.CategoryID = c.CategoryID "
                 + "WHERE ps.ProductID = ?";
         try ( PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, productId);
             try ( ResultSet rs = st.executeQuery()) {
                 while (rs.next()) {
-                    Category category = new Category(rs.getInt("CategoryID"), rs.getString("CategoryName")
-                    , rs.getString("Detail"));
-                    ProductSize productSize = new ProductSize(
-                            rs.getInt("ProductID"),
-                            rs.getString("ProductName"),
-                            rs.getString("Image"),
-                            rs.getString("ProductDescription"),
-                            rs.getString("Recipe"),
-                            rs.getBoolean("Status"),
-                            rs.getBoolean("IsHot"),
-                            category,
+                    Size size = new Size(
                             rs.getInt("SizeID"),
                             rs.getString("Type"),
-                            rs.getDouble("Price")
+                            rs.getString("Description")
+                    );
+                    ProductSize productSize = new ProductSize(
+                            rs.getInt("ProductID"),
+                            rs.getInt("SizeID"),
+                            rs.getDouble("Price"),
+                            size
                     );
                     productSizes.add(productSize);
                 }
