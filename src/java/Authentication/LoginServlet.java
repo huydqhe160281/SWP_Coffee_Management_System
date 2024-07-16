@@ -83,6 +83,9 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("account", account);
             session.setAttribute("role", account.getRoleID());
 
+            // Set session timeout to 7 days
+            session.setMaxInactiveInterval(10080 * 60); // 10080 minutes
+
             if (account.getRoleID() == 1) {
                 response.sendRedirect("index.html");
             } else if (account.getRoleID() == 2) {

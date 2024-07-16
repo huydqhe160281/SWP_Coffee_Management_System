@@ -97,7 +97,7 @@ public class UpdateGeneralServlet extends HttpServlet {
         Part logoPart = request.getPart("logoImage");
         Part fivicoPart = request.getPart("fivicoImage");
 
-        String uploadPath = "D:/Huy_data/FPT/Ky8/SWP392/Coffee_Management/web/assets/images";
+        String uploadPath = "D:/Huy_data/FPT/Ky8/SWP392/demo2/web/assets/images";
 
         try {
             // Save new logo image
