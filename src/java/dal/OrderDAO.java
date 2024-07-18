@@ -110,6 +110,32 @@ public class OrderDAO extends DBContext {
         return details;
     }
 
+    public List<OrderDetail> getOrderDetailsByDate(Date orderDate) {
+        List<OrderDetail> orderDetails = new ArrayList<>();
+        String sql = "SELECT orderID, productID, productName, unitPrice, quantity, note, discountID, value FROM OrderDetails WHERE orderDate = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setDate(1, new java.sql.Date(orderDate.getTime()));
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                OrderDetail detail = new OrderDetail(
+                        rs.getInt("orderID"),
+                        rs.getInt("productID"),
+                        rs.getString("productName"),
+                        rs.getDouble("unitPrice"),
+                        rs.getInt("quantity"),
+                        rs.getString("note"),
+                        rs.getInt("discountID"),
+                        rs.getInt("value")
+                );
+                orderDetails.add(detail);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return orderDetails;
+    }
+
     public List<RevenueData> getRevenueByDay() {
         List<RevenueData> list = new ArrayList<>();
         String query = "SELECT CONVERT(date, OrderDate) as OrderDate, SUM(UnitPrice * Quantity) as Revenue "
@@ -148,11 +174,12 @@ public class OrderDAO extends DBContext {
 
     public List<RevenueData> getRevenueByDateRange(Date fromDate, Date toDate) {
         List<RevenueData> revenueDataList = new ArrayList<>();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        String query = "SELECT OrderDate, SUM(UnitPrice * Quantity) AS Revenue FROM [Order] "
-                + "JOIN OrderDetail ON [Order].OrderID = OrderDetail.OrderID "
-                + "WHERE OrderDate BETWEEN ? AND ? "
-                + "GROUP BY OrderDate";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String query = "SELECT o.OrderDate, SUM(od.UnitPrice * od.Quantity) AS Revenue "
+                + "FROM [Order] o "
+                + "JOIN OrderDetail od ON o.OrderID = od.OrderID "
+                + "WHERE o.OrderDate BETWEEN ? AND ? "
+                + "GROUP BY o.OrderDate";
         try ( PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, sdf.format(fromDate));
             ps.setString(2, sdf.format(toDate));
