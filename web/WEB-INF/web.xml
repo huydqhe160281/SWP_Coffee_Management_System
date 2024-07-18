@@ -192,6 +192,10 @@
         <servlet-name>DeleteCampusServlet</servlet-name>
         <servlet-class>CampusController.DeleteCampusServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteSizeServlet</servlet-name>
+        <servlet-class>SizeController.DeleteSizeServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductServlet</servlet-name>
         <url-pattern>/product</url-pattern>
@@ -371,6 +375,10 @@
     <servlet-mapping>
         <servlet-name>DeleteCampusServlet</servlet-name>
         <url-pattern>/campus_delete</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteSizeServlet</servlet-name>
+        <url-pattern>/size_delete</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
