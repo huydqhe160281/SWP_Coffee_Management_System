@@ -51,7 +51,7 @@ public class OrderServlet extends HttpServlet {
             throws ServletException, IOException {
         String categoryIDParam = request.getParameter("categoryID");
         String productIDParam = request.getParameter("productID");
-
+        HttpSession session = request.getSession();
         if (categoryIDParam != null && !categoryIDParam.isEmpty()) {
             try {
                 int categoryID = Integer.parseInt(categoryIDParam);
@@ -59,13 +59,14 @@ public class OrderServlet extends HttpServlet {
                 List<Category> categories = categoryDAO.getAllCategory();
                 request.setAttribute("categories", categories);
                 request.setAttribute("products", products);
-                request.setAttribute("selectedCategoryID", categoryID); // Lưu trữ categoryID đã chọn
+                request.setAttribute("selectedCategoryID", categoryID);
                 if (productIDParam != null && !productIDParam.isEmpty()) {
                     int productID = Integer.parseInt(productIDParam);
                     List<String> sizes = orderDAO.getSizesByProduct(productID);
-                    request.setAttribute("sizes", sizes);
-                    request.setAttribute("selectedProductID", productID); // Lưu trữ productID đã chọn
+                    session.setAttribute("selectedProductID", productID);
+                    session.setAttribute("sizes", sizes);
                 }
+
                 request.getRequestDispatcher("order.jsp").forward(request, response);
             } catch (NumberFormatException e) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "CategoryID and ProductID must be valid integers.");

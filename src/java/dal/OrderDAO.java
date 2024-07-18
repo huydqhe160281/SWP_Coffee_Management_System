@@ -18,10 +18,6 @@ import model.SalesData;
 import model.Size;
 import model.StaffOrder;
 
-/**
- *
- * @author Nam
- */
 public class OrderDAO extends DBContext {
 
     public List<Order> getAllOrders() throws SQLException {
@@ -210,10 +206,12 @@ public class OrderDAO extends DBContext {
     }
 
     public void addOrder(Order order) {
-        String sql = "INSERT INTO [Order] (AccountID, OrderDate) VALUES (?, ?)";
+        String sql = "INSERT INTO [Order] (AccountID, OrderDate, Status, Cancelled) VALUES (?, ?, ?, ?)";
         try ( PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, order.getAccountID());
             ps.setDate(2, new java.sql.Date(order.getOrderDate().getTime()));
+            ps.setBoolean(3, order.isStatus());
+            ps.setBoolean(4, order.isCancelled());
             ps.executeUpdate();
 
             ResultSet rs = ps.getGeneratedKeys();
@@ -308,7 +306,11 @@ public class OrderDAO extends DBContext {
                         category,
                         rs.getInt("SizeID"),
                         rs.getString("Type"),
-                        rs.getDouble("Price")
+                        rs.getDouble("Price"),
+                        0, // Default quantity as 0
+                        0, // Default orderID as 0
+                        0, // Default discountID as 0
+                        "" // Default note as empty
                 );
                 products.add(product);
             }

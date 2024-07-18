@@ -17,11 +17,15 @@ public class StaffOrder {
     private int sizeID;
     private String type;
     private double price;
+    private int quantity;
+    private int orderID;  
+    private int discountID; 
+    private String note;
 
     public StaffOrder() {
     }
 
-    public StaffOrder(int productID, String productName, String image, String description, Category category, int sizeID, String type, double price) {
+    public StaffOrder(int productID, String productName, String image, String description, Category category, int sizeID, String type, double price, int quantity, int orderID, int discountID, String note) {
         this.productID = productID;
         this.productName = productName;
         this.image = image;
@@ -30,6 +34,10 @@ public class StaffOrder {
         this.sizeID = sizeID;
         this.type = type;
         this.price = price;
+        this.quantity = quantity;
+        this.orderID = orderID;
+        this.discountID = discountID;
+        this.note = note;
     }
 
     public int getProductID() {
@@ -96,6 +104,37 @@ public class StaffOrder {
         this.price = price;
     }
 
-    
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public int getOrderID() {
+        return orderID;
+    }
+
+    public void setOrderID(int orderID) {
+        this.orderID = orderID;
+    }
+
+    public int getDiscountID() {
+        return discountID;
+    }
+
+    public void setDiscountID(int discountID) {
+        this.discountID = discountID;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
     
 }

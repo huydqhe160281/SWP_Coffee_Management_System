@@ -35,7 +35,7 @@
         <div class="pcoded-navigation-label">Navigation</div>
         <ul class="pcoded-item pcoded-left-item">
             <li class="${fn:contains(currentPath, '/index') ? 'active' : ''}">
-                <a href="index.html" class="waves-effect waves-dark">
+                <a href="index.jsp" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
                     <span class="pcoded-mtext">Dashboard</span>
                     <span class="pcoded-mcaret"></span>
