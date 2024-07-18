@@ -5,12 +5,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import model.Category;
 import model.Order;
 import model.OrderDetail;
 import model.ProductSize;
+import model.RevenueData;
+import model.SalesData;
 import model.Size;
 
 /**
@@ -22,8 +26,8 @@ public class OrderDAO extends DBContext {
     public List<Order> getAllOrders() throws SQLException {
         List<Order> orders = new ArrayList<>();
         String query = "SELECT o.OrderID, o.AccountID, a.Name AS AccountName, o.OrderDate, o.status, o.cancelled "
-                     + "FROM [Order] o "
-                     + "JOIN Account a ON o.AccountID = a.AccountID";
+                + "FROM [Order] o "
+                + "JOIN Account a ON o.AccountID = a.AccountID";
         Statement stmt = connection.createStatement();
         ResultSet rs = stmt.executeQuery(query);
 
@@ -44,11 +48,11 @@ public class OrderDAO extends DBContext {
     public List<Order> getOrdersByPage(int indexPage, int pageSize) throws SQLException {
         List<Order> orders = new ArrayList<>();
         String query = "SELECT o.OrderID, o.AccountID, a.Name AS AccountName, o.OrderDate, o.status, o.cancelled "
-                     + "FROM [Order] o "
-                     + "JOIN Account a ON o.AccountID = a.AccountID "
-                     + "ORDER BY o.OrderID "
-                     + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
+                + "FROM [Order] o "
+                + "JOIN Account a ON o.AccountID = a.AccountID "
+                + "ORDER BY o.OrderID "
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, (indexPage - 1) * pageSize);
             ps.setInt(2, pageSize);
             ResultSet rs = ps.executeQuery();
@@ -66,10 +70,9 @@ public class OrderDAO extends DBContext {
         return orders;
     }
 
-    
     public int getTotalOrders() throws SQLException {
         String query = "SELECT COUNT(*) FROM [Order]";
-        try (Statement stmt = connection.createStatement()) {
+        try ( Statement stmt = connection.createStatement()) {
             ResultSet rs = stmt.executeQuery(query);
             if (rs.next()) {
                 return rs.getInt(1);
@@ -81,10 +84,10 @@ public class OrderDAO extends DBContext {
     public List<OrderDetail> getOrderDetails(int orderId) {
         List<OrderDetail> details = new ArrayList<>();
         String query = "SELECT od.OrderID, od.ProductID, p.ProductName, od.UnitPrice, od.Quantity, od.Note, od.DiscountID, d.Value "
-                     + "FROM OrderDetail od "
-                     + "JOIN Product p ON od.ProductID = p.ProductID "
-                     + "LEFT JOIN Discount d ON od.DiscountID = d.DiscountID "
-                     + "WHERE od.OrderID = ?";
+                + "FROM OrderDetail od "
+                + "JOIN Product p ON od.ProductID = p.ProductID "
+                + "LEFT JOIN Discount d ON od.DiscountID = d.DiscountID "
+                + "WHERE od.OrderID = ?";
         try {
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setInt(1, orderId);
@@ -105,6 +108,64 @@ public class OrderDAO extends DBContext {
             e.printStackTrace();
         }
         return details;
+    }
+
+    public List<RevenueData> getRevenueByDay() {
+        List<RevenueData> list = new ArrayList<>();
+        String query = "SELECT CONVERT(date, OrderDate) as OrderDate, SUM(UnitPrice * Quantity) as Revenue "
+                + "FROM [Order] JOIN OrderDetail ON [Order].OrderID = OrderDetail.OrderID "
+                + "GROUP BY CONVERT(date, OrderDate)";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new RevenueData(rs.getDate("OrderDate"), rs.getDouble("Revenue")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public List<SalesData> getSalesByDay() {
+        List<SalesData> list = new ArrayList<>();
+        String query = "SELECT CONVERT(date, OrderDate) as OrderDate, SUM(Quantity) as Quantity "
+                + "FROM [Order] JOIN OrderDetail ON [Order].OrderID = OrderDetail.OrderID "
+                + "GROUP BY CONVERT(date, OrderDate)";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new SalesData(rs.getDate("OrderDate"), rs.getInt("Quantity")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public List<RevenueData> getRevenueByDateRange(Date fromDate, Date toDate) {
+        List<RevenueData> revenueDataList = new ArrayList<>();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        String query = "SELECT OrderDate, SUM(UnitPrice * Quantity) AS Revenue FROM [Order] "
+                + "JOIN OrderDetail ON [Order].OrderID = OrderDetail.OrderID "
+                + "WHERE OrderDate BETWEEN ? AND ? "
+                + "GROUP BY OrderDate";
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, sdf.format(fromDate));
+            ps.setString(2, sdf.format(toDate));
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Date orderDate = rs.getDate("OrderDate");
+                double revenue = rs.getDouble("Revenue");
+                revenueDataList.add(new RevenueData(orderDate, revenue));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return revenueDataList;
     }
 
     public String getAccountNameByOrderId(int orderId) throws SQLException {
