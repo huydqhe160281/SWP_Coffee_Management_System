@@ -16,6 +16,7 @@ import model.ProductSize;
 import model.RevenueData;
 import model.SalesData;
 import model.Size;
+import model.StaffOrder;
 
 /**
  *
@@ -281,15 +282,12 @@ public class OrderDAO extends DBContext {
         return categories;
     }
 
-    public List<ProductSize> getProductsByCategory(int categoryID) {
-        List<ProductSize> products = new ArrayList<>();
-        String sql = "SELECT p.ProductID, p.ProductName, p.Image, p.Description, p.Recipe, p.Status, p.IsHot, "
-                + "c.CategoryID, c.CategoryName, c.Detail, "
-                + "ps.SizeID, ps.Price, "
-                + "s.SizeID AS sizeId, s.Type AS sizeType, s.Description AS sizeDescription "
+    public List<StaffOrder> getProductsByCategory(int categoryID) {
+        List<StaffOrder> products = new ArrayList<>();
+        String sql = "SELECT p.ProductID, p.ProductName, p.Image, p.Description, c.CategoryID, c.CategoryName, ps.SizeID, s.Type, ps.Price "
                 + "FROM Product p "
-                + "JOIN ProductSize ps ON p.ProductID = ps.ProductID "
                 + "JOIN Category c ON p.CategoryID = c.CategoryID "
+                + "JOIN ProductSize ps ON p.ProductID = ps.ProductID "
                 + "JOIN Size s ON ps.SizeID = s.SizeID "
                 + "WHERE p.CategoryID = ?";
         try {
@@ -300,18 +298,17 @@ public class OrderDAO extends DBContext {
                 Category category = new Category(
                         rs.getInt("CategoryID"),
                         rs.getString("CategoryName"),
-                        rs.getString("Detail")
+                        null // Thêm thông tin chi tiết nếu cần thiết
                 );
-                Size size = new Size(
-                        rs.getInt("sizeId"),
-                        rs.getString("sizeType"),
-                        rs.getString("sizeDescription")
-                );
-                ProductSize product = new ProductSize(
+                StaffOrder product = new StaffOrder(
                         rs.getInt("ProductID"),
+                        rs.getString("ProductName"),
+                        rs.getString("Image"),
+                        rs.getString("Description"),
+                        category,
                         rs.getInt("SizeID"),
-                        rs.getDouble("Price"),
-                        size
+                        rs.getString("Type"),
+                        rs.getDouble("Price")
                 );
                 products.add(product);
             }
@@ -323,7 +320,7 @@ public class OrderDAO extends DBContext {
 
     public List<String> getSizesByProduct(int productID) {
         List<String> sizes = new ArrayList<>();
-        String sql = "SELECT * "
+        String sql = "SELECT s.Type "
                 + "FROM ProductSize ps "
                 + "JOIN Size s ON ps.SizeID = s.SizeID "
                 + "WHERE ps.ProductID = ?";
