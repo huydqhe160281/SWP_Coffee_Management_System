@@ -180,6 +180,10 @@
         <servlet-name>CreateCampusServlet</servlet-name>
         <servlet-class>CampusController.CreateCampusServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewCampusServlet</servlet-name>
+        <servlet-class>CampusController.ViewCampusServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductServlet</servlet-name>
         <url-pattern>/product</url-pattern>
@@ -347,6 +351,10 @@
     <servlet-mapping>
         <servlet-name>CreateCampusServlet</servlet-name>
         <url-pattern>/campus_create</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewCampusServlet</servlet-name>
+        <url-pattern>/campus_view_detail</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
