@@ -87,7 +87,7 @@ public class LoginServlet extends HttpServlet {
             session.setMaxInactiveInterval(10080 * 60); // 10080 minutes
 
             if (account.getRoleID() == 1) {
-                response.sendRedirect("index.html");
+                response.sendRedirect("index.jsp");
             } else if (account.getRoleID() == 2) {
                 response.sendRedirect("home");
             }

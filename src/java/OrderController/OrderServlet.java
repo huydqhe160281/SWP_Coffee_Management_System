@@ -4,6 +4,7 @@
  */
 package OrderController;
 
+import com.google.gson.Gson;
 import dal.CategoryDAO;
 import dal.OrderDAO;
 import dal.ProductDAO;
@@ -13,9 +14,11 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import model.Category;
@@ -24,6 +27,7 @@ import model.OrderDetail;
 import model.Product;
 import model.ProductSize;
 import model.Size;
+import model.StaffOrder;
 
 /**
  *
@@ -40,7 +44,6 @@ public class OrderServlet extends HttpServlet {
         categoryDAO = new CategoryDAO();
         productDAO = new ProductDAO();
         orderDAO = new OrderDAO();
-
     }
 
     @Override
@@ -48,21 +51,22 @@ public class OrderServlet extends HttpServlet {
             throws ServletException, IOException {
         String categoryIDParam = request.getParameter("categoryID");
         String productIDParam = request.getParameter("productID");
-
+        HttpSession session = request.getSession();
         if (categoryIDParam != null && !categoryIDParam.isEmpty()) {
             try {
                 int categoryID = Integer.parseInt(categoryIDParam);
-                List<ProductSize> products = orderDAO.getProductsByCategory(categoryID);
+                List<StaffOrder> products = orderDAO.getProductsByCategory(categoryID);
                 List<Category> categories = categoryDAO.getAllCategory();
                 request.setAttribute("categories", categories);
                 request.setAttribute("products", products);
-                request.setAttribute("selectedCategoryID", categoryID); // Lưu trữ categoryID đã chọn
+                request.setAttribute("selectedCategoryID", categoryID);
                 if (productIDParam != null && !productIDParam.isEmpty()) {
                     int productID = Integer.parseInt(productIDParam);
                     List<String> sizes = orderDAO.getSizesByProduct(productID);
-                    request.setAttribute("sizes", sizes);
-                    request.setAttribute("selectedProductID", productID); // Lưu trữ productID đã chọn
+                    session.setAttribute("selectedProductID", productID);
+                    session.setAttribute("sizes", sizes);
                 }
+
                 request.getRequestDispatcher("order.jsp").forward(request, response);
             } catch (NumberFormatException e) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "CategoryID and ProductID must be valid integers.");
@@ -74,70 +78,37 @@ public class OrderServlet extends HttpServlet {
         }
     }
 
-//    private void listOrders(HttpServletRequest request, HttpServletResponse response)
-//            throws ServletException, IOException, SQLException {
-//        List<Order> orders = orderDAO.getAllOrders();
-//        request.setAttribute("orders", orders);
-//        request.getRequestDispatcher("order.jsp").forward(request, response);
-//    }
-
-    
-
-    private void deleteOrder(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
-        int orderId = Integer.parseInt(request.getParameter("orderId"));
-        orderDAO.deleteOrder(orderId);
-        response.sendRedirect("order?action=list");
-    }
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        String action = request.getParameter("action");
-//        if (action == null) {
-//            action = "list";
-//        }
-//
-//        switch (action) {
-//            case "add":
-//                addOrder(request, response);
-//                break;
-//            default:
-//                listOrders(request, response);
-//                break;
-//        }
-    }
-
-    private void addOrder(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
-        int accountId = Integer.parseInt(request.getParameter("accountId"));
-        Date orderDate = parseDate(request.getParameter("orderDate"));
-
-        Order order = new Order();
-        order.setAccountID(accountId);
-        order.setOrderDate(orderDate);
-
-        orderDAO.addOrder(order);
-        response.sendRedirect("order?action=list");
-    }
-
-    private Date parseDate(String date) {
-        try {
-            return new SimpleDateFormat("yyyy-MM-dd").parse(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
+        HttpSession session = request.getSession();
+        List<StaffOrder> orderList = (List<StaffOrder>) session.getAttribute("orderList");
+        if (orderList == null) {
+            orderList = new ArrayList<>();
         }
+
+        int productID = Integer.parseInt(request.getParameter("productID"));
+        String productName = request.getParameter("productName");
+        String sizeType = request.getParameter("sizeType");
+        double unitPrice = Double.parseDouble(request.getParameter("unitPrice"));
+
+        StaffOrder order = new StaffOrder();
+        order.setProductID(productID);
+        order.setProductName(productName);
+        order.setType(sizeType);
+        order.setPrice(unitPrice);
+
+        orderList.add(order);
+        session.setAttribute("orderList", orderList);
+
+        response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
+        out.print(new Gson().toJson(orderList));
+        out.flush();
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
-
+    }
 }

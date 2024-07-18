@@ -163,7 +163,7 @@
                                         <div class="col-md-4">
                                             <ul class="breadcrumb">
                                                 <li class="breadcrumb-item">
-                                                    <a href="index.html"> <i class="fa fa-home"></i> </a>
+                                                    <a href="index.jsp"> <i class="fa fa-home"></i> </a>
                                                 </li>
                                                 <li class="breadcrumb-item">
                                                     <a href="/admin/listOrder">Order Management</a>
@@ -229,16 +229,16 @@
                                                                 </tbody>
                                                             </table>
                                                             <div class="d-flex justify-content-end">
-                                                                <form id="sizeForm" method="get" action="listOrder" class="mr-2">
+                                                                <form id="sizeForm" method="get" action="order_list" class="mr-2">
                                                                     <div class="input-group mb-3">
                                                                         <div class="input-group-prepend">
                                                                             <label class="input-group-text" for="inputGroupSelect01">Size</label>
                                                                         </div>
-                                                                        <select class="custom-select w-25" id="inputGroupSelect01" name="pageSize" onchange="submitSizeForm()">
-                                                                            <option value="2" ${pageSize == 2 ? 'selected' : ''}>2</option>
-                                                                            <option value="5" ${pageSize == 5 ? 'selected' : ''}>5</option>
-                                                                            <option value="10" ${pageSize == 10 ? 'selected' : ''}>10</option>
-                                                                            <option value="20" ${pageSize == 20 ? 'selected' : ''}>20</option>
+                                                                        <select class="custom-select w-25" id="inputGroupSelect01" name="sizePage" onchange="submitSizeForm()">
+                                                                            <option value="2" ${sizePage == 2 ? 'selected' : ''}>2</option>
+                                                                            <option value="5" ${sizePage == 5 ? 'selected' : ''}>5</option>
+                                                                            <option value="10" ${sizePage == 10 ? 'selected' : ''}>10</option>
+                                                                            <option value="20" ${sizePage == 20 ? 'selected' : ''}>20</option>
                                                                         </select>
                                                                     </div>
                                                                     <input type="hidden" name="indexPage" value="${indexPage}" />
@@ -247,17 +247,17 @@
                                                                     <ul class="pagination">
                                                                         <c:if test="${indexPage > 1}">
                                                                             <li class="page-item">
-                                                                                <a class="page-link" href="?indexPage=${indexPage - 1}&pageSize=${pageSize}" tabindex="-1">Previous</a>
+                                                                                <a class="page-link" href="?indexPage=${indexPage - 1}&sizePage=${sizePage}&categoryID=${categoryID}" tabindex="-1">Previous</a>
                                                                             </li>
                                                                         </c:if>
                                                                         <c:forEach var="i" begin="1" end="${endPage}">
                                                                             <li class="page-item ${i == indexPage ? 'active' : ''}">
-                                                                                <a class="page-link" href="?indexPage=${i}&pageSize=${pageSize}">${i} <c:if test="${i == indexPage}"><span class="sr-only">(current)</span></c:if></a>
+                                                                                <a class="page-link" href="?indexPage=${i}&sizePage=${sizePage}&categoryID=${categoryID}">${i} <c:if test="${i == indexPage}"><span class="sr-only">(current)</span></c:if></a>
                                                                                 </li>
                                                                         </c:forEach>
                                                                         <c:if test="${indexPage < endPage}">
                                                                             <li class="page-item">
-                                                                                <a class="page-link" href="?indexPage=${indexPage + 1}&pageSize=${pageSize}">Next</a>
+                                                                                <a class="page-link" href="?indexPage=${indexPage + 1}&sizePage=${sizePage}&categoryID=${categoryID}">Next</a>
                                                                             </li>
                                                                         </c:if>
                                                                     </ul>

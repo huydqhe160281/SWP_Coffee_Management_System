@@ -5,25 +5,26 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import model.Category;
 import model.Order;
 import model.OrderDetail;
 import model.ProductSize;
+import model.RevenueData;
+import model.SalesData;
 import model.Size;
+import model.StaffOrder;
 
-/**
- *
- * @author Nam
- */
 public class OrderDAO extends DBContext {
 
     public List<Order> getAllOrders() throws SQLException {
         List<Order> orders = new ArrayList<>();
         String query = "SELECT o.OrderID, o.AccountID, a.Name AS AccountName, o.OrderDate, o.status, o.cancelled "
-                     + "FROM [Order] o "
-                     + "JOIN Account a ON o.AccountID = a.AccountID";
+                + "FROM [Order] o "
+                + "JOIN Account a ON o.AccountID = a.AccountID";
         Statement stmt = connection.createStatement();
         ResultSet rs = stmt.executeQuery(query);
 
@@ -44,11 +45,11 @@ public class OrderDAO extends DBContext {
     public List<Order> getOrdersByPage(int indexPage, int pageSize) throws SQLException {
         List<Order> orders = new ArrayList<>();
         String query = "SELECT o.OrderID, o.AccountID, a.Name AS AccountName, o.OrderDate, o.status, o.cancelled "
-                     + "FROM [Order] o "
-                     + "JOIN Account a ON o.AccountID = a.AccountID "
-                     + "ORDER BY o.OrderID "
-                     + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
+                + "FROM [Order] o "
+                + "JOIN Account a ON o.AccountID = a.AccountID "
+                + "ORDER BY o.OrderID "
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, (indexPage - 1) * pageSize);
             ps.setInt(2, pageSize);
             ResultSet rs = ps.executeQuery();
@@ -66,10 +67,9 @@ public class OrderDAO extends DBContext {
         return orders;
     }
 
-    
     public int getTotalOrders() throws SQLException {
         String query = "SELECT COUNT(*) FROM [Order]";
-        try (Statement stmt = connection.createStatement()) {
+        try ( Statement stmt = connection.createStatement()) {
             ResultSet rs = stmt.executeQuery(query);
             if (rs.next()) {
                 return rs.getInt(1);
@@ -81,10 +81,10 @@ public class OrderDAO extends DBContext {
     public List<OrderDetail> getOrderDetails(int orderId) {
         List<OrderDetail> details = new ArrayList<>();
         String query = "SELECT od.OrderID, od.ProductID, p.ProductName, od.UnitPrice, od.Quantity, od.Note, od.DiscountID, d.Value "
-                     + "FROM OrderDetail od "
-                     + "JOIN Product p ON od.ProductID = p.ProductID "
-                     + "LEFT JOIN Discount d ON od.DiscountID = d.DiscountID "
-                     + "WHERE od.OrderID = ?";
+                + "FROM OrderDetail od "
+                + "JOIN Product p ON od.ProductID = p.ProductID "
+                + "LEFT JOIN Discount d ON od.DiscountID = d.DiscountID "
+                + "WHERE od.OrderID = ?";
         try {
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setInt(1, orderId);
@@ -107,6 +107,91 @@ public class OrderDAO extends DBContext {
         return details;
     }
 
+    public List<OrderDetail> getOrderDetailsByDate(Date orderDate) {
+        List<OrderDetail> orderDetails = new ArrayList<>();
+        String sql = "SELECT orderID, productID, productName, unitPrice, quantity, note, discountID, value FROM OrderDetails WHERE orderDate = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setDate(1, new java.sql.Date(orderDate.getTime()));
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                OrderDetail detail = new OrderDetail(
+                        rs.getInt("orderID"),
+                        rs.getInt("productID"),
+                        rs.getString("productName"),
+                        rs.getDouble("unitPrice"),
+                        rs.getInt("quantity"),
+                        rs.getString("note"),
+                        rs.getInt("discountID"),
+                        rs.getInt("value")
+                );
+                orderDetails.add(detail);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return orderDetails;
+    }
+
+    public List<RevenueData> getRevenueByDay() {
+        List<RevenueData> list = new ArrayList<>();
+        String query = "SELECT CONVERT(date, OrderDate) as OrderDate, SUM(UnitPrice * Quantity) as Revenue "
+                + "FROM [Order] JOIN OrderDetail ON [Order].OrderID = OrderDetail.OrderID "
+                + "GROUP BY CONVERT(date, OrderDate)";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new RevenueData(rs.getDate("OrderDate"), rs.getDouble("Revenue")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public List<SalesData> getSalesByDay() {
+        List<SalesData> list = new ArrayList<>();
+        String query = "SELECT CONVERT(date, OrderDate) as OrderDate, SUM(Quantity) as Quantity "
+                + "FROM [Order] JOIN OrderDetail ON [Order].OrderID = OrderDetail.OrderID "
+                + "GROUP BY CONVERT(date, OrderDate)";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new SalesData(rs.getDate("OrderDate"), rs.getInt("Quantity")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public List<RevenueData> getRevenueByDateRange(Date fromDate, Date toDate) {
+        List<RevenueData> revenueDataList = new ArrayList<>();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String query = "SELECT o.OrderDate, SUM(od.UnitPrice * od.Quantity) AS Revenue "
+                + "FROM [Order] o "
+                + "JOIN OrderDetail od ON o.OrderID = od.OrderID "
+                + "WHERE o.OrderDate BETWEEN ? AND ? "
+                + "GROUP BY o.OrderDate";
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, sdf.format(fromDate));
+            ps.setString(2, sdf.format(toDate));
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Date orderDate = rs.getDate("OrderDate");
+                double revenue = rs.getDouble("Revenue");
+                revenueDataList.add(new RevenueData(orderDate, revenue));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return revenueDataList;
+    }
+
     public String getAccountNameByOrderId(int orderId) throws SQLException {
         String query = "SELECT a.Name FROM [Order] o JOIN Account a ON o.AccountID = a.AccountID WHERE o.OrderID = ?";
         PreparedStatement pstmt = connection.prepareStatement(query);
@@ -121,10 +206,12 @@ public class OrderDAO extends DBContext {
     }
 
     public void addOrder(Order order) {
-        String sql = "INSERT INTO [Order] (AccountID, OrderDate) VALUES (?, ?)";
+        String sql = "INSERT INTO [Order] (AccountID, OrderDate, Status, Cancelled) VALUES (?, ?, ?, ?)";
         try ( PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, order.getAccountID());
             ps.setDate(2, new java.sql.Date(order.getOrderDate().getTime()));
+            ps.setBoolean(3, order.isStatus());
+            ps.setBoolean(4, order.isCancelled());
             ps.executeUpdate();
 
             ResultSet rs = ps.getGeneratedKeys();
@@ -193,15 +280,12 @@ public class OrderDAO extends DBContext {
         return categories;
     }
 
-    public List<ProductSize> getProductsByCategory(int categoryID) {
-        List<ProductSize> products = new ArrayList<>();
-        String sql = "SELECT p.ProductID, p.ProductName, p.Image, p.Description, p.Recipe, p.Status, p.IsHot, "
-                + "c.CategoryID, c.CategoryName, c.Detail, "
-                + "ps.SizeID, ps.Price, "
-                + "s.SizeID AS sizeId, s.Type AS sizeType, s.Description AS sizeDescription "
+    public List<StaffOrder> getProductsByCategory(int categoryID) {
+        List<StaffOrder> products = new ArrayList<>();
+        String sql = "SELECT p.ProductID, p.ProductName, p.Image, p.Description, c.CategoryID, c.CategoryName, ps.SizeID, s.Type, ps.Price "
                 + "FROM Product p "
-                + "JOIN ProductSize ps ON p.ProductID = ps.ProductID "
                 + "JOIN Category c ON p.CategoryID = c.CategoryID "
+                + "JOIN ProductSize ps ON p.ProductID = ps.ProductID "
                 + "JOIN Size s ON ps.SizeID = s.SizeID "
                 + "WHERE p.CategoryID = ?";
         try {
@@ -212,18 +296,21 @@ public class OrderDAO extends DBContext {
                 Category category = new Category(
                         rs.getInt("CategoryID"),
                         rs.getString("CategoryName"),
-                        rs.getString("Detail")
+                        null // Thêm thông tin chi tiết nếu cần thiết
                 );
-                Size size = new Size(
-                        rs.getInt("sizeId"),
-                        rs.getString("sizeType"),
-                        rs.getString("sizeDescription")
-                );
-                ProductSize product = new ProductSize(
+                StaffOrder product = new StaffOrder(
                         rs.getInt("ProductID"),
+                        rs.getString("ProductName"),
+                        rs.getString("Image"),
+                        rs.getString("Description"),
+                        category,
                         rs.getInt("SizeID"),
+                        rs.getString("Type"),
                         rs.getDouble("Price"),
-                        size
+                        0, // Default quantity as 0
+                        0, // Default orderID as 0
+                        0, // Default discountID as 0
+                        "" // Default note as empty
                 );
                 products.add(product);
             }
@@ -235,7 +322,7 @@ public class OrderDAO extends DBContext {
 
     public List<String> getSizesByProduct(int productID) {
         List<String> sizes = new ArrayList<>();
-        String sql = "SELECT * "
+        String sql = "SELECT s.Type "
                 + "FROM ProductSize ps "
                 + "JOIN Size s ON ps.SizeID = s.SizeID "
                 + "WHERE ps.ProductID = ?";
