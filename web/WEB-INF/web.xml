@@ -176,6 +176,10 @@
         <servlet-name>CampusServlet</servlet-name>
         <servlet-class>CampusController.CampusServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CreateCampusServlet</servlet-name>
+        <servlet-class>CampusController.CreateCampusServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductServlet</servlet-name>
         <url-pattern>/product</url-pattern>
@@ -339,6 +343,10 @@
     <servlet-mapping>
         <servlet-name>CampusServlet</servlet-name>
         <url-pattern>/campus</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateCampusServlet</servlet-name>
+        <url-pattern>/campus_create</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
