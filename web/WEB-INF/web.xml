@@ -101,6 +101,30 @@
         <servlet-class>SupplierController.UpdateSupplierServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>CampusServlet</servlet-name>
+        <servlet-class>CampusController.CampusServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateCampusServlet</servlet-name>
+        <servlet-class>CampusController.CreateCampusServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewCampusServlet</servlet-name>
+        <servlet-class>CampusController.ViewCampusServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateCampusServlet</servlet-name>
+        <servlet-class>CampusController.UpdateCampusServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteCampusServlet</servlet-name>
+        <servlet-class>CampusController.DeleteCampusServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteSizeServlet</servlet-name>
+        <servlet-class>SizeController.DeleteSizeServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ViewSupplierServlet</servlet-name>
         <servlet-class>SupplierController.ViewSupplierServlet</servlet-class>
     </servlet>
@@ -173,28 +197,8 @@
         <servlet-class>OrderController.OrderDetailServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>CampusServlet</servlet-name>
-        <servlet-class>CampusController.CampusServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>CreateCampusServlet</servlet-name>
-        <servlet-class>CampusController.CreateCampusServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ViewCampusServlet</servlet-name>
-        <servlet-class>CampusController.ViewCampusServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>UpdateCampusServlet</servlet-name>
-        <servlet-class>CampusController.UpdateCampusServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>DeleteCampusServlet</servlet-name>
-        <servlet-class>CampusController.DeleteCampusServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>DeleteSizeServlet</servlet-name>
-        <servlet-class>SizeController.DeleteSizeServlet</servlet-class>
+        <servlet-name>StatisticalServlet</servlet-name>
+        <servlet-class>Statistical.StatisticalServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ProductServlet</servlet-name>
@@ -353,10 +357,6 @@
         <url-pattern>/order_list</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>OrderDetailServlet</servlet-name>
-        <url-pattern>/order_detail</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>CampusServlet</servlet-name>
         <url-pattern>/campus</url-pattern>
     </servlet-mapping>
@@ -379,6 +379,14 @@
     <servlet-mapping>
         <servlet-name>DeleteSizeServlet</servlet-name>
         <url-pattern>/size_delete</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderDetailServlet</servlet-name>
+        <url-pattern>/order_detail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StatisticalServlet</servlet-name>
+        <url-pattern>/statistical</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

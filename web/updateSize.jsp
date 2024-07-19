@@ -105,7 +105,7 @@
                             <div class="page-block">
                                 <ul class="breadcrumb">
                                     <li class="breadcrumb-item">
-                                        <a href="index.html"> <i class="fa fa-home"></i> </a>
+                                        <a href="index.jsp"> <i class="fa fa-home"></i> </a>
                                     </li>
                                     <li class="breadcrumb-item">
                                         <a href="/size">Size Management</a>

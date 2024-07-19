@@ -31,7 +31,7 @@
                     </div>
                 </div>
             </div>
-            <a href="index.html">
+            <a href="index.jsp">
                 <!--                <img
                                     class="img-fluid"
                                     src="assets/images/logo.png"

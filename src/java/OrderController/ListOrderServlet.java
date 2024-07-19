@@ -35,16 +35,33 @@ public class ListOrderServlet extends HttpServlet {
         String currentPath = request.getRequestURI();
         request.setAttribute("currentPath", currentPath);
         try {
-            int indexPage = Integer.parseInt(request.getParameter("indexPage") == null ? "1" : request.getParameter("indexPage"));
-            int pageSize = Integer.parseInt(request.getParameter("pageSize") == null ? "10" : request.getParameter("pageSize"));
+            String indexPage_raw = request.getParameter("indexPage");
+            String sizePage_raw = request.getParameter("sizePage");
+            String sortType = request.getParameter("sortType");
 
-            List<Order> listOrders = orderDAO.getOrdersByPage(indexPage, pageSize);
-            int totalOrders = orderDAO.getTotalOrders();
-            int endPage = (int) Math.ceil((double) totalOrders / pageSize);
+            if (indexPage_raw == null) {
+                indexPage_raw = "1";
+            }
+            if (sizePage_raw == null) {
+                sizePage_raw = "5";
+            }
+            if (sortType == null) {
+                sortType = "asc";
+            }
+
+            int indexPage = Integer.parseInt(indexPage_raw);
+            int sizePage = Integer.parseInt(sizePage_raw);
+            int count = orderDAO.getTotalOrders();
+
+            int endPage = count / sizePage;
+            if (count % sizePage != 0) {
+                endPage++;
+            }
+            List<Order> listOrders = orderDAO.getOrdersByPage(indexPage, sizePage);
 
             request.setAttribute("listOrders", listOrders);
             request.setAttribute("indexPage", indexPage);
-            request.setAttribute("pageSize", pageSize);
+            request.setAttribute("pageSize", sizePage);
             request.setAttribute("endPage", endPage);
 
             request.getRequestDispatcher("listOrder.jsp").forward(request, response);
