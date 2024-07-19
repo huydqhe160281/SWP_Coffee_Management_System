@@ -151,7 +151,7 @@
                                                                                 <thead>
                                                                                     <tr>
                                                                                         <th>Type</th>
-                                                                                        <th>Price</th>
+                                                                                        <th>Price(vnđ)</th>
                                                                                     </tr>
                                                                                 </thead>
                                                                                 <tbody>
