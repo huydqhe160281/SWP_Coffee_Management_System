@@ -101,6 +101,30 @@
         <servlet-class>SupplierController.UpdateSupplierServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>CampusServlet</servlet-name>
+        <servlet-class>CampusController.CampusServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateCampusServlet</servlet-name>
+        <servlet-class>CampusController.CreateCampusServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewCampusServlet</servlet-name>
+        <servlet-class>CampusController.ViewCampusServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateCampusServlet</servlet-name>
+        <servlet-class>CampusController.UpdateCampusServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteCampusServlet</servlet-name>
+        <servlet-class>CampusController.DeleteCampusServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteSizeServlet</servlet-name>
+        <servlet-class>SizeController.DeleteSizeServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ViewSupplierServlet</servlet-name>
         <servlet-class>SupplierController.ViewSupplierServlet</servlet-class>
     </servlet>
@@ -331,6 +355,30 @@
     <servlet-mapping>
         <servlet-name>ListOrderServlet</servlet-name>
         <url-pattern>/order_list</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CampusServlet</servlet-name>
+        <url-pattern>/campus</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateCampusServlet</servlet-name>
+        <url-pattern>/campus_create</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewCampusServlet</servlet-name>
+        <url-pattern>/campus_view_detail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateCampusServlet</servlet-name>
+        <url-pattern>/campus_update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteCampusServlet</servlet-name>
+        <url-pattern>/campus_delete</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteSizeServlet</servlet-name>
+        <url-pattern>/size_delete</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>OrderDetailServlet</servlet-name>

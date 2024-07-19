@@ -51,6 +51,13 @@
                     <span class="pcoded-mcaret"></span>
                 </a>
             </li>
+            <li class="${fn:contains(currentPath, '/campus') ? 'active' : ''}">
+                <a href="/campus" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-receipt"></i><b>B</b></span>
+                    <span class="pcoded-mtext">Campus Management</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
             <li class="${fn:contains(currentPath, '/category') ? 'active' : ''}">
                 <a href="/category" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-receipt"></i><b>B</b></span>

@@ -171,6 +171,9 @@
                                                                             <i class="fa fa-pencil-square-o icon-spacing" aria-hidden="true" 
                                                                                data-toggle="tooltip" data-placement=left title="Edit"
                                                                                onclick="window.location.href = '/size_update?sizeID=${size.sizeID}'"></i>
+                                                                            <i class="fa fa-trash-o icon-spacing" aria-hidden="true" 
+                                                                               data-toggle="tooltip" data-placement="left" title="Delete"
+                                                                               onclick="deleteSize(${size.sizeID})"></i>
                                                                         </td>
                                                                     </tr>
                                                                 </c:forEach>
@@ -195,9 +198,23 @@
         </div>
 
         <script type="text/javascript">
+    function deleteSize(sizeID, type) {
+        if (confirm('Are you sure you want to delete this size ?')) {
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = 'size_delete'; // Replace with your servlet URL for deleting size
 
+            var hiddenField = document.createElement('input');
+            hiddenField.type = 'hidden';
+            hiddenField.name = 'sizeID';
+            hiddenField.value = sizeID;
+            form.appendChild(hiddenField);
 
-        </script>
+            document.body.appendChild(form);
+            form.submit();
+        }
+    }
+</script>
 
 
         <!-- Required Jquery -->

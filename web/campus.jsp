@@ -1,12 +1,12 @@
 <%-- 
-    Document   : account
-    Created on : 28-05-2024, 22:42:34
+    Document   : campus
+    Created on : 18-07-2024, 12:03:28
     Author     : Dinh Hai
 --%>
 
 <%@ page import="java.util.Date" %>
 <%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="model.Account" %>
+<%@ page import="model.Campus" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -38,53 +38,44 @@
         <!-- Style.css -->
         <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
         <link rel="stylesheet" type="text/css" href="assets/css/jquery.mCustomScrollbar.css" />
+        <style>
+            .limit-detail {
+                max-width: 200px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            .search-form {
+                display: flex;
+                align-items: center; /* Căn chỉnh các phần tử theo trục dọc */
+                gap: 10px; /* Khoảng cách giữa các phần tử */
+            }
+            .search-form input[type="text"],
+            .search-form input[type="number"],
+            .search-form input[type="date"] {
+                flex: 1; /* Mỗi input sẽ có độ rộng bằng nhau */
+                padding: 2px; /* Padding cho input để tăng kích thước click */
+                margin: 0 2px; /* Khoảng cách giữa các input */
+            }
+            .search-form input[type="submit"] {
+                padding: 10px 20px; /* Padding cho nút submit để dễ dàng click */
+                cursor: pointer; /* Con trỏ chuột khi di chuyển vào nút */
+                background-color: #007bff; /* Màu nền cho nút */
+                color: white; /* Màu chữ cho nút */
+                border: none; /* Bỏ đường viền */
+                border-radius: 3px;
+            }
+            .search-form input[type="submit"]:hover {
+                background-color: #0056b3; /* Màu khi hover */
+            }
+            .status-active {
+                color: green; /* Sets the text color to green */
+            }
+            .status-expired {
+                color: red; /* Sets the text color to red */
+            }
+        </style>
     </head>
-    <style>
-        .limit-detail {
-            max-width: 200px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        .search-form {
-            display: flex;
-            align-items: center; /* Căn chỉnh các phần tử theo trục dọc */
-            gap: 10px; /* Khoảng cách giữa các phần tử */
-        }
-        .search-form input[type="text"],
-        .search-form input[type="number"],
-        .search-form input[type="date"] {
-            flex: 1; /* Mỗi input sẽ có độ rộng bằng nhau */
-            padding: 2px; /* Padding cho input để tăng kích thước click */
-            margin: 0 2px; /* Khoảng cách giữa các input */
-        }
-        .search-form input[type="submit"] {
-            padding: 10px 20px; /* Padding cho nút submit để dễ dàng click */
-            cursor: pointer; /* Con trỏ chuột khi di chuyển vào nút */
-            background-color: #007bff; /* Màu nền cho nút */
-            color: white; /* Màu chữ cho nút */
-            border: none; /* Bỏ đường viền */
-            border-radius: 3px;
-        }
-        .search-form input[type="submit"]:hover {
-            background-color: #0056b3; /* Màu khi hover */
-        }
-        .status-active {
-            color: green; /* Sets the text color to green */
-        }
-        .status-expired {
-            color: red; /* Sets the text color to red */
-        }
-        .status-active {
-            color: green; /* Màu chữ xanh cho trạng thái Active */
-        }
-        .status-inactive {
-            color: red; /* Màu chữ đỏ cho trạng thái Inactive */
-        }
-        .card .card-header .card-header-right{
-            top: 0px;
-        }
-    </style>
     <body>
 
         <!-- Pre-loader start -->
@@ -113,17 +104,17 @@
                                     <div class="row align-items-center">
                                         <div class="col-md-8">
                                             <div class="page-header-title">
-                                                <h5 class="m-b-10">Account Management</h5>
-                                                <p class="m-b-0">Quản lý Account</p>
+                                                <h5 class="m-b-10">Campus Management</h5>
+                                                <p class="m-b-0">Quản lý Campus</p>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <ul class="breadcrumb">
                                                 <li class="breadcrumb-item">
-                                                    <a href="index.jsp"> <i class="fa fa-home"></i> </a>
+                                                    <a href="index.html"> <i class="fa fa-home"></i> </a>
                                                 </li>
                                                 <li class="breadcrumb-item">
-                                                    <a href="/account">Account Management</a>
+                                                    <a href="/campus">Campus Management</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -143,13 +134,7 @@
                                                 <!-- Sub header table start -->
                                                 <div class="card-header">
                                                     <div class="d-flex justify-content-between align-items-center pt-3">
-                                                        <div class="p-15 p-b-0 w-25">
-                                                            <form class="search-form" action="account_search" method="get">
-                                                                Search: <input type="text" name="name" placeholder="Name" />
-                                                                <button type="submit" style="border: none;background-color: #ffffff"><i class="fa fa-search m-r-10"></i></button>
-                                                            </form>
-                                                        </div>
-                                                        <button class="btn btn-primary waves-effect h-15" onclick="window.location.href = '/account_create'">
+                                                        <button class="btn btn-primary waves-effect h-15" onclick="window.location.href = '/campus_create'">
                                                             Add New
                                                         </button>
                                                     </div>
@@ -169,48 +154,29 @@
                                                     <div class="table-responsive">
                                                         <div class="container">
                                                             <table class="table table-hover">
-                                                                <thead>
+                                                                <tr>
+                                                                    <th>#</th>
+                                                                    <th>Campus Name</th>
+                                                                    <th>Address</th>
+                                                                    <th class="text-right">Action</th>
+                                                                </tr>
+                                                                <c:forEach items="${requestScope.campuses}" var="campus">
                                                                     <tr>
-                                                                        <th>#</th>
-                                                                        <th>Username</th>
-                                                                        <th>Name</th>
-                                                                        <th>Phone</th>
-                                                                        <th>Email</th>
-                                                                        <th>Address</th>
-                                                                        <th>Status</th>
-                                                                        <th class="text-right">Action</th>
+                                                                        <td>${campus.campusID}</td>
+                                                                        <td>${campus.campusName}</td>
+                                                                        <td>${campus.address}</td>
+                                                                        <td class="text-right pt-3">
+                                                                            <i class="fa fa-eye icon-spacing" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="View" 
+                                                                               onclick="window.location.href = '/campus_view_detail?campusID=${campus.campusID}'"></i>
+                                                                            <i class="fa fa-pencil-square-o icon-spacing" aria-hidden="true" 
+                                                                               data-toggle="tooltip" data-placement=left title="Edit"
+                                                                               onclick="window.location.href = '/campus_update?campusID=${campus.campusID}'"></i>
+                                                                            <i class="fa fa-trash-o icon-spacing" aria-hidden="true" 
+                                                                               data-toggle="tooltip" data-placement="left" title="Delete"
+                                                                               onclick="deleteCampus(${campus.campusID})"></i>
+                                                                        </td>
                                                                     </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <c:forEach items="${requestScope.accounts}" var="account">
-                                                                        <tr>
-                                                                            <td>${account.accountID}</td>
-                                                                            <td>${account.username}</td>
-                                                                            <td>${account.name}</td>
-                                                                            <td>${account.phone}</td>
-                                                                            <td>${account.email}</td>
-                                                                            <td>${account.address}</td>
-                                                                            <td>
-                                                                                <c:choose>
-                                                                                    <c:when test="${account.status}">
-                                                                                        <span class="status-active">Active</span>
-                                                                                    </c:when>
-                                                                                    <c:otherwise>
-                                                                                        <span class="status-inactive">InActive</span>
-                                                                                    </c:otherwise>
-                                                                                </c:choose>
-                                                                            </td>
-                                                                            <td class="text-right pt-3">
-                                                                                <i class="fa fa-eye icon-spacing" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="View" 
-                                                                                   onclick="window.location.href = '/account_view_detail?accountID=${account.accountID}'"></i>
-                                                                                <i class="fa fa-pencil-square-o icon-spacing" aria-hidden="true" 
-                                                                                   data-toggle="tooltip" data-placement=left title="Edit"
-                                                                                   onclick="window.location.href = '/account_update?accountID=${account.accountID}'"></i>
-                                                                            </td>
-
-                                                                        </tr>
-                                                                    </c:forEach>
-                                                                </tbody>
+                                                                </c:forEach>
                                                             </table>
                                                         </div>
                                                     </div>
@@ -232,10 +198,23 @@
         </div>
 
         <script type="text/javascript">
+            function deleteCampus(campusID, campusName) {
+                if (confirm('Are you sure you want to delete this campus ? ')) {
+                    var form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = 'campus_delete'; // Replace with your servlet URL for deleting campus
 
+                    var hiddenField = document.createElement('input');
+                    hiddenField.type = 'hidden';
+                    hiddenField.name = 'campusID';
+                    hiddenField.value = campusID;
+                    form.appendChild(hiddenField);
 
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            }
         </script>
-
 
         <!-- Required Jquery -->
         <script type="text/javascript" src="assets/js/jquery/jquery.min.js"></script>
@@ -253,3 +232,4 @@
         <script type="text/javascript" src="assets/js/script.js"></script>
     </body>
 </html>
+
