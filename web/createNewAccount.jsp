@@ -207,5 +207,13 @@
         <script src="assets/js/vertical/vertical-layout.min.js"></script>
         <script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
         <script type="text/javascript" src="assets/js/script.js"></script>
+        <script>
+            $(document).ready(function () {
+                 $('.pcoded-left-item li a').on('click', function () {
+                    $('.pcoded-left-item li').removeClass('active');
+                    $(this).closest('li').addClass('active');
+                });
+            }); 
+        </script>
     </body>
 </html>

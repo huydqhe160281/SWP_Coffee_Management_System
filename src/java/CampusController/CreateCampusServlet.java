@@ -39,7 +39,7 @@ public class CreateCampusServlet extends HttpServlet {
             // out.println("<h1>Servlet CreateCampusServlet at " + request.getContextPath() + "</h1>");
             // out.println("</body>");
             // out.println("</html>");
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -57,6 +57,8 @@ public class CreateCampusServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String currentPath = request.getRequestURI();
+        request.setAttribute("currentPath", currentPath);
         request.getRequestDispatcher("/createNewCampus.jsp").forward(request, response);
     }
 
@@ -71,6 +73,8 @@ public class CreateCampusServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String currentPath = request.getRequestURI();
+        request.setAttribute("currentPath", currentPath);
         String campusName = request.getParameter("campusName");
         String address = request.getParameter("address");
 
@@ -79,7 +83,7 @@ public class CreateCampusServlet extends HttpServlet {
         campus.setAddress(address);
 
         campusDAO.addCampus(campus);
-        
+
         // Redirect to the campus list page after adding
         response.sendRedirect("campus");
     }

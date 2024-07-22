@@ -39,6 +39,8 @@ public class DeleteSizeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        String currentPath = request.getRequestURI();
+        request.setAttribute("currentPath", currentPath);
         int sizeID = Integer.parseInt(request.getParameter("sizeID"));
         sizeDAO.deleteSize(sizeID);
         response.sendRedirect("size"); // Redirect to sizes listing page

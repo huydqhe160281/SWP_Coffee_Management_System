@@ -20,6 +20,8 @@ public class UpdateSizeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            String currentPath = request.getRequestURI();
+            request.setAttribute("currentPath", currentPath);
             int sizeID = Integer.parseInt(request.getParameter("sizeID"));
             Size size = sizeDAO.getSizeByID(sizeID);
             request.setAttribute("size", size);
@@ -34,6 +36,8 @@ public class UpdateSizeServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            String currentPath = request.getRequestURI();
+            request.setAttribute("currentPath", currentPath);
             int sizeID = Integer.parseInt(request.getParameter("sizeID"));
             String type = request.getParameter("type");
             String description = request.getParameter("description");
@@ -46,6 +50,6 @@ public class UpdateSizeServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             request.setAttribute("error", "Error processing input. Please ensure all fields are correctly filled.");
             request.getRequestDispatcher("/updateSize.jsp").forward(request, response);
-        } 
+        }
     }
 }

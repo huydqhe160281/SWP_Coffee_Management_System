@@ -42,6 +42,8 @@ public class CampusServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String currentPath = request.getRequestURI();
+        request.setAttribute("currentPath", currentPath);
         CampusDAO campusDAO = new CampusDAO();
         List<Campus> campuses = campusDAO.getAllCampuses();
         request.setAttribute("campuses", campuses);
