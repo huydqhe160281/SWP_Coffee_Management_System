@@ -79,7 +79,7 @@
                                     alt="Generic placeholder image"
                                     />
                                 <div class="media-body">
-                                    <h5 class="notification-user">John Doe</h5>
+                                    <h5 class="notification-user">Admin</h5>
                                     <p class="notification-msg">
                                         Lorem ipsum dolor sit amet, consectetuer elit.
                                     </p>
@@ -128,30 +128,17 @@
                             class="img-radius"
                             alt="User-Profile-Image"
                             />
-                        <span>John Doe</span>
+                        <span>Admin</span>
                         <i class="ti-angle-down"></i>
                     </a>
                     <ul class="show-notification profile-notification">
                         <li class="waves-effect waves-light">
-                            <a href="#!"> <i class="ti-settings"></i> Settings </a>
-                        </li>
-                        <li class="waves-effect waves-light">
-                            <a href="user-profile.html">
+                            <a href="account_view_detail?accountID=1">
                                 <i class="ti-user"></i> Profile
                             </a>
                         </li>
                         <li class="waves-effect waves-light">
-                            <a href="email-inbox.html">
-                                <i class="ti-email"></i> My Messages
-                            </a>
-                        </li>
-                        <li class="waves-effect waves-light">
-                            <a href="auth-lock-screen.html">
-                                <i class="ti-lock"></i> Lock Screen
-                            </a>
-                        </li>
-                        <li class="waves-effect waves-light">
-                            <a href="auth-normal-sign-in.html">
+                            <a href="logout">
                                 <i class="ti-layout-sidebar-left"></i> Logout
                             </a>
                         </li>
