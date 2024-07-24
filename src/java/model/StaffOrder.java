@@ -136,5 +136,9 @@ public class StaffOrder {
         this.note = note;
     }
 
-    
+    @Override
+    public String toString() {
+        return "StaffOrder{" + "productID=" + productID + ", productName=" + productName + ", image=" + image + ", description=" + description + ", category=" + category + ", sizeID=" + sizeID + ", type=" + type + ", price=" + price + ", quantity=" + quantity + ", orderID=" + orderID + ", discountID=" + discountID + ", note=" + note + '}';
+    }
+
 }

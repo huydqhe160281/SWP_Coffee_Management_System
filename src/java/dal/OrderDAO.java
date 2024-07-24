@@ -282,11 +282,9 @@ public class OrderDAO extends DBContext {
 
     public List<StaffOrder> getProductsByCategory(int categoryID) {
         List<StaffOrder> products = new ArrayList<>();
-        String sql = "SELECT p.ProductID, p.ProductName, p.Image, p.Description, c.CategoryID, c.CategoryName, ps.SizeID, s.Type, ps.Price "
+        String sql = "SELECT DISTINCT p.ProductID, p.ProductName, p.Image, p.Description, c.CategoryID, c.CategoryName "
                 + "FROM Product p "
                 + "JOIN Category c ON p.CategoryID = c.CategoryID "
-                + "JOIN ProductSize ps ON p.ProductID = ps.ProductID "
-                + "JOIN Size s ON ps.SizeID = s.SizeID "
                 + "WHERE p.CategoryID = ?";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -304,13 +302,13 @@ public class OrderDAO extends DBContext {
                         rs.getString("Image"),
                         rs.getString("Description"),
                         category,
-                        rs.getInt("SizeID"),
-                        rs.getString("Type"),
-                        rs.getDouble("Price"),
-                        0, // Default quantity as 0
-                        0, // Default orderID as 0
-                        0, // Default discountID as 0
-                        "" // Default note as empty
+                        0, // Default sizeID
+                        "", // Default type
+                        0, // Default price
+                        0, // Default quantity
+                        0, // Default orderID
+                        0, // Default discountID
+                        "" // Default note
                 );
                 products.add(product);
             }
@@ -320,22 +318,69 @@ public class OrderDAO extends DBContext {
         return products;
     }
 
-    public List<String> getSizesByProduct(int productID) {
-        List<String> sizes = new ArrayList<>();
-        String sql = "SELECT s.Type "
+    public double getPriceByProductAndSize(int productID, String size) {
+        String sql = "SELECT ps.Price "
                 + "FROM ProductSize ps "
                 + "JOIN Size s ON ps.SizeID = s.SizeID "
-                + "WHERE ps.ProductID = ?";
+                + "WHERE ps.ProductID = ? AND s.Type = ?";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, productID);
+            ps.setString(2, size);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getDouble("Price");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public List<String> getSizesByProduct(int productID) throws SQLException {
+        List<String> sizes = new ArrayList<>();
+        String query = "SELECT s.Type FROM ProductSize ps JOIN Size s ON ps.SizeID = s.SizeID WHERE ps.ProductID = ?";
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, productID);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 sizes.add(rs.getString("Type"));
             }
+        }
+        return sizes;
+    }
+
+    public List<StaffOrder> getProductsByCategoryWithSizes(int categoryID) {
+        List<StaffOrder> products = new ArrayList<>();
+        String sql = "SELECT p.ProductID, p.ProductName, s.Type AS SizeType, ps.Price "
+                + "FROM Product p "
+                + "JOIN ProductSize ps ON p.ProductID = ps.ProductID "
+                + "JOIN Size s ON ps.SizeID = s.SizeID "
+                + "WHERE p.CategoryID = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, categoryID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                StaffOrder product = new StaffOrder(
+                        rs.getInt("ProductID"),
+                        rs.getString("ProductName"),
+                        null, // image
+                        null, // description
+                        null, // category
+                        0, // sizeID
+                        rs.getString("SizeType"),
+                        rs.getDouble("Price"),
+                        0, // quantity
+                        0, // orderID
+                        0, // discountID
+                        "" // note
+                );
+                products.add(product);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return sizes;
+        return products;
     }
 }
