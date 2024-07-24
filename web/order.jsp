@@ -60,22 +60,6 @@
                 width: 50px;
                 text-align: center;
             }
-            .size-option {
-                display: inline-block;
-                padding: 5px 10px;
-                margin: 5px;
-                border: 1px solid #ddd;
-                border-radius: 4px;
-                cursor: pointer;
-            }
-            .size-option.disabled {
-                background-color: #e9e9e9;
-                cursor: not-allowed;
-            }
-            .size-option.selected {
-                background-color: #007bff;
-                color: white;
-            }
         </style>
     </head>
     <body>
@@ -84,117 +68,138 @@
                 <h3>Categories</h3>
                 <div id="categories">
                     <c:forEach var="category" items="${categories}">
-                        <div class="category-item">
-                            <a href="order?categoryID=${category.categoryID}">
-                                ${category.categoryName}
-                            </a>
+                        <div class="category-item" onclick="window.location.href='order?categoryID=${category.categoryID}'">
+                            ${category.categoryName}
                         </div>
                     </c:forEach>
                 </div>
                 <h3>Products</h3>
                 <div id="products">
                     <c:forEach var="product" items="${products}">
-                        <div class="product-item">
-                            <a href="order?categoryID=${selectedCategoryID}&productID=${product.productID}">
-                                ${product.productName}
-                            </a>
+                        <div class="product-item" onclick="addToOrder('${product.productID}', '${product.productName}', '${product.type}', ${product.price})">
+                            ${product.productName} (${product.type})
                         </div>
                     </c:forEach>
                 </div>
-                <h3>Sizes</h3>
-                <div id="sizes">
-                    <c:forEach var="size" items="${sizes}">
-                        <div class="size-option ${size eq 'M' ? 'M' : ''} ${size eq 'L' ? 'L' : ''} ${size eq 'X' ? 'X' : ''}">
-                            ${size}
-                        </div>
-                    </c:forEach>
-                </div>
-                <button id="addProduct" class="btn btn-primary">Add</button>
             </div>
             <div class="order-sidebar">
                 <h3>Order</h3>
                 <div id="orderList"></div>
-                <div>Total: <span id="totalAmount"></span></div>
+                <div>Total: <span id="totalAmount">0</span></div>
             </div>
         </div>
-
         <script>
             document.addEventListener("DOMContentLoaded", function () {
-                const addProductBtn = document.getElementById("addProduct");
-                addProductBtn.addEventListener("click", function () {
-                    const selectedSize = document.querySelector(".size-option.selected");
-                    if (selectedSize) {
-                        const sizeType = selectedSize.textContent.trim();
-                        const productID = "${selectedProductID}";
-                        const productName = "${products[0].productName}";
-                        const unitPrice = parseFloat("${products[0].price}");
+                loadOrderFromCookie();
+            });
 
-                        const orderList = document.getElementById("orderList");
-                        const orderItem = document.createElement("div");
-                        orderItem.classList.add("order-item");
+            function addToOrder(productID, productName, size, price) {
+                const orderList = document.getElementById('orderList');
+                const orderItem = document.createElement('div');
+                orderItem.className = 'order-item';
 
-                        const nameElem = document.createElement("span");
-                        nameElem.textContent = productName + " (" + sizeType + ")";
-                        orderItem.appendChild(nameElem);
+                const productNameElem = document.createElement('span');
+                productNameElem.textContent = `${product.productName} (${size})`;
 
-                        const quantityInput = document.createElement("input");
-                        quantityInput.type = "number";
-                        quantityInput.value = 1;
+                const quantityInput = document.createElement('input');
+                quantityInput.type = 'number';
+                quantityInput.value = 1;
+                quantityInput.min = 1;
+                quantityInput.oninput = updateTotal;
+
+                const priceElem = document.createElement('span');
+                priceElem.className = 'price';
+                priceElem.textContent = price;
+
+                const removeBtn = document.createElement('button');
+                removeBtn.textContent = 'X';
+                removeBtn.onclick = function() {
+                    orderList.removeChild(orderItem);
+                    updateTotal();
+                    saveOrderToCookie();
+                };
+
+                orderItem.appendChild(productNameElem);
+                orderItem.appendChild(quantityInput);
+                orderItem.appendChild(priceElem);
+                orderItem.appendChild(removeBtn);
+
+                orderList.appendChild(orderItem);
+                updateTotal();
+                saveOrderToCookie();
+            }
+
+            function updateTotal() {
+                const orderItems = document.querySelectorAll('.order-item');
+                let total = 0;
+                orderItems.forEach(item => {
+                    const quantity = item.querySelector('input').value;
+                    const price = item.querySelector('.price').textContent;
+                    total += quantity * price;
+                });
+                document.getElementById('totalAmount').textContent = total;
+            }
+
+            function removeItem(button) {
+                const orderItem = button.parentElement;
+                orderItem.remove();
+                updateTotal();
+                saveOrderToCookie();
+            }
+
+            function saveOrderToCookie() {
+                const orderItems = document.querySelectorAll('.order-item');
+                const orderList = [];
+                orderItems.forEach(item => {
+                    const productName = item.querySelector('span').textContent;
+                    const quantity = item.querySelector('input').value;
+                    const price = item.querySelector('.price').textContent;
+                    orderList.push({ productName, quantity, price });
+                });
+                document.cookie = "orderList=" + JSON.stringify(orderList) + "; path=/";
+            }
+
+            function loadOrderFromCookie() {
+                const cookies = document.cookie.split(';');
+                const orderCookie = cookies.find(cookie => cookie.trim().startsWith("orderList="));
+                if (orderCookie) {
+                    const orderList = JSON.parse(orderCookie.split('=')[1]);
+                    const orderListElem = document.getElementById('orderList');
+                    orderList.forEach(order => {
+                        const orderItem = document.createElement('div');
+                        orderItem.className = 'order-item';
+
+                        const productNameElem = document.createElement('span');
+                        productNameElem.textContent = order.product.productName;
+
+                        const quantityInput = document.createElement('input');
+                        quantityInput.type = 'number';
+                        quantityInput.value = order.quantity;
                         quantityInput.min = 1;
-                        quantityInput.addEventListener("input", updateTotal);
-                        orderItem.appendChild(quantityInput);
+                        quantityInput.oninput = updateTotal;
 
-                        const priceElem = document.createElement("span");
-                        priceElem.textContent = formatNumber(unitPrice);
-                        orderItem.appendChild(priceElem);
+                        const priceElem = document.createElement('span');
+                        priceElem.className = 'price';
+                        priceElem.textContent = order.price;
 
-                        const removeBtn = document.createElement("button");
-                        removeBtn.textContent = "X";
-                        removeBtn.addEventListener("click", function () {
-                            orderList.removeChild(orderItem);
+                        const removeBtn = document.createElement('button');
+                        removeBtn.textContent = 'X';
+                        removeBtn.onclick = function() {
+                            orderListElem.removeChild(orderItem);
                             updateTotal();
-                        });
+                            saveOrderToCookie();
+                        };
+
+                        orderItem.appendChild(productNameElem);
+                        orderItem.appendChild(quantityInput);
+                        orderItem.appendChild(priceElem);
                         orderItem.appendChild(removeBtn);
 
-                        orderList.appendChild(orderItem);
-                        updateTotal();
-                    } else {
-                        alert("Please select a size.");
-                    }
-                });
-
-                const sizeOptions = document.querySelectorAll(".size-option");
-                sizeOptions.forEach(option => {
-                    option.addEventListener("click", function () {
-                        sizeOptions.forEach(opt => opt.classList.remove("selected"));
-                        option.classList.add("selected");
+                        orderListElem.appendChild(orderItem);
                     });
-                });
-
-                async function updateTotal() {
-                    const orderItems = document.querySelectorAll(".order-item");
-                    let total = 0;
-                    orderItems.forEach(item => {
-                        const quantityInput = item.querySelector("input[type='number']");
-                        const priceSpan = item.querySelector("span");
-
-                        if (quantityInput && priceSpan) {
-                            const quantity = parseInt(quantityInput.value, 10);
-                            const price = parseFloat(priceSpan.textContent.replace(/,/g, ''));
-
-                            if (!isNaN(quantity) && !isNaN(price)) {
-                                total += quantity * price;
-                            }
-                        }
-                    });
-                    document.getElementById("totalAmount").textContent = formatNumber(total);
+                    updateTotal();
                 }
-
-                function formatNumber(num) {
-                    return num.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 2});
-                }
-            });
+            }
         </script>
-
     </body>
 </html>

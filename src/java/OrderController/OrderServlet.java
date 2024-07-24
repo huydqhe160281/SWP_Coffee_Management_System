@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package OrderController;
 
 import com.google.gson.Gson;
@@ -15,24 +11,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import model.Category;
-import model.Order;
-import model.OrderDetail;
-import model.Product;
-import model.ProductSize;
-import model.Size;
 import model.StaffOrder;
 
-/**
- *
- * @author Namqd
- */
 public class OrderServlet extends HttpServlet {
 
     private CategoryDAO categoryDAO;
@@ -51,25 +36,45 @@ public class OrderServlet extends HttpServlet {
             throws ServletException, IOException {
         String categoryIDParam = request.getParameter("categoryID");
         String productIDParam = request.getParameter("productID");
-        HttpSession session = request.getSession();
+        String sizeParam = request.getParameter("size");
+
+        if (productIDParam != null && sizeParam != null) {
+            try {
+                int productID = Integer.parseInt(productIDParam);
+                double price = orderDAO.getPriceByProductAndSize(productID, sizeParam);
+                Map<String, Double> priceMap = new HashMap<>();
+                priceMap.put("price", price);
+
+                String json = new Gson().toJson(priceMap);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                PrintWriter out = response.getWriter();
+                out.write(json);
+                out.flush();
+                return;
+            } catch (NumberFormatException e) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "ProductID must be a valid integer.");
+            }
+        }
+
         if (categoryIDParam != null && !categoryIDParam.isEmpty()) {
             try {
                 int categoryID = Integer.parseInt(categoryIDParam);
-                List<StaffOrder> products = orderDAO.getProductsByCategory(categoryID);
+                List<StaffOrder> products = orderDAO.getProductsByCategoryWithSizes(categoryID);
                 List<Category> categories = categoryDAO.getAllCategory();
                 request.setAttribute("categories", categories);
                 request.setAttribute("products", products);
                 request.setAttribute("selectedCategoryID", categoryID);
-                if (productIDParam != null && !productIDParam.isEmpty()) {
-                    int productID = Integer.parseInt(productIDParam);
-                    List<String> sizes = orderDAO.getSizesByProduct(productID);
-                    session.setAttribute("selectedProductID", productID);
-                    session.setAttribute("sizes", sizes);
+
+                HttpSession session = request.getSession();
+                List<StaffOrder> orderList = (List<StaffOrder>) session.getAttribute("orderList");
+                if (orderList != null) {
+                    request.setAttribute("orderList", orderList);
                 }
 
                 request.getRequestDispatcher("order.jsp").forward(request, response);
             } catch (NumberFormatException e) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "CategoryID and ProductID must be valid integers.");
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "CategoryID must be a valid integer.");
             }
         } else {
             List<Category> categories = categoryDAO.getAllCategory();
@@ -87,18 +92,14 @@ public class OrderServlet extends HttpServlet {
             orderList = new ArrayList<>();
         }
 
-        int productID = Integer.parseInt(request.getParameter("productID"));
-        String productName = request.getParameter("productName");
-        String sizeType = request.getParameter("sizeType");
-        double unitPrice = Double.parseDouble(request.getParameter("unitPrice"));
+        String orderListJson = request.getParameter("orderList");
+        Gson gson = new Gson();
+        StaffOrder[] orders = gson.fromJson(orderListJson, StaffOrder[].class);
 
-        StaffOrder order = new StaffOrder();
-        order.setProductID(productID);
-        order.setProductName(productName);
-        order.setType(sizeType);
-        order.setPrice(unitPrice);
+        for (StaffOrder order : orders) {
+            orderList.add(order);
+        }
 
-        orderList.add(order);
         session.setAttribute("orderList", orderList);
 
         response.setContentType("application/json");
