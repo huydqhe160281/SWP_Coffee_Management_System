@@ -201,6 +201,26 @@
         <servlet-class>Statistical.StatisticalServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>ajaxServlet</servlet-name>
+        <servlet-class>VNPayController.AjaxServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>VnpayQuery</servlet-name>
+        <servlet-class>VNPayController.VnpayQuery</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>VNPayServlet</servlet-name>
+        <servlet-class>VNPayController.VNPayServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReturnVNPayServlet</servlet-name>
+        <servlet-class>VNPayController.ReturnVNPayServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CheckoutServlet</servlet-name>
+        <servlet-class>OrderController.CheckoutServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>Authentication.LogoutServlet</servlet-class>
     </servlet>
@@ -391,6 +411,26 @@
     <servlet-mapping>
         <servlet-name>StatisticalServlet</servlet-name>
         <url-pattern>/statistical</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ajaxServlet</servlet-name>
+        <url-pattern>/ajaxServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VnpayQuery</servlet-name>
+        <url-pattern>/vnpayQuery</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VNPayServlet</servlet-name>
+        <url-pattern>/vnpay</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReturnVNPayServlet</servlet-name>
+        <url-pattern>/returnVNPay</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CheckoutServlet</servlet-name>
+        <url-pattern>/checkout</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>

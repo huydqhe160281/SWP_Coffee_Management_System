@@ -5,6 +5,7 @@
 package model;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -17,17 +18,18 @@ public class Order {
     private Date orderDate;
     private boolean status;
     private boolean cancelled;
-
+    private List<OrderDetail> items;
     public Order() {
     }
 
-    public Order(int orderID, int accountID, String accountName, Date orderDate, boolean status, boolean cancelled) {
+    public Order(int orderID, int accountID, String accountName, Date orderDate, boolean status, boolean cancelled, List<OrderDetail> items) {
         this.orderID = orderID;
         this.accountID = accountID;
         this.accountName = accountName;
         this.orderDate = orderDate;
         this.status = status;
         this.cancelled = cancelled;
+        this.items = items;
     }
 
     public int getOrderID() {
@@ -77,5 +79,14 @@ public class Order {
     public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
     }
+
+    public List<OrderDetail> getItems() {
+        return items;
+    }
+
+    public void setItems(List<OrderDetail> items) {
+        this.items = items;
+    }
+
     
 }

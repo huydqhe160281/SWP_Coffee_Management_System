@@ -1,10 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package OrderController;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import dal.CategoryDAO;
 import dal.OrderDAO;
 import dal.ProductDAO;
@@ -16,23 +13,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import model.Category;
+import model.Discount;
 import model.Order;
 import model.OrderDetail;
-import model.Product;
-import model.ProductSize;
-import model.Size;
 import model.StaffOrder;
 
-/**
- *
- * @author Namqd
- */
 public class OrderServlet extends HttpServlet {
 
     private CategoryDAO categoryDAO;
@@ -49,27 +40,61 @@ public class OrderServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String action = request.getParameter("action");
+        if ("getActiveDiscounts".equals(action)) {
+            try {
+                List<Discount> discounts = orderDAO.getActiveDiscounts();
+                String json = new Gson().toJson(discounts);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write(json);
+            } catch (SQLException e) {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                response.getWriter().write("Error: " + e.getMessage());
+            }
+            return;
+        }
         String categoryIDParam = request.getParameter("categoryID");
         String productIDParam = request.getParameter("productID");
-        HttpSession session = request.getSession();
+        String sizeParam = request.getParameter("size");
+
+        if (productIDParam != null && sizeParam != null) {
+            try {
+                int productID = Integer.parseInt(productIDParam);
+                double price = orderDAO.getPriceByProductAndSize(productID, sizeParam);
+                Map<String, Double> priceMap = new HashMap<>();
+                priceMap.put("price", price);
+
+                String json = new Gson().toJson(priceMap);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                PrintWriter out = response.getWriter();
+                out.write(json);
+                out.flush();
+                return;
+            } catch (NumberFormatException e) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "ProductID must be a valid integer.");
+            }
+        }
+
         if (categoryIDParam != null && !categoryIDParam.isEmpty()) {
             try {
                 int categoryID = Integer.parseInt(categoryIDParam);
-                List<StaffOrder> products = orderDAO.getProductsByCategory(categoryID);
+                List<StaffOrder> products = orderDAO.getProductsByCategoryWithSizes(categoryID);
                 List<Category> categories = categoryDAO.getAllCategory();
                 request.setAttribute("categories", categories);
                 request.setAttribute("products", products);
                 request.setAttribute("selectedCategoryID", categoryID);
-                if (productIDParam != null && !productIDParam.isEmpty()) {
-                    int productID = Integer.parseInt(productIDParam);
-                    List<String> sizes = orderDAO.getSizesByProduct(productID);
-                    session.setAttribute("selectedProductID", productID);
-                    session.setAttribute("sizes", sizes);
+
+                HttpSession session = request.getSession();
+                List<StaffOrder> orderList = (List<StaffOrder>) session.getAttribute("orderList");
+                if (orderList != null) {
+                    request.setAttribute("orderList", orderList);
                 }
 
                 request.getRequestDispatcher("order.jsp").forward(request, response);
             } catch (NumberFormatException e) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "CategoryID and ProductID must be valid integers.");
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "CategoryID must be a valid integer.");
             }
         } else {
             List<Category> categories = categoryDAO.getAllCategory();
@@ -82,29 +107,37 @@ public class OrderServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        List<StaffOrder> orderList = (List<StaffOrder>) session.getAttribute("orderList");
-        if (orderList == null) {
-            orderList = new ArrayList<>();
+        String orderListJson = request.getParameter("orderList");
+        String discountJson = request.getParameter("discount");
+        Gson gson = new Gson();
+        OrderDetail[] orderDetails = gson.fromJson(orderListJson, OrderDetail[].class);
+        Discount discount = gson.fromJson(discountJson, Discount.class);
+
+        int accountId = 1; // ID của tài khoản người dùng (cập nhật với giá trị thật)
+        Order order = new Order();
+        order.setAccountID(accountId);
+        order.setOrderDate(new Date());
+        order.setStatus(true);
+        order.setCancelled(false);
+
+        try {
+            int orderId = orderDAO.saveOrder(order);
+            for (OrderDetail detail : orderDetails) {
+                detail.setOrderID(orderId);
+                orderDAO.saveOrderDetail(detail);
+            }
+            if (discount != null) {
+                // Lưu discount vào đơn hàng
+                orderDAO.saveOrderDiscount(orderId, discount.getDiscountID());
+            }
+
+            session.setAttribute("orderID", orderId);
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.sendRedirect("checkout?orderID=" + orderId);
+        } catch (SQLException e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write("Error: " + e.getMessage());
         }
-
-        int productID = Integer.parseInt(request.getParameter("productID"));
-        String productName = request.getParameter("productName");
-        String sizeType = request.getParameter("sizeType");
-        double unitPrice = Double.parseDouble(request.getParameter("unitPrice"));
-
-        StaffOrder order = new StaffOrder();
-        order.setProductID(productID);
-        order.setProductName(productName);
-        order.setType(sizeType);
-        order.setPrice(unitPrice);
-
-        orderList.add(order);
-        session.setAttribute("orderList", orderList);
-
-        response.setContentType("application/json");
-        PrintWriter out = response.getWriter();
-        out.print(new Gson().toJson(orderList));
-        out.flush();
     }
 
     @Override
