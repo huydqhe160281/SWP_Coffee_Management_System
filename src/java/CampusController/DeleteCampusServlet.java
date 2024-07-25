@@ -39,6 +39,8 @@ public class DeleteCampusServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        String currentPath = request.getRequestURI();
+        request.setAttribute("currentPath", currentPath);
         int campusID = Integer.parseInt(request.getParameter("campusID"));
         campusDAO.deleteCampus(campusID);
         response.sendRedirect("campus"); // Redirect to campus listing page

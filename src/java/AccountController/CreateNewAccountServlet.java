@@ -58,6 +58,8 @@ public class CreateNewAccountServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String currentPath = request.getRequestURI();
+        request.setAttribute("currentPath", currentPath);
         request.getRequestDispatcher("/createNewAccount.jsp").forward(request, response);
     }
 
@@ -72,6 +74,8 @@ public class CreateNewAccountServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String currentPath = request.getRequestURI();
+        request.setAttribute("currentPath", currentPath);
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String name = request.getParameter("name");

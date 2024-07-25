@@ -3,6 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package model;
+	
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 /**
  *
@@ -73,16 +77,39 @@ public class Account {
     }
 
     public void setPhone(String Phone) {
+        if (isValidPhone(Phone)) {
         this.Phone = Phone;
+            this.Phone = Phone;
+        } else {
+            throw new IllegalArgumentException("Invalid phone number format.");
+        }
     }
+    private boolean isValidPhone(String phone) {
+        String regex = "\\d{10}"; // Số điện thoại 10 chữ số
+        return phone.matches(regex);
+    }
+    
 
     public String getEmail() {
         return Email;
     }
 
     public void setEmail(String Email) {
+        if (isValidEmail(Email)) {
         this.Email = Email;
+            this.Email = Email;
+        } else {
+            throw new IllegalArgumentException("Invalid email address format.");
+        }
     }
+    private boolean isValidEmail(String email) {
+        // Biểu thức chính quy cho email
+        String regex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+    
 
     public String getAddress() {
         return Address;
@@ -122,11 +149,11 @@ public class Account {
         sb.append("Account{");
         sb.append("AccountID=").append(AccountID);
         sb.append(", Username=").append(Username);
-        sb.append(", Password=").append(Password);
-        sb.append(", Name=").append(Name);
-        sb.append(", Phone=").append(Phone);
-        sb.append(", Email=").append(Email);
-        sb.append(", Address=").append(Address);
+        sb.append(", Password='").append(Password).append('\'');
+        sb.append(", Name='").append(Name).append('\'');
+        sb.append(", Phone='").append(Phone).append('\'');
+        sb.append(", Email='").append(Email).append('\'');
+        sb.append(", Address='").append(Address).append('\'');
         sb.append(", Status=").append(Status);
         sb.append(", RoleID=").append(RoleID);
         sb.append(", CampusID=").append(CampusID);

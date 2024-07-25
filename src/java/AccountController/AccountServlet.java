@@ -58,6 +58,8 @@ public class AccountServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String currentPath = request.getRequestURI();
+        request.setAttribute("currentPath", currentPath);
         AccountDAO accountDAO = new AccountDAO();
         List<Account> accounts = accountDAO.getAllAccounts();
         request.setAttribute("accounts", accounts);
