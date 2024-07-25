@@ -79,17 +79,23 @@ public class LoginServlet extends HttpServlet {
         Account account = accountDAO.checkLogin(username, password);
 
         if (account != null) {
-            HttpSession session = request.getSession();
-            session.setAttribute("account", account);
-            session.setAttribute("role", account.getRoleID());
+            if (account.isStatus()) { // Kiểm tra trạng thái của tài khoản
+                HttpSession session = request.getSession();
+                session.setAttribute("account", account);
+                session.setAttribute("role", account.getRoleID());
 
-            // Set session timeout to 7 days
-            session.setMaxInactiveInterval(10080 * 60); // 10080 minutes
+                // Set session timeout to 7 days
+                session.setMaxInactiveInterval(10080 * 60); // 10080 minutes
 
-            if (account.getRoleID() == 1) {
-                response.sendRedirect("account");
-            } else if (account.getRoleID() == 2) {
-                response.sendRedirect("category");
+                if (account.getRoleID() == 1) {
+                    response.sendRedirect("index.jsp");
+                } else if (account.getRoleID() == 2) {
+                    response.sendRedirect("category");
+                }
+            } else {
+                // Tài khoản bị khóa
+                request.setAttribute("errorMessage", "Your account has been disabled. Please contact administrator.");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
             }
         } else {
             request.setAttribute("errorMessage", "Invalid username or password");
