@@ -1,5 +1,3 @@
-
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- Navbar Start -->
 <nav class="navbar header-navbar pcoded-header">
@@ -79,7 +77,11 @@
                                     alt="Generic placeholder image"
                                     />
                                 <div class="media-body">
-                                    <h5 class="notification-user">Admin</h5>
+                                    <c:if test="${sessionScope.account != null}">
+                                        <h5 class="notification-user">
+                                            ${sessionScope.account.username};
+                                        </h5>
+                                    </c:if>
                                     <p class="notification-msg">
                                         Lorem ipsum dolor sit amet, consectetuer elit.
                                     </p>
@@ -128,14 +130,21 @@
                             class="img-radius"
                             alt="User-Profile-Image"
                             />
-                        <span>Admin</span>
+                        <c:if test="${sessionScope.account != null}">
+                            <span>
+                                ${sessionScope.account.username}
+                            </span>
+                        </c:if>
                         <i class="ti-angle-down"></i>
                     </a>
                     <ul class="show-notification profile-notification">
                         <li class="waves-effect waves-light">
-                            <a href="account_view_detail?accountID=1">
+                            <c:if test="${sessionScope.account != null}">
+                                <a href="account_view_detail?accountID=${sessionScope.account.accountID}">
                                 <i class="ti-user"></i> Profile
                             </a>
+                            </c:if>
+                            
                         </li>
                         <li class="waves-effect waves-light">
                             <a href="logout">
