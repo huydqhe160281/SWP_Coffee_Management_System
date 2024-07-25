@@ -13,6 +13,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.OrderDetail;
 
 /**
@@ -33,7 +35,12 @@ public class OrderDetailServlet extends HttpServlet {
         String currentPath = request.getRequestURI();
         request.setAttribute("currentPath", currentPath);
         int orderId = Integer.parseInt(request.getParameter("orderId"));
-        List<OrderDetail> orderDetails = orderDAO.getOrderDetails(orderId);
+        List<OrderDetail> orderDetails = null;
+        try {
+            orderDetails = orderDAO.getOrderDetails(orderId);
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDetailServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
         request.setAttribute("orderDetails", orderDetails);
         request.getRequestDispatcher("orderDetail.jsp").forward(request, response);
     }
