@@ -68,14 +68,14 @@
             width: 100%;
             padding: 10px;
             color: white;
-            background-color: #5cb85c;
+            background-color: #448aff;
             border: none;
             border-radius: 4px;
             cursor: pointer;
         }
 
         .form-material input[type="submit"]:hover {
-            background-color: #45a045;
+            background-color: #448aff;
         }
 
         /* Hiệu ứng cho các thông báo lỗi */
