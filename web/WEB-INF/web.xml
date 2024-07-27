@@ -200,6 +200,10 @@
         <servlet-name>StatisticalServlet</servlet-name>
         <servlet-class>Statistical.StatisticalServlet</servlet-class>
     </servlet>
+      <servlet>
+        <servlet-name>UpdateProductServlet</servlet-name>
+        <servlet-class>productController.UpdateProductServlet</servlet-class>
+    </servlet>
     <servlet>
         <servlet-name>ajaxServlet</servlet-name>
         <servlet-class>VNPayController.AjaxServlet</servlet-class>
@@ -411,6 +415,10 @@
     <servlet-mapping>
         <servlet-name>StatisticalServlet</servlet-name>
         <url-pattern>/statistical</url-pattern>
+    </servlet-mapping>
+        <servlet-mapping>
+        <servlet-name>UpdateProductServlet</servlet-name>
+        <url-pattern>/product_update</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ajaxServlet</servlet-name>
