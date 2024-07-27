@@ -158,7 +158,7 @@
                                                                                     <c:forEach var="productSize" items="${product.productSizes}">
                                                                                         <tr>
                                                                                             <td>${productSize.size.type}</td>
-                                                                                            <td>${productSize.price}</td>
+                                                                                            <td> <fmt:formatNumber value="${productSize.price}" type="currency" pattern="###,###"/></td>
                                                                                         </tr>
                                                                                     </c:forEach>
                                                                                 </tbody>

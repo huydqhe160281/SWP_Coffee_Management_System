@@ -54,7 +54,7 @@ public class ProductDAO extends DBContext {
                 + "FROM [SWP391_SU24].[dbo].[Product] p "
                 + "JOIN [SWP391_SU24].[dbo].[Category] c ON p.CategoryID = c.CategoryID "
                 + "WHERE p.IsHot = 1 "
-                + "ORDER BY NEWID()";  // NEWID() để lấy ra mẫu ngẫu nhiên
+                + "ORDER BY NEWID()";
 
         try ( PreparedStatement st = connection.prepareStatement(sql);  ResultSet rs = st.executeQuery()) {
             while (rs.next()) {
@@ -297,9 +297,8 @@ public class ProductDAO extends DBContext {
                 + "(ProductID, SizeID, Price) VALUES (?, ?, ?)";
 
         try {
-            connection.setAutoCommit(false); // Start transaction
+            connection.setAutoCommit(false);
 
-            // Insert product and get generated ProductID
             try ( PreparedStatement st = connection.prepareStatement(insertProductSQL, Statement.RETURN_GENERATED_KEYS)) {
                 st.setString(1, product.getProductName());
                 st.setString(2, product.getImage());
@@ -317,7 +316,6 @@ public class ProductDAO extends DBContext {
                 }
             }
 
-            // Insert ProductSizes
             try ( PreparedStatement st = connection.prepareStatement(insertProductSizeSQL)) {
                 for (ProductSize ps : productSizes) {
                     st.setInt(1, product.getProductID());
@@ -328,17 +326,74 @@ public class ProductDAO extends DBContext {
                 st.executeBatch();
             }
 
-            connection.commit(); // Commit transaction
+            connection.commit();
         } catch (SQLException e) {
             try {
-                connection.rollback(); // Rollback transaction on error
+                connection.rollback();
             } catch (SQLException ex) {
                 System.err.println("Error rolling back transaction: " + ex.getMessage());
             }
             System.err.println("Error creating new product: " + e.getMessage());
         } finally {
             try {
-                connection.setAutoCommit(true); // Reset auto-commit
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+                System.err.println("Error resetting auto-commit: " + e.getMessage());
+            }
+        }
+    }
+
+    public void updateProduct(Product product, List<ProductSize> productSizes) {
+        String updateProductSQL = "UPDATE [SWP391_SU24].[dbo].[Product] SET "
+                + "ProductName = ?, Image = ?, Description = ?, Recipe = ?, Status = ?, IsHot = ?, CategoryID = ? "
+                + "WHERE ProductID = ?";
+
+        String deleteProductSizeSQL = "DELETE FROM [SWP391_SU24].[dbo].[ProductSize] WHERE ProductID = ?";
+
+        String insertProductSizeSQL = "INSERT INTO [SWP391_SU24].[dbo].[ProductSize] "
+                + "(ProductID, SizeID, Price) VALUES (?, ?, ?)";
+
+        try {
+            connection.setAutoCommit(false);
+
+            try ( PreparedStatement st = connection.prepareStatement(updateProductSQL)) {
+                st.setString(1, product.getProductName());
+                st.setString(2, product.getImage());
+                st.setString(3, product.getDescription());
+                st.setString(4, product.getRecipe());
+                st.setBoolean(5, product.isStatus());
+                st.setBoolean(6, product.isIsHot());
+                st.setInt(7, product.getCategory().getCategoryID());
+                st.setInt(8, product.getProductID());
+                st.executeUpdate();
+            }
+
+            try ( PreparedStatement st = connection.prepareStatement(deleteProductSizeSQL)) {
+                st.setInt(1, product.getProductID());
+                st.executeUpdate();
+            }
+
+            try ( PreparedStatement st = connection.prepareStatement(insertProductSizeSQL)) {
+                for (ProductSize ps : productSizes) {
+                    st.setInt(1, product.getProductID());
+                    st.setInt(2, ps.getSize().getSizeID());
+                    st.setDouble(3, ps.getPrice());
+                    st.addBatch();
+                }
+                st.executeBatch();
+            }
+
+            connection.commit();
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                System.err.println("Error rolling back transaction: " + ex.getMessage());
+            }
+            System.err.println("Error updating product: " + e.getMessage());
+        } finally {
+            try {
+                connection.setAutoCommit(true);
             } catch (SQLException e) {
                 System.err.println("Error resetting auto-commit: " + e.getMessage());
             }
@@ -350,8 +405,8 @@ public class ProductDAO extends DBContext {
         List<Product> list = dao.getProductByCategoryIdByPage("", 1, 20, "ASC");
         Product p = dao.getProductById("1");
 
-        for (Product i : list) {
-            System.out.println(i);
-        }
+//        for (Product i : list) {
+//            System.out.println(i);
+//        }
     }
 }
