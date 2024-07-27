@@ -31,7 +31,7 @@
                             </a>
                         </c:if>
                         <a href="logout"
-                           ><i class="ti-layout-sidebar-left"></i>Logout</a
+                           ><i class="fa fa-sign-out" aria-hidden="true"></i>Logout</a
                         >
                     </li>
                 </ul>

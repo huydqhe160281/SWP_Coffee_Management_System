@@ -46,6 +46,11 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
+        .icon-spacing {
+            padding-right: 5px;
+            font-size: 1.6em; /* Tăng kích thước của icon, bạn có thể thay đổi giá trị này để phù hợp */
+            cursor: pointer;
+        }
         .search-form {
             display: flex;
             align-items: center; /* Căn chỉnh các phần tử theo trục dọc */
