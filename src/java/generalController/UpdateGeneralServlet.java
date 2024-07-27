@@ -100,7 +100,6 @@ public class UpdateGeneralServlet extends HttpServlet {
         String uploadPath = "D:/Huy_data/FPT/Ky8/SWP392/demo2/web/assets/images";
 
         try {
-            // Save new logo image
             String logoFilename = Paths.get(logoPart.getSubmittedFileName()).getFileName().toString();
             try ( OutputStream logoOs = new FileOutputStream(new File(uploadPath, logoFilename));  InputStream logoIs = logoPart.getInputStream()) {
 
@@ -110,7 +109,6 @@ public class UpdateGeneralServlet extends HttpServlet {
                     logoOs.write(buffer, 0, bytesRead);
                 }
 
-                // Save new favicon image
                 String fivicoFilename = Paths.get(fivicoPart.getSubmittedFileName()).getFileName().toString();
                 try ( OutputStream fivicoOs = new FileOutputStream(new File(uploadPath, fivicoFilename));  InputStream fivicoIs = fivicoPart.getInputStream()) {
 
@@ -119,19 +117,16 @@ public class UpdateGeneralServlet extends HttpServlet {
                         fivicoOs.write(buffer, 0, bytesRead);
                     }
 
-                    // Update the General record in the database with the uploaded file information
                     GeneralDAO generalDao = new GeneralDAO();
-                    General currentGeneral = generalDao.getLastGeneral(); // Get current General info
+                    General currentGeneral = generalDao.getLastGeneral();
 
-                    String currentLogoName = currentGeneral.getLogoImage(); // Get current logo image name
-                    String currentFivicoName = currentGeneral.getFivicoImage(); // Get current favicon image name
+                    String currentLogoName = currentGeneral.getLogoImage();
+                    String currentFivicoName = currentGeneral.getFivicoImage();
 
-                    // Update General object with new image filenames
                     General general = new General(generalID, email, phone, nameApp, address, logoFilename, fivicoFilename);
                     boolean isUpdated = generalDao.updateGeneral(general, generalID);
 
                     if (isUpdated) {
-                        // Delete old logo image file if it's different from the new one
                         if (currentLogoName != null && !currentLogoName.equals(logoFilename)) {
                             File currentLogoFile = new File(uploadPath + File.separator + currentLogoName);
                             if (currentLogoFile.exists()) {
@@ -139,7 +134,6 @@ public class UpdateGeneralServlet extends HttpServlet {
                             }
                         }
 
-                        // Delete old favicon image file if it's different from the new one
                         if (currentFivicoName != null && !currentFivicoName.equals(fivicoFilename)) {
                             File currentFivicoFile = new File(uploadPath + File.separator + currentFivicoName);
                             if (currentFivicoFile.exists()) {
@@ -147,7 +141,6 @@ public class UpdateGeneralServlet extends HttpServlet {
                             }
                         }
 
-                        // Forward to general.jsp with updated generalInfo
                         request.setAttribute("generalInfo", generalDao.getLastGeneral());
                         request.getRequestDispatcher("general.jsp").forward(request, response);
                     } else {
