@@ -200,7 +200,7 @@
         <servlet-name>StatisticalServlet</servlet-name>
         <servlet-class>Statistical.StatisticalServlet</servlet-class>
     </servlet>
-      <servlet>
+    <servlet>
         <servlet-name>UpdateProductServlet</servlet-name>
         <servlet-class>productController.UpdateProductServlet</servlet-class>
     </servlet>
@@ -416,7 +416,7 @@
         <servlet-name>StatisticalServlet</servlet-name>
         <url-pattern>/statistical</url-pattern>
     </servlet-mapping>
-        <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>UpdateProductServlet</servlet-name>
         <url-pattern>/product_update</url-pattern>
     </servlet-mapping>
@@ -444,6 +444,9 @@
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
+    <welcome-file-list>
+        <welcome-file>landing-page</welcome-file>
+    </welcome-file-list>
     <session-config>
         <session-timeout>
             30
