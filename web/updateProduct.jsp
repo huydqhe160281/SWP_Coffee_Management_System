@@ -95,7 +95,7 @@
                                                         <% } %>
                                                         <form name="productForm" class="form-material" action="product_update" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
                                                             <!-- Existing fields -->
-                                                            <input type="hidden" name="productID" value="${product.productID}" />
+                                                            <input type="hidden" name="productId" value="${product.productID}" />
                                                             <div class="form-group form-default form-static-label">
                                                                 <input type="text" name="productName" class="form-control" value="${product.productName}" required minlength="3" maxlength="50" />
                                                                 <label class="float-label">Product Name</label>

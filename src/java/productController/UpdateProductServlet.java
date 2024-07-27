@@ -10,18 +10,31 @@ import dal.SizeDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import model.Category;
 import model.Product;
+import model.ProductSize;
 import model.Size;
 
 /**
  *
  * @author ADMIN
  */
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50)   // 50MB
 public class UpdateProductServlet extends HttpServlet {
 
     /**
@@ -71,8 +84,6 @@ public class UpdateProductServlet extends HttpServlet {
         List<Size> sList = sizeDAO.getAllSizes();
         CategoryDAO categoryDAO = new CategoryDAO();
 
-        System.out.println("product" + product);
-
         List<Category> cList = categoryDAO.getAllCategory();
 
         request.setAttribute("product", product);
@@ -93,7 +104,56 @@ public class UpdateProductServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        int productId = Integer.parseInt(request.getParameter("productId"));
+        String productName = request.getParameter("productName");
+        String description = request.getParameter("description");
+        String recipe = request.getParameter("recipe");
+        boolean status = request.getParameter("status") != null;
+        boolean isHot = request.getParameter("isHot") != null;
+        int categoryId = Integer.parseInt(request.getParameter("category"));
+
+        Part filePart = request.getPart("image");
+        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+
+        String uploadPath = "D:/Huy_data/FPT/Ky8/SWP392/demo2/web/assets/images";
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs();
+        }
+
+        try ( InputStream fileInputStream = filePart.getInputStream();  OutputStream fileOutputStream = new FileOutputStream(new File(uploadPath, fileName))) {
+
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+                fileOutputStream.write(buffer, 0, bytesRead);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.getWriter().println("Error uploading image: " + e.getMessage());
+            return;
+        }
+
+        Category category = new Category(categoryId, null, null);
+        Product product = new Product(productId, productName, fileName, description, recipe, status, isHot, category, new ArrayList<>());
+
+        List<ProductSize> productSizes = new ArrayList<>();
+        Enumeration<String> parameterNames = request.getParameterNames();
+
+        while (parameterNames.hasMoreElements()) {
+            String paramName = parameterNames.nextElement();
+            if (paramName.startsWith("price_")) {
+                int sizeId = Integer.parseInt(paramName.substring(6));
+                double price = Double.parseDouble(request.getParameter(paramName));
+                Size size = new Size(sizeId, null, null);
+                productSizes.add(new ProductSize(productId, sizeId, price, size));
+            }
+        }
+
+        ProductDAO productDAO = new ProductDAO();
+        productDAO.updateProduct(product, productSizes);
+
+        response.sendRedirect("/product");
     }
 
     /**
