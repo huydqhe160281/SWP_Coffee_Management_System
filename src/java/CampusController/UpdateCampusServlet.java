@@ -20,6 +20,8 @@ public class UpdateCampusServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            String currentPath = request.getRequestURI();
+            request.setAttribute("currentPath", currentPath);
             int campusID = Integer.parseInt(request.getParameter("campusID"));
             Campus campus = campusDAO.getCampusByID(campusID);
             request.setAttribute("campus", campus);
@@ -34,6 +36,8 @@ public class UpdateCampusServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            String currentPath = request.getRequestURI();
+            request.setAttribute("currentPath", currentPath);
             int campusID = Integer.parseInt(request.getParameter("campusID"));
             String campusName = request.getParameter("campusName");
             String address = request.getParameter("address");
@@ -46,6 +50,6 @@ public class UpdateCampusServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             request.setAttribute("error", "Error processing input. Please ensure all fields are correctly filled.");
             request.getRequestDispatcher("/updateCampus.jsp").forward(request, response);
-        } 
+        }
     }
 }

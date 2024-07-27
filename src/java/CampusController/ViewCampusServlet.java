@@ -39,6 +39,8 @@ public class ViewCampusServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String currentPath = request.getRequestURI();
+        request.setAttribute("currentPath", currentPath);
         int campusId = Integer.parseInt(request.getParameter("campusID"));
         Campus campus = campusDAO.getCampusByID(campusId);
         if (campus != null) {

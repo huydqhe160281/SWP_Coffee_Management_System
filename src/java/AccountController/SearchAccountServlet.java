@@ -35,6 +35,8 @@ public class SearchAccountServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String currentPath = request.getRequestURI();
+        request.setAttribute("currentPath", currentPath);
         response.setContentType("text/html;charset=UTF-8");
 
         String text_search = request.getParameter("name");

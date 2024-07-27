@@ -201,6 +201,10 @@
         <servlet-class>Statistical.StatisticalServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>UpdateProductServlet</servlet-name>
+        <servlet-class>productController.UpdateProductServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ajaxServlet</servlet-name>
         <servlet-class>VNPayController.AjaxServlet</servlet-class>
     </servlet>
@@ -219,6 +223,10 @@
     <servlet>
         <servlet-name>CheckoutServlet</servlet-name>
         <servlet-class>OrderController.CheckoutServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>Authentication.LogoutServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ProductServlet</servlet-name>
@@ -409,6 +417,10 @@
         <url-pattern>/statistical</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>UpdateProductServlet</servlet-name>
+        <url-pattern>/product_update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>ajaxServlet</servlet-name>
         <url-pattern>/ajaxServlet</url-pattern>
     </servlet-mapping>
@@ -428,6 +440,13 @@
         <servlet-name>CheckoutServlet</servlet-name>
         <url-pattern>/checkout</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+    <welcome-file-list>
+        <welcome-file>landing-page</welcome-file>
+    </welcome-file-list>
     <session-config>
         <session-timeout>
             30

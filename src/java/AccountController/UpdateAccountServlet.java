@@ -20,6 +20,8 @@ public class UpdateAccountServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            String currentPath = request.getRequestURI();
+            request.setAttribute("currentPath", currentPath);
             int accountID = Integer.parseInt(request.getParameter("accountID"));
             Account account = accountDAO.getAccountByID(accountID);
             request.setAttribute("account", account);
@@ -32,8 +34,10 @@ public class UpdateAccountServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         try {
+            String currentPath = request.getRequestURI();
+            request.setAttribute("currentPath", currentPath);
             int accountID = Integer.parseInt(request.getParameter("accountID"));
             String username = request.getParameter("username");
             String password = request.getParameter("password");
@@ -53,6 +57,6 @@ public class UpdateAccountServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             request.setAttribute("error", "Error processing input. Please ensure all fields are correctly filled.");
             request.getRequestDispatcher("/updateAccount.jsp").forward(request, response);
-        } 
+        }
     }
 }

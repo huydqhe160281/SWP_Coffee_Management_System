@@ -2,23 +2,27 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package Authentication;
+package productController;
 
-import dal.AccountDAO;
+import dal.CategoryDAO;
+import dal.ProductDAO;
+import dal.SizeDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import model.Account;
+import java.util.List;
+import model.Category;
+import model.Product;
+import model.Size;
 
 /**
  *
- * @author Dinh Hai
+ * @author ADMIN
  */
-public class LoginServlet extends HttpServlet {
+public class UpdateProductServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,10 +41,10 @@ public class LoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginServlet</title>");
+            out.println("<title>Servlet UpdateProductServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UpdateProductServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,7 +62,24 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("login.jsp").forward(request, response);
+        String currentPath = request.getRequestURI();
+        String productID = request.getParameter("productID");
+        ProductDAO productDao = new ProductDAO();
+        SizeDAO sizeDAO = new SizeDAO();
+
+        Product product = productDao.getProductById(productID);
+        List<Size> sList = sizeDAO.getAllSizes();
+        CategoryDAO categoryDAO = new CategoryDAO();
+
+        System.out.println("product" + product);
+
+        List<Category> cList = categoryDAO.getAllCategory();
+
+        request.setAttribute("product", product);
+        request.setAttribute("cList", cList);
+        request.setAttribute("sList", sList);
+        request.setAttribute("currentPath", currentPath);
+        request.getRequestDispatcher("updateProduct.jsp").forward(request, response);
     }
 
     /**
@@ -72,35 +93,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-
-        AccountDAO accountDAO = new AccountDAO();
-        Account account = accountDAO.checkLogin(username, password);
-
-        if (account != null) {
-            if (account.isStatus()) { // Kiểm tra trạng thái của tài khoản
-                HttpSession session = request.getSession();
-                session.setAttribute("account", account);
-                session.setAttribute("role", account.getRoleID());
-
-                // Set session timeout to 7 days
-                session.setMaxInactiveInterval(10080 * 60); // 10080 minutes
-
-                if (account.getRoleID() == 1) {
-                    response.sendRedirect("index.jsp");
-                } else if (account.getRoleID() == 2) {
-                    response.sendRedirect("category");
-                }
-            } else {
-                // Tài khoản bị khóa
-                request.setAttribute("errorMessage", "Your account has been disabled. Please contact administrator.");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
-        } else {
-            request.setAttribute("errorMessage", "Invalid username or password");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-        }
+        processRequest(request, response);
     }
 
     /**
