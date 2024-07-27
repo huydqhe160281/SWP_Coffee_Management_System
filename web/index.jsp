@@ -164,7 +164,11 @@
                                             <div class="media">
                                                 <img class="d-flex align-self-center img-radius" src="assets/images/avatar-2.jpg" alt="Generic placeholder image">
                                                 <div class="media-body">
-                                                    <h5 class="notification-user">Admin</h5>
+                                                    <c:if test="${sessionScope.account != null}">
+                                                        <h5 class="notification-user">
+                                                            ${sessionScope.account.username};
+                                                        </h5>
+                                                    </c:if>
                                                     <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
                                                     <span class="notification-time">30 minutes ago</span>
                                                 </div>
@@ -195,15 +199,20 @@
                                 <li class="user-profile header-notification">
                                     <a href="#!" class="waves-effect waves-light">
                                         <img src="assets/images/avatar-4.jpg" class="img-radius" alt="User-Profile-Image">
-                                        <span>John Doe</span>
+                                        <c:if test="${sessionScope.account != null}">
+                                            <span 
+                                                >${sessionScope.account.username}</span>
+                                        </c:if>
                                         <i class="ti-angle-down"></i>
                                     </a>
                                     <ul class="show-notification profile-notification">
-                                        <li class="waves-effect waves-light">
-                                            <a href="user-profile.html">
-                                                <i class="ti-user"></i> Profile
-                                            </a>
-                                        </li>
+                                        <c:if test="${sessionScope.account != null}">
+                                            <li class="waves-effect waves-light">
+                                                <a href="account_view_detail?accountID=${sessionScope.account.accountID}">
+                                                    <i class="ti-user"></i> Profile
+                                                </a>
+                                            </li>
+                                        </c:if>
                                         <li class="waves-effect waves-light">
                                             <a href="logout">
                                                 <i class="ti-layout-sidebar-left"></i> Logout
@@ -225,7 +234,11 @@
                                     <div class="main-menu-header">
                                         <img class="img-80 img-radius" src="assets/images/avatar-4.jpg" alt="User-Profile-Image">
                                         <div class="user-details">
-                                            <span id="more-details">John Doe<i class="fa fa-caret-down"></i></span>
+                                            <c:if test="${sessionScope.account != null}">
+                                                <span id="more-details"
+                                                      >${sessionScope.account.username}<i class="fa fa-caret-down"></i
+                                                    ></span>
+                                                </c:if>
                                         </div>
                                     </div>
                                     <div class="main-menu-content">
@@ -558,12 +571,12 @@
         <script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
         <script type="text/javascript" src="assets/js/script.js"></script>
         <script>
-            $(document).ready(function () {
-                 $('.pcoded-left-item li a').on('click', function () {
-                    $('.pcoded-left-item li').removeClass('active');
-                    $(this).closest('li').addClass('active');
-                });
-            }); 
+                                        $(document).ready(function () {
+                                            $('.pcoded-left-item li a').on('click', function () {
+                                                $('.pcoded-left-item li').removeClass('active');
+                                                $(this).closest('li').addClass('active');
+                                            });
+                                        });
         </script>
     </body>
 
