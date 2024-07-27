@@ -1,5 +1,3 @@
-
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- Navbar Start -->
 <nav class="navbar header-navbar pcoded-header">
@@ -79,7 +77,11 @@
                                     alt="Generic placeholder image"
                                     />
                                 <div class="media-body">
-                                    <h5 class="notification-user">John Doe</h5>
+                                    <c:if test="${sessionScope.account != null}">
+                                        <h5 class="notification-user">
+                                            ${sessionScope.account.username};
+                                        </h5>
+                                    </c:if>
                                     <p class="notification-msg">
                                         Lorem ipsum dolor sit amet, consectetuer elit.
                                     </p>
@@ -128,30 +130,24 @@
                             class="img-radius"
                             alt="User-Profile-Image"
                             />
-                        <span>John Doe</span>
+                        <c:if test="${sessionScope.account != null}">
+                            <span>
+                                ${sessionScope.account.username}
+                            </span>
+                        </c:if>
                         <i class="ti-angle-down"></i>
                     </a>
                     <ul class="show-notification profile-notification">
                         <li class="waves-effect waves-light">
-                            <a href="#!"> <i class="ti-settings"></i> Settings </a>
-                        </li>
-                        <li class="waves-effect waves-light">
-                            <a href="user-profile.html">
+                            <c:if test="${sessionScope.account != null}">
+                                <a href="account_view_detail?accountID=${sessionScope.account.accountID}">
                                 <i class="ti-user"></i> Profile
                             </a>
+                            </c:if>
+                            
                         </li>
                         <li class="waves-effect waves-light">
-                            <a href="email-inbox.html">
-                                <i class="ti-email"></i> My Messages
-                            </a>
-                        </li>
-                        <li class="waves-effect waves-light">
-                            <a href="auth-lock-screen.html">
-                                <i class="ti-lock"></i> Lock Screen
-                            </a>
-                        </li>
-                        <li class="waves-effect waves-light">
-                            <a href="auth-normal-sign-in.html">
+                            <a href="logout">
                                 <i class="ti-layout-sidebar-left"></i> Logout
                             </a>
                         </li>

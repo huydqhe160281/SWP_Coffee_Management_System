@@ -2,6 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
+
 package OrderController;
 
 import dal.OrderDAO;
@@ -15,45 +16,59 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Order;
 import model.OrderDetail;
 
 /**
  *
  * @author Namqd
  */
-public class OrderDetailServlet extends HttpServlet {
+public class CheckoutServlet extends HttpServlet {
+   
+    private OrderDAO orderDAO;
 
-    private final OrderDAO orderDAO;
-
-    public OrderDetailServlet() {
-        this.orderDAO = new OrderDAO();
+    @Override
+    public void init() {
+        orderDAO = new OrderDAO();
     }
-
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String currentPath = request.getRequestURI();
-        request.setAttribute("currentPath", currentPath);
-        int orderId = Integer.parseInt(request.getParameter("orderId"));
+    throws ServletException, IOException {
+        int orderID = Integer.parseInt(request.getParameter("orderID"));
+        Order order = null;
+        try {
+            order = orderDAO.getOrderByOrderID(orderID);
+        } catch (SQLException ex) {
+            Logger.getLogger(CheckoutServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
         List<OrderDetail> orderDetails = null;
         try {
-            orderDetails = orderDAO.getOrderDetails(orderId);
+            orderDetails = orderDAO.getOrderDetails(orderID);
         } catch (SQLException ex) {
-            Logger.getLogger(OrderDetailServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CheckoutServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        request.setAttribute("orderDetails", orderDetails);
-        request.getRequestDispatcher("orderDetail.jsp").forward(request, response);
-    }
 
+        request.setAttribute("order", order);
+        request.setAttribute("orderDetails", orderDetails);
+        request.getRequestDispatcher("checkout.jsp").forward(request, response);
+    } 
+
+    /** 
+     * Handles the HTTP <code>POST</code> method.
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
 
     }
 
-    /**
+    /** 
      * Returns a short description of the servlet.
-     *
      * @return a String containing servlet description
      */
     @Override

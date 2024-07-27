@@ -40,7 +40,7 @@ public class CreateSizeServlet extends HttpServlet {
             // out.println("<h1>Servlet CreateSizeServlet at " + request.getContextPath() + "</h1>");
             // out.println("</body>");
             // out.println("</html>");
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -58,6 +58,8 @@ public class CreateSizeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String currentPath = request.getRequestURI();
+        request.setAttribute("currentPath", currentPath);
         request.getRequestDispatcher("/createNewSize.jsp").forward(request, response);
     }
 
@@ -72,6 +74,8 @@ public class CreateSizeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String currentPath = request.getRequestURI();
+        request.setAttribute("currentPath", currentPath);
         String type = request.getParameter("type");
         String description = request.getParameter("description");
 
@@ -80,7 +84,7 @@ public class CreateSizeServlet extends HttpServlet {
         size.setDescription(description);
 
         sizeDAO.addSize(size);
-         response.sendRedirect("size");
+        response.sendRedirect("size");
     }
 
     /**

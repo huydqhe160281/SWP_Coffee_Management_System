@@ -1,12 +1,12 @@
 <%-- 
-    Document   : size
-    Created on : 24-06-2024, 23:54:38
+    Document   : campus
+    Created on : 18-07-2024, 12:03:28
     Author     : Dinh Hai
 --%>
 
 <%@ page import="java.util.Date" %>
 <%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="model.Discount" %>
+<%@ page import="model.Campus" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -38,44 +38,44 @@
         <!-- Style.css -->
         <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
         <link rel="stylesheet" type="text/css" href="assets/css/jquery.mCustomScrollbar.css" />
+        <style>
+            .limit-detail {
+                max-width: 200px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            .search-form {
+                display: flex;
+                align-items: center; /* Căn chỉnh các phần tử theo trục dọc */
+                gap: 10px; /* Khoảng cách giữa các phần tử */
+            }
+            .search-form input[type="text"],
+            .search-form input[type="number"],
+            .search-form input[type="date"] {
+                flex: 1; /* Mỗi input sẽ có độ rộng bằng nhau */
+                padding: 2px; /* Padding cho input để tăng kích thước click */
+                margin: 0 2px; /* Khoảng cách giữa các input */
+            }
+            .search-form input[type="submit"] {
+                padding: 10px 20px; /* Padding cho nút submit để dễ dàng click */
+                cursor: pointer; /* Con trỏ chuột khi di chuyển vào nút */
+                background-color: #007bff; /* Màu nền cho nút */
+                color: white; /* Màu chữ cho nút */
+                border: none; /* Bỏ đường viền */
+                border-radius: 3px;
+            }
+            .search-form input[type="submit"]:hover {
+                background-color: #0056b3; /* Màu khi hover */
+            }
+            .status-active {
+                color: green; /* Sets the text color to green */
+            }
+            .status-expired {
+                color: red; /* Sets the text color to red */
+            }
+        </style>
     </head>
-    <style>
-        .limit-detail {
-            max-width: 200px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        .search-form {
-            display: flex;
-            align-items: center; /* Căn chỉnh các phần tử theo trục dọc */
-            gap: 10px; /* Khoảng cách giữa các phần tử */
-        }
-        .search-form input[type="text"],
-        .search-form input[type="number"],
-        .search-form input[type="date"] {
-            flex: 1; /* Mỗi input sẽ có độ rộng bằng nhau */
-            padding: 2px; /* Padding cho input để tăng kích thước click */
-            margin: 0 2px; /* Khoảng cách giữa các input */
-        }
-        .search-form input[type="submit"] {
-            padding: 10px 20px; /* Padding cho nút submit để dễ dàng click */
-            cursor: pointer; /* Con trỏ chuột khi di chuyển vào nút */
-            background-color: #007bff; /* Màu nền cho nút */
-            color: white; /* Màu chữ cho nút */
-            border: none; /* Bỏ đường viền */
-            border-radius: 3px;
-        }
-        .search-form input[type="submit"]:hover {
-            background-color: #0056b3; /* Màu khi hover */
-        }
-        .status-active {
-            color: green; /* Sets the text color to green */
-        }
-        .status-expired {
-            color: red; /* Sets the text color to red */
-        }
-    </style>
     <body>
 
         <!-- Pre-loader start -->
@@ -104,17 +104,17 @@
                                     <div class="row align-items-center">
                                         <div class="col-md-8">
                                             <div class="page-header-title">
-                                                <h5 class="m-b-10">Size Management</h5>
-                                                <p class="m-b-0">Quản lý Size</p>
+                                                <h5 class="m-b-10">Campus Management</h5>
+                                                <p class="m-b-0">Quản lý Campus</p>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <ul class="breadcrumb">
                                                 <li class="breadcrumb-item">
-                                                    <a href="index.jsp"> <i class="fa fa-home"></i> </a>
+                                                    <a href="index.html"> <i class="fa fa-home"></i> </a>
                                                 </li>
                                                 <li class="breadcrumb-item">
-                                                    <a href="/discount">Size Management</a>
+                                                    <a href="/campus">Campus Management</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -134,7 +134,7 @@
                                                 <!-- Sub header table start -->
                                                 <div class="card-header">
                                                     <div class="d-flex justify-content-between align-items-center pt-3">
-                                                        <button class="btn btn-primary waves-effect h-15" onclick="window.location.href = '/size_create'">
+                                                        <button class="btn btn-primary waves-effect h-15" onclick="window.location.href = '/campus_create'">
                                                             Add New
                                                         </button>
                                                     </div>
@@ -156,24 +156,24 @@
                                                             <table class="table table-hover">
                                                                 <tr>
                                                                     <th>#</th>
-                                                                    <th>Type</th>
-                                                                    <th>Description</th>
+                                                                    <th>Campus Name</th>
+                                                                    <th>Address</th>
                                                                     <th class="text-right">Action</th>
                                                                 </tr>
-                                                                <c:forEach items="${requestScope.sizes}" var="size">
+                                                                <c:forEach items="${requestScope.campuses}" var="campus">
                                                                     <tr>
-                                                                        <td>${size.sizeID}</td>
-                                                                        <td>${size.type}</td>
-                                                                        <td>${size.description}</td>
+                                                                        <td>${campus.campusID}</td>
+                                                                        <td>${campus.campusName}</td>
+                                                                        <td>${campus.address}</td>
                                                                         <td class="text-right pt-3">
                                                                             <i class="fa fa-eye icon-spacing" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="View" 
-                                                                               onclick="window.location.href = '/size_view_detail?sizeID=${size.sizeID}'"></i>
+                                                                               onclick="window.location.href = '/campus_view_detail?campusID=${campus.campusID}'"></i>
                                                                             <i class="fa fa-pencil-square-o icon-spacing" aria-hidden="true" 
                                                                                data-toggle="tooltip" data-placement=left title="Edit"
-                                                                               onclick="window.location.href = '/size_update?sizeID=${size.sizeID}'"></i>
+                                                                               onclick="window.location.href = '/campus_update?campusID=${campus.campusID}'"></i>
                                                                             <i class="fa fa-trash-o icon-spacing" aria-hidden="true" 
                                                                                data-toggle="tooltip" data-placement="left" title="Delete"
-                                                                               onclick="deleteSize(${size.sizeID})"></i>
+                                                                               onclick="deleteCampus(${campus.campusID})"></i>
                                                                         </td>
                                                                     </tr>
                                                                 </c:forEach>
@@ -198,24 +198,23 @@
         </div>
 
         <script type="text/javascript">
-    function deleteSize(sizeID, type) {
-        if (confirm('Are you sure you want to delete this size ?')) {
-            var form = document.createElement('form');
-            form.method = 'POST';
-            form.action = 'size_delete'; // Replace with your servlet URL for deleting size
+            function deleteCampus(campusID, campusName) {
+                if (confirm('Are you sure you want to delete this campus ? ')) {
+                    var form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = 'campus_delete'; // Replace with your servlet URL for deleting campus
 
-            var hiddenField = document.createElement('input');
-            hiddenField.type = 'hidden';
-            hiddenField.name = 'sizeID';
-            hiddenField.value = sizeID;
-            form.appendChild(hiddenField);
+                    var hiddenField = document.createElement('input');
+                    hiddenField.type = 'hidden';
+                    hiddenField.name = 'campusID';
+                    hiddenField.value = campusID;
+                    form.appendChild(hiddenField);
 
-            document.body.appendChild(form);
-            form.submit();
-        }
-    }
-</script>
-
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            }
+        </script>
 
         <!-- Required Jquery -->
         <script type="text/javascript" src="assets/js/jquery/jquery.min.js"></script>
@@ -233,3 +232,4 @@
         <script type="text/javascript" src="assets/js/script.js"></script>
     </body>
 </html>
+

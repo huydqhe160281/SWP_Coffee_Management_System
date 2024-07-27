@@ -101,6 +101,30 @@
         <servlet-class>SupplierController.UpdateSupplierServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>CampusServlet</servlet-name>
+        <servlet-class>CampusController.CampusServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateCampusServlet</servlet-name>
+        <servlet-class>CampusController.CreateCampusServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewCampusServlet</servlet-name>
+        <servlet-class>CampusController.ViewCampusServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateCampusServlet</servlet-name>
+        <servlet-class>CampusController.UpdateCampusServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteCampusServlet</servlet-name>
+        <servlet-class>CampusController.DeleteCampusServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteSizeServlet</servlet-name>
+        <servlet-class>SizeController.DeleteSizeServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ViewSupplierServlet</servlet-name>
         <servlet-class>SupplierController.ViewSupplierServlet</servlet-class>
     </servlet>
@@ -176,9 +200,33 @@
         <servlet-name>StatisticalServlet</servlet-name>
         <servlet-class>Statistical.StatisticalServlet</servlet-class>
     </servlet>
-    <servlet>
+      <servlet>
         <servlet-name>UpdateProductServlet</servlet-name>
         <servlet-class>productController.UpdateProductServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ajaxServlet</servlet-name>
+        <servlet-class>VNPayController.AjaxServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>VnpayQuery</servlet-name>
+        <servlet-class>VNPayController.VnpayQuery</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>VNPayServlet</servlet-name>
+        <servlet-class>VNPayController.VNPayServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReturnVNPayServlet</servlet-name>
+        <servlet-class>VNPayController.ReturnVNPayServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CheckoutServlet</servlet-name>
+        <servlet-class>OrderController.CheckoutServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>Authentication.LogoutServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ProductServlet</servlet-name>
@@ -337,6 +385,30 @@
         <url-pattern>/order_list</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>CampusServlet</servlet-name>
+        <url-pattern>/campus</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateCampusServlet</servlet-name>
+        <url-pattern>/campus_create</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewCampusServlet</servlet-name>
+        <url-pattern>/campus_view_detail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateCampusServlet</servlet-name>
+        <url-pattern>/campus_update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteCampusServlet</servlet-name>
+        <url-pattern>/campus_delete</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteSizeServlet</servlet-name>
+        <url-pattern>/size_delete</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>OrderDetailServlet</servlet-name>
         <url-pattern>/order_detail</url-pattern>
     </servlet-mapping>
@@ -344,9 +416,33 @@
         <servlet-name>StatisticalServlet</servlet-name>
         <url-pattern>/statistical</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
+        <servlet-mapping>
         <servlet-name>UpdateProductServlet</servlet-name>
         <url-pattern>/product_update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ajaxServlet</servlet-name>
+        <url-pattern>/ajaxServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VnpayQuery</servlet-name>
+        <url-pattern>/vnpayQuery</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VNPayServlet</servlet-name>
+        <url-pattern>/vnpay</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReturnVNPayServlet</servlet-name>
+        <url-pattern>/returnVNPay</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CheckoutServlet</servlet-name>
+        <url-pattern>/checkout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/logout</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

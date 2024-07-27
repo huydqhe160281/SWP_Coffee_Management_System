@@ -81,6 +81,9 @@
         .status-inactive {
             color: red; /* Màu chữ đỏ cho trạng thái Inactive */
         }
+        .card .card-header .card-header-right{
+            top: 0px;
+        }
     </style>
     <body>
 
@@ -143,8 +146,8 @@
                                                         <div class="p-15 p-b-0 w-25">
                                                             <form class="search-form" action="account_search" method="get">
                                                                 Search: <input type="text" name="name" placeholder="Name" />
-                                                            <button type="submit" style="border: none;background-color: #ffffff"><i class="fa fa-search m-r-10"></i></button>
-                                                        </form>
+                                                                <button type="submit" style="border: none;background-color: #ffffff"><i class="fa fa-search m-r-10"></i></button>
+                                                            </form>
                                                         </div>
                                                         <button class="btn btn-primary waves-effect h-15" onclick="window.location.href = '/account_create'">
                                                             Add New
@@ -198,13 +201,13 @@
                                                                                 </c:choose>
                                                                             </td>
                                                                             <td class="text-right pt-3">
-                                                                                <a href="/account_view_detail?accountID=${account.accountID}" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="left" title="View">
-                                                                                    <i class="fa fa-eye"></i>
-                                                                                </a>
-                                                                                <a href="/account_update?accountID=${account.accountID}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="left" title="Edit">
-                                                                                    <i class="fa fa-pencil-square-o"></i>
-                                                                                </a>
+                                                                                <i class="fa fa-eye icon-spacing" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="View" 
+                                                                                   onclick="window.location.href = '/account_view_detail?accountID=${account.accountID}'"></i>
+                                                                                <i class="fa fa-pencil-square-o icon-spacing" aria-hidden="true" 
+                                                                                   data-toggle="tooltip" data-placement=left title="Edit"
+                                                                                   onclick="window.location.href = '/account_update?accountID=${account.accountID}'"></i>
                                                                             </td>
+
                                                                         </tr>
                                                                     </c:forEach>
                                                                 </tbody>
@@ -228,10 +231,7 @@
             </div>
         </div>
 
-        <script type="text/javascript">
-
-
-        </script>
+        
 
 
         <!-- Required Jquery -->
@@ -248,5 +248,13 @@
         <script src="assets/js/vertical/vertical-layout.min.js"></script>
         <script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
         <script type="text/javascript" src="assets/js/script.js"></script>
+        <script>
+            $(document).ready(function () {
+                 $('.pcoded-left-item li a').on('click', function () {
+                    $('.pcoded-left-item li').removeClass('active');
+                    $(this).closest('li').addClass('active');
+                });
+            }); 
+        </script>
     </body>
 </html>

@@ -15,17 +15,25 @@
                     alt="User-Profile-Image"
                     />
                 <div class="user-details">
-                    <span id="more-details"
-                          >John Doe<i class="fa fa-caret-down"></i
-                        ></span>
+                    <c:if test="${sessionScope.account != null}">
+                        <span id="more-details"
+                              >${sessionScope.account.username}<i class="fa fa-caret-down"></i
+                            ></span>
+                        </c:if>
+
+
                 </div>
             </div>
             <div class="main-menu-content">
                 <ul>
                     <li class="more-details">
-                        <a href="user-profile.html"><i class="ti-user"></i>View Profile</a>
-                        <a href="#!"><i class="ti-settings"></i>Settings</a>
-                        <a href="auth-normal-sign-in.html"
+                        <c:if test="${sessionScope.account != null}">
+                            <a href="account_view_detail?accountID=${sessionScope.account.accountID}">
+                                <i class="ti-user"></i> View Profile
+                            </a>
+                        </c:if>
+
+                        <a href="logout"
                            ><i class="ti-layout-sidebar-left"></i>Logout</a
                         >
                     </li>
@@ -48,6 +56,13 @@
                 <a href="/account" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-receipt"></i><b>B</b></span>
                     <span class="pcoded-mtext">Account Management</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class="${fn:contains(currentPath, '/campus') ? 'active' : ''}">
+                <a href="/campus" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-receipt"></i><b>B</b></span>
+                    <span class="pcoded-mtext">Campus Management</span>
                     <span class="pcoded-mcaret"></span>
                 </a>
             </li>

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import model.Category;
+import model.Discount;
 import model.Order;
 import model.OrderDetail;
 import model.ProductSize;
@@ -67,6 +68,97 @@ public class OrderDAO extends DBContext {
         return orders;
     }
 
+    public int saveOrder(Order order) throws SQLException {
+        String sql = "INSERT INTO Orders (AccountID, OrderDate, Status, Cancelled) VALUES (?, ?, ?, ?)";
+        try ( PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setInt(1, order.getAccountID());
+            ps.setDate(2, new java.sql.Date(order.getOrderDate().getTime()));
+            ps.setBoolean(3, order.isStatus());
+            ps.setBoolean(4, order.isCancelled());
+            ps.executeUpdate();
+
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return -1;
+    }
+
+    public void saveOrderDetail(OrderDetail detail) throws SQLException {
+        String sql = "INSERT INTO OrderDetails (OrderID, ProductID, ProductName, UnitPrice, Quantity, Note, DiscountID, Value) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try ( PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, detail.getOrderID());
+            ps.setInt(2, detail.getProductID());
+            ps.setString(3, detail.getProductName());
+            ps.setDouble(4, detail.getUnitPrice());
+            ps.setInt(5, detail.getQuantity());
+            ps.setString(6, detail.getNote());
+            ps.setInt(7, detail.getDiscountID());
+            ps.setInt(8, detail.getValue());
+            ps.executeUpdate();
+        }
+    }
+
+    public void saveOrderDiscount(int orderId, int discountId) throws SQLException {
+        String query = "UPDATE Orders SET discountID = ? WHERE orderID = ?";
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, discountId);
+            ps.setInt(2, orderId);
+            ps.executeUpdate();
+        }
+    }
+    public Order getOrderByOrderID(int orderID) throws SQLException {
+        String orderQuery = "SELECT o.OrderID, o.AccountID, a.Name AS AccountName, o.OrderDate, o.Status, o.Cancelled "
+                + "FROM [Order] o "
+                + "JOIN Account a ON o.AccountID = a.AccountID "
+                + "WHERE o.OrderID = ?";
+        Order order = null;
+        try ( PreparedStatement orderStmt = connection.prepareStatement(orderQuery)) {
+            orderStmt.setInt(1, orderID);
+            ResultSet rs = orderStmt.executeQuery();
+            if (rs.next()) {
+                order = new Order(
+                        rs.getInt("OrderID"),
+                        rs.getInt("AccountID"),
+                        rs.getString("AccountName"),
+                        rs.getDate("OrderDate"),
+                        rs.getBoolean("Status"),
+                        rs.getBoolean("Cancelled"),
+                        getOrderDetails(orderID)
+                );
+            }
+        }
+        return order;
+    }
+
+    public List<OrderDetail> getOrderDetails(int orderID) throws SQLException {
+        List<OrderDetail> details = new ArrayList<>();
+        String detailQuery = "SELECT od.OrderID, od.ProductID, p.ProductName, od.UnitPrice, od.Quantity, od.Note, od.DiscountID, d.Value "
+                + "FROM OrderDetail od "
+                + "JOIN Product p ON od.ProductID = p.ProductID "
+                + "LEFT JOIN Discount d ON od.DiscountID = d.DiscountID "
+                + "WHERE od.OrderID = ?";
+        try ( PreparedStatement detailStmt = connection.prepareStatement(detailQuery)) {
+            detailStmt.setInt(1, orderID);
+            ResultSet rs = detailStmt.executeQuery();
+            while (rs.next()) {
+                OrderDetail detail = new OrderDetail(
+                        rs.getInt("OrderID"),
+                        rs.getInt("ProductID"),
+                        rs.getString("ProductName"),
+                        rs.getDouble("UnitPrice"),
+                        rs.getInt("Quantity"),
+                        rs.getString("Note"),
+                        rs.getInt("DiscountID"),
+                        rs.getInt("Value")
+                );
+                details.add(detail);
+            }
+        }
+        return details;
+    }
+
     public int getTotalOrders() throws SQLException {
         String query = "SELECT COUNT(*) FROM [Order]";
         try ( Statement stmt = connection.createStatement()) {
@@ -76,35 +168,6 @@ public class OrderDAO extends DBContext {
             }
         }
         return 0;
-    }
-
-    public List<OrderDetail> getOrderDetails(int orderId) {
-        List<OrderDetail> details = new ArrayList<>();
-        String query = "SELECT od.OrderID, od.ProductID, p.ProductName, od.UnitPrice, od.Quantity, od.Note, od.DiscountID, d.Value "
-                + "FROM OrderDetail od "
-                + "JOIN Product p ON od.ProductID = p.ProductID "
-                + "LEFT JOIN Discount d ON od.DiscountID = d.DiscountID "
-                + "WHERE od.OrderID = ?";
-        try {
-            PreparedStatement ps = connection.prepareStatement(query);
-            ps.setInt(1, orderId);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                OrderDetail detail = new OrderDetail();
-                detail.setOrderID(rs.getInt("OrderID"));
-                detail.setProductID(rs.getInt("ProductID"));
-                detail.setProductName(rs.getString("ProductName"));
-                detail.setUnitPrice(rs.getDouble("UnitPrice"));
-                detail.setQuantity(rs.getInt("Quantity"));
-                detail.setNote(rs.getString("Note"));
-                detail.setDiscountID(rs.getInt("DiscountID"));
-                detail.setValue(rs.getInt("Value"));
-                details.add(detail);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return details;
     }
 
     public List<OrderDetail> getOrderDetailsByDate(Date orderDate) {
@@ -282,11 +345,9 @@ public class OrderDAO extends DBContext {
 
     public List<StaffOrder> getProductsByCategory(int categoryID) {
         List<StaffOrder> products = new ArrayList<>();
-        String sql = "SELECT p.ProductID, p.ProductName, p.Image, p.Description, c.CategoryID, c.CategoryName, ps.SizeID, s.Type, ps.Price "
+        String sql = "SELECT DISTINCT p.ProductID, p.ProductName, p.Image, p.Description, c.CategoryID, c.CategoryName "
                 + "FROM Product p "
                 + "JOIN Category c ON p.CategoryID = c.CategoryID "
-                + "JOIN ProductSize ps ON p.ProductID = ps.ProductID "
-                + "JOIN Size s ON ps.SizeID = s.SizeID "
                 + "WHERE p.CategoryID = ?";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -304,13 +365,13 @@ public class OrderDAO extends DBContext {
                         rs.getString("Image"),
                         rs.getString("Description"),
                         category,
-                        rs.getInt("SizeID"),
-                        rs.getString("Type"),
-                        rs.getDouble("Price"),
-                        0, // Default quantity as 0
-                        0, // Default orderID as 0
-                        0, // Default discountID as 0
-                        "" // Default note as empty
+                        0, // Default sizeID
+                        "", // Default type
+                        0, // Default price
+                        0, // Default quantity
+                        0, // Default orderID
+                        0, // Default discountID
+                        "" // Default note
                 );
                 products.add(product);
             }
@@ -320,22 +381,91 @@ public class OrderDAO extends DBContext {
         return products;
     }
 
-    public List<String> getSizesByProduct(int productID) {
-        List<String> sizes = new ArrayList<>();
-        String sql = "SELECT s.Type "
+    public double getPriceByProductAndSize(int productID, String size) {
+        String sql = "SELECT ps.Price "
                 + "FROM ProductSize ps "
                 + "JOIN Size s ON ps.SizeID = s.SizeID "
-                + "WHERE ps.ProductID = ?";
+                + "WHERE ps.ProductID = ? AND s.Type = ?";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, productID);
+            ps.setString(2, size);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getDouble("Price");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public List<String> getSizesByProduct(int productID) throws SQLException {
+        List<String> sizes = new ArrayList<>();
+        String query = "SELECT s.Type FROM ProductSize ps JOIN Size s ON ps.SizeID = s.SizeID WHERE ps.ProductID = ?";
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, productID);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 sizes.add(rs.getString("Type"));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return sizes;
     }
+
+    public List<StaffOrder> getProductsByCategoryWithSizes(int categoryID) {
+        List<StaffOrder> products = new ArrayList<>();
+        String sql = "SELECT p.ProductID, p.ProductName, s.Type AS SizeType, ps.Price "
+                + "FROM Product p "
+                + "JOIN ProductSize ps ON p.ProductID = ps.ProductID "
+                + "JOIN Size s ON ps.SizeID = s.SizeID "
+                + "WHERE p.CategoryID = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, categoryID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                StaffOrder product = new StaffOrder(
+                        rs.getInt("ProductID"),
+                        rs.getString("ProductName"),
+                        null, // image
+                        null, // description
+                        null, // category
+                        0, // sizeID
+                        rs.getString("SizeType"),
+                        rs.getDouble("Price"),
+                        0, // quantity
+                        0, // orderID
+                        0, // discountID
+                        "" // note
+                );
+                products.add(product);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return products;
+    }
+
+    public List<Discount> getActiveDiscounts() throws SQLException {
+        List<Discount> discounts = new ArrayList<>();
+        String query = "SELECT * FROM Discount WHERE Status = 1";
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Discount discount = new Discount();
+                discount.setDiscountID(rs.getInt("DiscountID"));
+                discount.setValue(rs.getInt("Value"));
+                discount.setCode(rs.getString("Code"));
+                discount.setStartDate(rs.getDate("StartDate"));
+                discount.setEndDate(rs.getDate("EndDate"));
+                discount.setMaxDiscount(rs.getDouble("MaxDiscount"));
+                discount.setQuantity(rs.getInt("Quantity"));
+                discount.setStatus(rs.getBoolean("Status"));
+                discounts.add(discount);
+            }
+        }
+        return discounts;
+    }
+
 }

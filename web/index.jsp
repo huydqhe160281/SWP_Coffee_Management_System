@@ -164,7 +164,7 @@
                                             <div class="media">
                                                 <img class="d-flex align-self-center img-radius" src="assets/images/avatar-2.jpg" alt="Generic placeholder image">
                                                 <div class="media-body">
-                                                    <h5 class="notification-user">John Doe</h5>
+                                                    <h5 class="notification-user">Admin</h5>
                                                     <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
                                                     <span class="notification-time">30 minutes ago</span>
                                                 </div>
@@ -200,27 +200,12 @@
                                     </a>
                                     <ul class="show-notification profile-notification">
                                         <li class="waves-effect waves-light">
-                                            <a href="#!">
-                                                <i class="ti-settings"></i> Settings
-                                            </a>
-                                        </li>
-                                        <li class="waves-effect waves-light">
                                             <a href="user-profile.html">
                                                 <i class="ti-user"></i> Profile
                                             </a>
                                         </li>
                                         <li class="waves-effect waves-light">
-                                            <a href="email-inbox.html">
-                                                <i class="ti-email"></i> My Messages
-                                            </a>
-                                        </li>
-                                        <li class="waves-effect waves-light">
-                                            <a href="auth-lock-screen.html">
-                                                <i class="ti-lock"></i> Lock Screen
-                                            </a>
-                                        </li>
-                                        <li class="waves-effect waves-light">
-                                            <a href="auth-normal-sign-in.html">
+                                            <a href="logout">
                                                 <i class="ti-layout-sidebar-left"></i> Logout
                                             </a>
                                         </li>
@@ -268,6 +253,13 @@
                                         <a href="index.jsp" class="waves-effect waves-dark">
                                             <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
                                             <span class="pcoded-mtext">Dashboard</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <li class="">
+                                        <a href="order" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
+                                            <span class="pcoded-mtext">Order</span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>

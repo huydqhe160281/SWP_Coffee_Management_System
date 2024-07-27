@@ -1,32 +1,36 @@
-package AccountController;
+package CampusController;
 
-import model.Account;
-import dal.AccountDAO;
+import dal.CampusDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Campus;
 
 /**
- *
- * @author Dinh Hai
+ * Servlet implementation class ViewCampusServlet
  */
-public class SearchAccountServlet extends HttpServlet {
+public class ViewCampusServlet extends HttpServlet {
+
+    private CampusDAO campusDAO;
+
+    public ViewCampusServlet() {
+        this.campusDAO = new CampusDAO();
+    }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
+        try (PrintWriter out = response.getWriter()) {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SearchAccountServlet</title>");
+            out.println("<title>Servlet ViewCampusServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SearchAccountServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ViewCampusServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -37,21 +41,15 @@ public class SearchAccountServlet extends HttpServlet {
             throws ServletException, IOException {
         String currentPath = request.getRequestURI();
         request.setAttribute("currentPath", currentPath);
-        response.setContentType("text/html;charset=UTF-8");
-
-        String text_search = request.getParameter("name");
-        if (text_search == null) {
-            text_search = ""; // Default to empty string if null
+        int campusId = Integer.parseInt(request.getParameter("campusID"));
+        Campus campus = campusDAO.getCampusByID(campusId);
+        if (campus != null) {
+            request.setAttribute("campus", campus);
+            request.getRequestDispatcher("/campusDetail.jsp").forward(request, response);
+        } else {
+            request.setAttribute("error", "Campus not found.");
+            request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
-        text_search = text_search.trim(); // Remove leading/trailing whitespace
-
-        AccountDAO accountDAO = new AccountDAO();
-        List<Account> accounts = accountDAO.searchAccountsByName(text_search);
-
-        request.setAttribute("name", text_search);
-        request.setAttribute("accounts", accounts);
-
-        request.getRequestDispatcher("account.jsp").forward(request, response);
     }
 
     @Override

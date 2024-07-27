@@ -1,24 +1,19 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
-package AccountController;
+package CampusController;
 
-import dal.AccountDAO;
+import dal.CampusDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import model.Account;
+import model.Campus;
 
 /**
- *
- * @author Dinh Hai
+ * Campus Creation Servlet
  */
-public class AccountServlet extends HttpServlet {
+public class CreateCampusServlet extends HttpServlet {
+
+    private final CampusDAO campusDAO = new CampusDAO();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,17 +27,21 @@ public class AccountServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet AccountServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet AccountServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        try {
+            // TODO output your page here. You may use following sample code.
+            // PrintWriter out = response.getWriter();
+            // out.println("<!DOCTYPE html>");
+            // out.println("<html>");
+            // out.println("<head>");
+            // out.println("<title>Servlet CreateCampusServlet</title>");
+            // out.println("</head>");
+            // out.println("<body>");
+            // out.println("<h1>Servlet CreateCampusServlet at " + request.getContextPath() + "</h1>");
+            // out.println("</body>");
+            // out.println("</html>");
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -60,10 +59,7 @@ public class AccountServlet extends HttpServlet {
             throws ServletException, IOException {
         String currentPath = request.getRequestURI();
         request.setAttribute("currentPath", currentPath);
-        AccountDAO accountDAO = new AccountDAO();
-        List<Account> accounts = accountDAO.getAllAccounts();
-        request.setAttribute("accounts", accounts);
-        request.getRequestDispatcher("account.jsp").forward(request, response);
+        request.getRequestDispatcher("/createNewCampus.jsp").forward(request, response);
     }
 
     /**
@@ -77,7 +73,19 @@ public class AccountServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String currentPath = request.getRequestURI();
+        request.setAttribute("currentPath", currentPath);
+        String campusName = request.getParameter("campusName");
+        String address = request.getParameter("address");
+
+        Campus campus = new Campus();
+        campus.setCampusName(campusName);
+        campus.setAddress(address);
+
+        campusDAO.addCampus(campus);
+
+        // Redirect to the campus list page after adding
+        response.sendRedirect("campus");
     }
 
     /**
