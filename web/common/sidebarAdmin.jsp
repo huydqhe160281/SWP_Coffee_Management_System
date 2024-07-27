@@ -20,8 +20,6 @@
                               >${sessionScope.account.username}<i class="fa fa-caret-down"></i
                             ></span>
                         </c:if>
-
-
                 </div>
             </div>
             <div class="main-menu-content">
@@ -32,7 +30,6 @@
                                 <i class="ti-user"></i> View Profile
                             </a>
                         </c:if>
-
                         <a href="logout"
                            ><i class="ti-layout-sidebar-left"></i>Logout</a
                         >
@@ -42,7 +39,7 @@
         </div>
         <div class="pcoded-navigation-label">Navigation</div>
         <ul class="pcoded-item pcoded-left-item">
-            <li class="${fn:contains(currentPath, '/index') ? 'active' : ''}">
+            <li class="${fn:contains(currentPath, '/index.jsp') ? 'active' : ''}">
                 <a href="index.jsp" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
                     <span class="pcoded-mtext">Dashboard</span>
@@ -87,13 +84,13 @@
                     <span class="pcoded-mcaret"></span>
                 </a>
             </li>
-            <li class="${fn:contains(currentPath, '/ingredient') ? 'active' : ''}">
+<!--            <li class="${fn:contains(currentPath, '/ingredient') ? 'active' : ''}">
                 <a href="/ingredient" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-receipt"></i><b>B</b></span>
                     <span class="pcoded-mtext">Ingredient Management</span>
                     <span class="pcoded-mcaret"></span>
                 </a>
-            </li>
+            </li>-->
             <li class="${fn:contains(currentPath, '/order_list') ? 'active' : ''}">
                 <a href="/order_list" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-receipt"></i><b>B</b></span>
