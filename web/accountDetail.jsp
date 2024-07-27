@@ -33,7 +33,6 @@
             font-family: 'Open Sans', sans-serif;
             color: #333;
             background-color: #f4f4f4;
-            padding: 20px;
         }
 
         h1, h2, h3, h4, h5, h6 {
@@ -148,9 +147,9 @@
                                                 <div class="table-responsive">
                                                     <div class="container">
                                                         <h1>Account Details</h1>
-                                                        <div class="form-group form-default">
+                                                        <div class="form-group form-default" hidden>
                                                             <label class="">Account ID: </label>
-                                                            <input type="text" name="username" class="form-control" value="<%= ((Account)request.getAttribute("account")).getAccountID() %>" readonly required>
+                                                            <input type="text" name="username" hidden class="form-control" value="<%= ((Account)request.getAttribute("account")).getAccountID() %>" readonly required>
                                                         </div>
                                                         <div class="form-group form-default">
                                                             <label class="">Username: </label>
