@@ -102,12 +102,13 @@ public class OrderDAO extends DBContext {
 
     public void saveOrderDiscount(int orderId, int discountId) throws SQLException {
         String query = "UPDATE Orders SET discountID = ? WHERE orderID = ?";
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, discountId);
             ps.setInt(2, orderId);
             ps.executeUpdate();
         }
     }
+
     public Order getOrderByOrderID(int orderID) throws SQLException {
         String orderQuery = "SELECT o.OrderID, o.AccountID, a.Name AS AccountName, o.OrderDate, o.Status, o.Cancelled "
                 + "FROM [Order] o "
@@ -468,4 +469,24 @@ public class OrderDAO extends DBContext {
         return discounts;
     }
 
+    public Discount getDiscountByCode(String code) throws SQLException {
+        String query = "SELECT * FROM Discount WHERE Code = ?";
+        try ( PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, code);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                Discount discount = new Discount();
+                discount.setDiscountID(rs.getInt("DiscountID"));
+                discount.setValue(rs.getInt("Value"));
+                discount.setCode(rs.getString("Code"));
+                discount.setStartDate(rs.getDate("StartDate"));
+                discount.setEndDate(rs.getDate("EndDate"));
+                discount.setMaxDiscount(rs.getDouble("MaxDiscount"));
+                discount.setQuantity(rs.getInt("Quantity"));
+                discount.setStatus(rs.getBoolean("Status"));
+                return discount;
+            }
+        }
+        return null;
+    }
 }

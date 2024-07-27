@@ -79,20 +79,23 @@
                 text-align: left;
             }
 
-            .btn_checkout, .btn_discount {
+            .btn_payment {
                 display: block;
                 text-align: center;
                 text-decoration: none;
                 border: 1px solid gray;
                 border-radius: 3px;
                 padding: 10px;
-                background-color: #448aff;
                 color: white;
                 margin-top: 20px;
             }
 
-            .btn_discount {
+            .btn_cash {
                 background-color: #4caf50;
+            }
+
+            .btn_vnpay {
+                background-color: #448aff;
             }
 
             #discountModal {
@@ -169,10 +172,11 @@
                     <tbody id="orderList"></tbody>
                 </table>
                 <div>Total: <span id="totalAmount">0</span></div>
-                <div>Voucher: <span id="discountInfo">None</span></div>
+                <div>Discount: <span id="discountInfo">None</span></div>
                 <div>New Total: <span id="newTotalAmount">0</span></div>
                 <button class="btn_discount" onclick="showDiscountModal()">Add Discount</button>
-                <a href="checkout" class="btn_checkout">Checkout</a>
+                <button class="btn_payment btn_cash" onclick="checkout('cash')">Payment in Cash</button>
+                <button class="btn_payment btn_vnpay" onclick="checkout('vnpay')">Payment via VNPay Wallet</button>
             </div>
         </div>
 
@@ -214,7 +218,7 @@
 
                 const priceElem = document.createElement('td');
                 priceElem.className = 'price';
-                priceElem.textContent = price;
+                priceElem.textContent = price.toFixed(0);
 
                 const removeBtn = document.createElement('button');
                 removeBtn.textContent = 'X';
@@ -249,11 +253,134 @@
                 updateNewTotal();
             }
 
-            function removeItem(button) {
-                const orderItem = button.parentElement.parentElement;
-                orderItem.remove();
-                updateTotal();
-                saveOrderToCookie();
+            function applyDiscount(discount) {
+                const totalElem = document.getElementById('totalAmount');
+                const total = parseFloat(totalElem.textContent.replace(/,/g, ''));
+                let newTotal = total;
+                const discountValue = total * (discount.Value / 100);
+
+                if (discountValue < discount.MaxDiscount) {
+                    newTotal = total - discountValue;
+                } else {
+                    newTotal = total - discount.MaxDiscount;
+                }
+
+                document.getElementById('discountInfo').textContent = 'Voucher ' + discount.Code + ' - ' + discount.Value + '% (Max: ' + discount.MaxDiscount + ')';
+                document.getElementById('newTotalAmount').textContent = formatNumber(newTotal);
+                closeDiscountModal();
+            }
+
+            function updateNewTotal() {
+                const discountInfo = document.getElementById('discountInfo').textContent;
+                if (discountInfo !== 'None') {
+                    const totalElem = document.getElementById('totalAmount');
+                    const total = parseFloat(totalElem.textContent.replace(/,/g, ''));
+                    const discount = discountInfo.match(/\d+/g).map(Number);
+                    let newTotal = total;
+                    const discountValue = total * (discount[1] / 100);
+
+                    if (discountValue < discount[2]) {
+                        newTotal = total - discountValue;
+                    } else {
+                        newTotal = total - discount[2];
+                    }
+                    document.getElementById('newTotalAmount').textContent = formatNumber(newTotal);
+                } else {
+                    document.getElementById('newTotalAmount').textContent = document.getElementById('totalAmount').textContent;
+                }
+            }
+
+            function showDiscountModal() {
+                const modal = document.getElementById('discountModal');
+                modal.style.display = 'block';
+
+                fetch('order?action=getActiveDiscounts')
+                        .then(response => response.json())
+                        .then(data => {
+                            const discountsDiv = document.getElementById('discounts');
+                            discountsDiv.innerHTML = '';
+
+                            data.forEach(discount => {
+                                const discountDiv = document.createElement('div');
+                                discountDiv.textContent = 'Voucher ' + discount.Code + ' - ' + discount.Value + '% (Max: ' + discount.MaxDiscount + ')';
+                                discountDiv.onclick = () => applyDiscount(discount);
+                                discountsDiv.appendChild(discountDiv);
+                            });
+                        });
+            }
+
+            function closeDiscountModal() {
+                const modal = document.getElementById('discountModal');
+                modal.style.display = 'none';
+            }
+
+            function checkout(paymentMethod) {
+                const orderDetails = getOrderDetailsFromDOM();
+                const discountInfo = document.getElementById('discountInfo').textContent;
+
+                if (paymentMethod === 'cash') {
+                    // Save order and show payment success page
+                    saveOrderToDatabase(orderDetails, discountInfo, 'cash');
+                } else if (paymentMethod === 'vnpay') {
+                    // Redirect to VNPay payment page
+                    redirectToVNPayPage(orderDetails, discountInfo);
+                }
+            }
+
+            function getOrderDetailsFromDOM() {
+                const orderItems = document.querySelectorAll('#orderList tr');
+                const orderList = [];
+                orderItems.forEach(item => {
+                    const productName = item.querySelector('td:first-child').textContent;
+                    const quantity = item.querySelector('input').value;
+                    const price = item.querySelector('.price').textContent;
+                    orderList.push({productName, quantity, price});
+                });
+                return orderList;
+            }
+
+            function saveOrderToDatabase(orderDetails, discountInfo, paymentMethod) {
+                const orderData = {
+                    orderDetails: orderDetails,
+                    discountInfo: discountInfo,
+                    paymentMethod: paymentMethod
+                };
+
+                fetch('order?action=saveOrder', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(orderData)
+                })
+                        .then(response => {
+                            if (response.ok) {
+                                window.location.href = 'payment_success.jsp';
+                            } else {
+                                alert('Error processing your order. Please try again.');
+                            }
+                        });
+            }
+
+            function redirectToVNPayPage(orderDetails, discountInfo) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = 'vnpay_pay.jsp';
+
+                const orderDetailsInput = document.createElement('input');
+                orderDetailsInput.type = 'hidden';
+                orderDetailsInput.name = 'orderDetails';
+                orderDetailsInput.value = JSON.stringify(orderDetails);
+                form.appendChild(orderDetailsInput);
+
+                const discountInfoInput = document.createElement('input');
+                discountInfoInput.type = 'hidden';
+                discountInfoInput.name = 'discountInfo';
+                discountInfoInput.value = discountInfo;
+                form.appendChild(discountInfoInput);
+
+                document.body.appendChild(form);
+                form.submit();
             }
 
             function saveOrderToCookie() {
@@ -316,70 +443,9 @@
                 }
             }
 
-            function showDiscountModal() {
-                const modal = document.getElementById('discountModal');
-                modal.style.display = 'block';
-
-                fetch('order?action=getActiveDiscounts')
-                        .then(response => response.json())
-                        .then(data => {
-                            const discountsDiv = document.getElementById('discounts');
-                            discountsDiv.innerHTML = '';
-
-                            data.forEach(discount => {
-                                const discountDiv = document.createElement('div');
-                                discountDiv.textContent = 'Voucher ' + discount.Code + ' - ' + discount.Value + '% (Max: ' + discount.MaxDiscount + ')';
-                                discountDiv.onclick = () => applyDiscount(discount);
-                                discountsDiv.appendChild(discountDiv);
-                            });
-                        });
-            }
-
-            function closeDiscountModal() {
-                const modal = document.getElementById('discountModal');
-                modal.style.display = 'none';
-            }
-
-            function applyDiscount(discount) {
-                const totalElem = document.getElementById('totalAmount');
-                const total = parseFloat(totalElem.textContent.replace(/,/g, ''));
-                let newTotal = total;
-                const discountValue = total * (discount.Value / 100);
-
-                if (discountValue < discount.MaxDiscount) {
-                    newTotal = total - discountValue;
-                } else {
-                    newTotal = total - discount.MaxDiscount;
-                }
-
-                document.getElementById('discountInfo').textContent = 'Voucher ' + discount.Code + ' - ' + discount.Value + '% (Max: ' + discount.MaxDiscount + ')';
-                document.getElementById('newTotalAmount').textContent = formatNumber(newTotal);
-                closeDiscountModal();
-            }
-
-            function updateNewTotal() {
-                const discountInfo = document.getElementById('discountInfo').textContent;
-                if (discountInfo !== 'None') {
-                    const totalElem = document.getElementById('totalAmount');
-                    const total = parseFloat(totalElem.textContent.replace(/,/g, ''));
-                    const discount = discountInfo.match(/\d+/g).map(Number);
-                    let newTotal = total;
-                    const discountValue = total * (discount[1] / 100);
-
-                    if (discountValue < discount[2]) {
-                        newTotal = total - discountValue;
-                    } else {
-                        newTotal = total - discount[2];
-                    }
-                    document.getElementById('newTotalAmount').textContent = formatNumber(newTotal);
-                } else {
-                    document.getElementById('newTotalAmount').textContent = document.getElementById('totalAmount').textContent;
-                }
-            }
             function formatNumber(num) {
                 return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             }
         </script>
     </body>
 </html>
-
