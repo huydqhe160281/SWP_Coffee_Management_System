@@ -16,6 +16,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import model.Category;
@@ -109,13 +112,30 @@ public class CreateNewProductServlet extends HttpServlet {
         // Handle file upload
         Part filePart = request.getPart("image");
         String fileName = extractFileName(filePart);
-        String uploadPath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIRECTORY;
+
+        // Define the upload directory
+        String uploadPath = "D:/Huy_data/FPT/Ky8/SWP392/demo2/web/assets/images";
         File uploadDir = new File(uploadPath);
         if (!uploadDir.exists()) {
-            uploadDir.mkdir();
+            uploadDir.mkdirs();
         }
+
+        // Define the full path for the uploaded file
         String filePath = uploadPath + File.separator + fileName;
-        filePart.write(filePath);
+
+        // Write the file to the server
+        try ( InputStream fileInputStream = filePart.getInputStream();  OutputStream fileOutputStream = new FileOutputStream(new File(filePath))) {
+
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+                fileOutputStream.write(buffer, 0, bytesRead);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.getWriter().println("Error uploading image: " + e.getMessage());
+            return;
+        }
 
         // Create category object
         Category category = new Category(categoryId, null, null); // Assuming you have a way to fetch the full category details
@@ -150,7 +170,7 @@ public class CreateNewProductServlet extends HttpServlet {
         String[] items = contentDisposition.split(";");
         for (String item : items) {
             if (item.trim().startsWith("filename")) {
-                return item.substring(item.indexOf("=") + 2, item.length() - 1);
+                return item.substring(item.indexOf("=") + 2, item.length() - 1).replace("\"", ""); // Added replace to clean up any extra quotes
             }
         }
         return "";
