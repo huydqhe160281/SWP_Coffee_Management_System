@@ -148,7 +148,7 @@
                         </li>
                         <li class="waves-effect waves-light">
                             <a href="logout">
-                                <i class="ti-layout-sidebar-left"></i> Logout
+                                <i class="fa fa-sign-out" aria-hidden="true"></i> Logout
                             </a>
                         </li>
                     </ul>
