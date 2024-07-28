@@ -28,6 +28,8 @@ public class UpdateSupplierServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        String currentPath = request.getRequestURI();
+        request.setAttribute("currentPath", currentPath);
         try {
             int supplierID = Integer.parseInt(request.getParameter("supplierID"));
             Supplier supplier = supplierDAO.getSupplierById(supplierID);

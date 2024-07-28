@@ -3,8 +3,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Order Page</title>
-        <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+        <title>Order Page</title>       
         <style>
             body {
                 font-family: 'Open Sans', sans-serif;
@@ -79,20 +78,23 @@
                 text-align: left;
             }
 
-            .btn_checkout, .btn_discount {
+            .btn_payment {
                 display: block;
                 text-align: center;
                 text-decoration: none;
                 border: 1px solid gray;
                 border-radius: 3px;
                 padding: 10px;
-                background-color: #448aff;
                 color: white;
                 margin-top: 20px;
             }
 
-            .btn_discount {
+            .btn_cash {
                 background-color: #4caf50;
+            }
+
+            .btn_vnpay {
+                background-color: #448aff;
             }
 
             #discountModal {
@@ -130,7 +132,7 @@
             }
         </style>
     </head>
-    <body>
+    <body>      
         <div class="container">
             <div class="main-content">
                 <h3>Categories</h3>
@@ -155,7 +157,7 @@
                     </c:forEach>
                 </div>
             </div>
-            <div class="order-sidebar">
+            <form id="orderForm" class="order-sidebar" method="post" action="order?action=saveOrder">
                 <h3>Order</h3>
                 <table class="order-table">
                     <thead>
@@ -169,11 +171,14 @@
                     <tbody id="orderList"></tbody>
                 </table>
                 <div>Total: <span id="totalAmount">0</span></div>
-                <div>Voucher: <span id="discountInfo">None</span></div>
+                <div>Discount: <span id="discountInfo">None</span></div>
                 <div>New Total: <span id="newTotalAmount">0</span></div>
-                <button class="btn_discount" onclick="showDiscountModal()">Add Discount</button>
-                <a href="checkout" class="btn_checkout">Checkout</a>
-            </div>
+                <input type="hidden" id="orderDetails" name="orderDetails">
+                <input type="hidden" id="discountDetails" name="discountDetails">
+                <button type="button" class="btn_discount" onclick="showDiscountModal()">Add Discount</button>
+                <button type="button" class="btn_payment btn_cash" onclick="submitOrderForm()">Payment in Cash</button>
+                <button type="button" class="btn_payment btn_vnpay" onclick="submitOrderForm('vnpay')">Payment via VNPay Wallet</button>
+            </form>
         </div>
 
         <!-- Discount Modal -->
@@ -205,6 +210,7 @@
 
                 const quantityInput = document.createElement('input');
                 quantityInput.type = 'number';
+                quantityInput.name = 'quantity';
                 quantityInput.value = 1;
                 quantityInput.min = 1;
                 quantityInput.oninput = updateTotal;
@@ -214,7 +220,7 @@
 
                 const priceElem = document.createElement('td');
                 priceElem.className = 'price';
-                priceElem.textContent = price;
+                priceElem.textContent = price.toFixed(0);
 
                 const removeBtn = document.createElement('button');
                 removeBtn.textContent = 'X';
@@ -249,11 +255,87 @@
                 updateNewTotal();
             }
 
-            function removeItem(button) {
-                const orderItem = button.parentElement.parentElement;
-                orderItem.remove();
-                updateTotal();
-                saveOrderToCookie();
+            function applyDiscount(discount) {
+                const totalElem = document.getElementById('totalAmount');
+                const total = parseFloat(totalElem.textContent.replace(/,/g, ''));
+                let newTotal = total;
+                const discountValue = total * (discount.Value / 100);
+
+                if (discountValue < discount.MaxDiscount) {
+                    newTotal = total - discountValue;
+                } else {
+                    newTotal = total - discount.MaxDiscount;
+                }
+
+                document.getElementById('discountInfo').textContent = 'Voucher ' + discount.Code + ' - ' + discount.Value + '% (Max: ' + discount.MaxDiscount + ')';
+                document.getElementById('newTotalAmount').textContent = formatNumber(newTotal);
+                closeDiscountModal();
+            }
+
+            function updateNewTotal() {
+                const discountInfo = document.getElementById('discountInfo').textContent;
+                if (discountInfo !== 'None') {
+                    const totalElem = document.getElementById('totalAmount');
+                    const total = parseFloat(totalElem.textContent.replace(/,/g, ''));
+                    const discount = discountInfo.match(/\d+/g).map(Number);
+                    let newTotal = total;
+                    const discountValue = total * (discount[1] / 100);
+
+                    if (discountValue < discount[2]) {
+                        newTotal = total - discountValue;
+                    } else {
+                        newTotal = total - discount[2];
+                    }
+                    document.getElementById('newTotalAmount').textContent = formatNumber(newTotal);
+                } else {
+                    document.getElementById('newTotalAmount').textContent = document.getElementById('totalAmount').textContent;
+                }
+            }
+
+            function showDiscountModal() {
+                const modal = document.getElementById('discountModal');
+                modal.style.display = 'block';
+
+                fetch('order?action=getActiveDiscounts')
+                        .then(response => response.json())
+                        .then(data => {
+                            const discountsDiv = document.getElementById('discounts');
+                            discountsDiv.innerHTML = '';
+
+                            data.forEach(discount => {
+                                const discountDiv = document.createElement('div');
+                                discountDiv.textContent = 'Voucher ' + discount.Code + ' - ' + discount.Value + '% (Max: ' + discount.MaxDiscount + ')';
+                                discountDiv.onclick = () => applyDiscount(discount);
+                                discountsDiv.appendChild(discountDiv);
+                            });
+                        });
+            }
+
+            function closeDiscountModal() {
+                const modal = document.getElementById('discountModal');
+                modal.style.display = 'none';
+            }
+
+            function submitOrderForm() {
+                const orderDetails = getOrderDetailsFromDOM();
+                const discountInfo = document.getElementById('discountInfo').textContent;
+
+                document.getElementById('orderDetails').value = JSON.stringify(orderDetails);
+                document.getElementById('discountDetails').value = discountInfo;
+
+                document.getElementById('orderForm').submit();
+            }
+
+            function getOrderDetailsFromDOM() {
+                const orderItems = document.querySelectorAll('#orderList tr');
+                const orderList = [];
+                orderItems.forEach(item => {
+                    const productName = item.querySelector('td:first-child').textContent;
+                    const quantity = item.querySelector('input').value;
+                    const price = item.querySelector('.price').textContent;
+                    orderList.push({productName, quantity, price});
+                });
+                return orderList;
             }
 
             function saveOrderToCookie() {
@@ -316,70 +398,9 @@
                 }
             }
 
-            function showDiscountModal() {
-                const modal = document.getElementById('discountModal');
-                modal.style.display = 'block';
-
-                fetch('order?action=getActiveDiscounts')
-                        .then(response => response.json())
-                        .then(data => {
-                            const discountsDiv = document.getElementById('discounts');
-                            discountsDiv.innerHTML = '';
-
-                            data.forEach(discount => {
-                                const discountDiv = document.createElement('div');
-                                discountDiv.textContent = 'Voucher ' + discount.Code + ' - ' + discount.Value + '% (Max: ' + discount.MaxDiscount + ')';
-                                discountDiv.onclick = () => applyDiscount(discount);
-                                discountsDiv.appendChild(discountDiv);
-                            });
-                        });
-            }
-
-            function closeDiscountModal() {
-                const modal = document.getElementById('discountModal');
-                modal.style.display = 'none';
-            }
-
-            function applyDiscount(discount) {
-                const totalElem = document.getElementById('totalAmount');
-                const total = parseFloat(totalElem.textContent.replace(/,/g, ''));
-                let newTotal = total;
-                const discountValue = total * (discount.Value / 100);
-
-                if (discountValue < discount.MaxDiscount) {
-                    newTotal = total - discountValue;
-                } else {
-                    newTotal = total - discount.MaxDiscount;
-                }
-
-                document.getElementById('discountInfo').textContent = 'Voucher ' + discount.Code + ' - ' + discount.Value + '% (Max: ' + discount.MaxDiscount + ')';
-                document.getElementById('newTotalAmount').textContent = formatNumber(newTotal);
-                closeDiscountModal();
-            }
-
-            function updateNewTotal() {
-                const discountInfo = document.getElementById('discountInfo').textContent;
-                if (discountInfo !== 'None') {
-                    const totalElem = document.getElementById('totalAmount');
-                    const total = parseFloat(totalElem.textContent.replace(/,/g, ''));
-                    const discount = discountInfo.match(/\d+/g).map(Number);
-                    let newTotal = total;
-                    const discountValue = total * (discount[1] / 100);
-
-                    if (discountValue < discount[2]) {
-                        newTotal = total - discountValue;
-                    } else {
-                        newTotal = total - discount[2];
-                    }
-                    document.getElementById('newTotalAmount').textContent = formatNumber(newTotal);
-                } else {
-                    document.getElementById('newTotalAmount').textContent = document.getElementById('totalAmount').textContent;
-                }
-            }
             function formatNumber(num) {
                 return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             }
         </script>
     </body>
 </html>
-

@@ -189,7 +189,7 @@
                                                             <% } else if (request.getAttribute("discount") != null) {
                                                                 Discount discount = (Discount) request.getAttribute("discount");
                                                             %>
-                                                            <p>ID: <%= discount.getDiscountID() %></p>
+                                                            <p hidden="true">ID: <%= discount.getDiscountID() %></p>
                                                             <p>Code: <%= discount.getCode() %></p>
                                                             <p>Value: <%= discount.getValue() %> %</p>
                                                             <p>Start Date: <%= discount.getStartDate() %></p>

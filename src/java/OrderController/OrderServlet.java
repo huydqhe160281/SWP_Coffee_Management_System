@@ -12,12 +12,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.io.BufferedReader;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import model.Account;
 import model.Category;
 import model.Discount;
 import model.Order;
@@ -106,37 +108,61 @@ public class OrderServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        String orderListJson = request.getParameter("orderList");
-        String discountJson = request.getParameter("discount");
-        Gson gson = new Gson();
-        OrderDetail[] orderDetails = gson.fromJson(orderListJson, OrderDetail[].class);
-        Discount discount = gson.fromJson(discountJson, Discount.class);
+        String action = request.getParameter("action");
+        if ("saveOrder".equals(action)) {
+            handleSaveOrder(request, response);
+        }
+    }
 
-        int accountId = 1; // ID của tài khoản người dùng (cập nhật với giá trị thật)
-        Order order = new Order();
-        order.setAccountID(accountId);
-        order.setOrderDate(new Date());
-        order.setStatus(true);
-        order.setCancelled(false);
+    private void handleSaveOrder(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("account") == null) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Unauthorized: No active session.");
+            return;
+        }
+
+        Account account = (Account) session.getAttribute("account");
+        int accountId = account.getAccountID();
 
         try {
+            String orderDetailsJson = request.getParameter("orderDetails");
+            String discountInfo = request.getParameter("discountDetails");
+
+            OrderDetail[] orderDetails = new Gson().fromJson(orderDetailsJson, OrderDetail[].class);
+
+            Order order = new Order();
+            order.setAccountID(accountId);
+            order.setOrderDate(new Date());
+            order.setStatus(true);
+            order.setCancelled(false);
+
             int orderId = orderDAO.saveOrder(order);
-            for (OrderDetail detail : orderDetails) {
-                detail.setOrderID(orderId);
-                orderDAO.saveOrderDetail(detail);
-            }
-            if (discount != null) {
-                // Lưu discount vào đơn hàng
-                orderDAO.saveOrderDiscount(orderId, discount.getDiscountID());
+
+            Discount discount = null;
+            if (!"None".equals(discountInfo)) {
+                String discountCode = discountInfo.split(" ")[1];
+                discount = orderDAO.getDiscountByCode(discountCode);
             }
 
-            session.setAttribute("orderID", orderId);
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.sendRedirect("checkout?orderID=" + orderId);
+            for (OrderDetail detail : orderDetails) {
+                detail.setOrderID(orderId);
+                if (discount != null) {
+                    detail.setDiscountID(discount.getDiscountID());
+                } else {
+                    detail.setDiscountID(0); // Or a default value if no Discount
+                }
+                orderDAO.saveOrderDetail(detail);
+            }
+
+            response.sendRedirect("checkout.jsp");
         } catch (SQLException e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().write("Error: " + e.getMessage());
+            response.getWriter().write("Error processing your order: " + e.getMessage());
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write("Error processing your order: " + e.getMessage());
         }
     }
 

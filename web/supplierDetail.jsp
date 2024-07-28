@@ -148,7 +148,7 @@
                                                             <% } else if (request.getAttribute("supplier") != null) {
                                                                 Supplier supplier = (Supplier) request.getAttribute("supplier");
                                                             %>
-                                                            <p>ID: <%= supplier.getSupplierID() %></p>
+                                                            <p hidden="true">ID: <%= supplier.getSupplierID() %></p>
                                                             <p>Name: <%= supplier.getSupplierName() %></p>
                                                             <p>Contact: <%= supplier.getContact() %></p>
                                                             <p>Address: <%= supplier.getAddress() %></p>

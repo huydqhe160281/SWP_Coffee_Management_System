@@ -65,6 +65,11 @@
         .search-form input[type="submit"]:hover {
             background-color: #0056b3;
         }
+        .icon-spacing {
+            padding-right: 5px;
+            font-size: 1.6em; /* Tăng kích thước của icon, bạn có thể thay đổi giá trị này để phù hợp */
+            cursor: pointer;
+        }
     </style>
     <body>
 

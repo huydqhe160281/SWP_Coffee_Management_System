@@ -14,20 +14,27 @@ public class UpdateDiscountServlet extends HttpServlet {
     private DiscountDAO discountDAO;
 
     public UpdateDiscountServlet() {
-        this.discountDAO = new DiscountDAO();  // Ensure your DAO has access to the database connection
+        this.discountDAO = new DiscountDAO();  
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        String currentPath = request.getRequestURI();
+        request.setAttribute("currentPath", currentPath);
         try {
             int discountID = Integer.parseInt(request.getParameter("discountID"));
             Discount discount = discountDAO.getDiscountByID(discountID);
-            request.setAttribute("discount", discount);
-            request.getRequestDispatcher("/updateDiscount.jsp").forward(request, response);
+            if (discount != null) {
+                request.setAttribute("discount", discount);
+                request.getRequestDispatcher("/updateDiscount.jsp").forward(request, response);
+            } else {
+                request.setAttribute("error", "Discount information is not available. Please check the Discount ID.");
+                request.getRequestDispatcher("/updateDiscount.jsp").forward(request, response);
+            }
         } catch (NumberFormatException e) {
             request.setAttribute("error", "Invalid discount ID.");
-            request.getRequestDispatcher("/errorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/updateDiscount.jsp").forward(request, response);
         }
     } 
 
@@ -59,7 +66,7 @@ public class UpdateDiscountServlet extends HttpServlet {
         request.getRequestDispatcher("/updateDiscount.jsp").forward(request, response);
     } catch (Exception e) {
         request.setAttribute("error", "System error: " + e.getMessage());
-        request.getRequestDispatcher("/errorPage.jsp").forward(request, response);
+        request.getRequestDispatcher("/updateDiscount.jsp").forward(request, response);
     }
     }
 

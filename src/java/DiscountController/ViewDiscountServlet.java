@@ -29,6 +29,8 @@ public class ViewDiscountServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        String currentPath = request.getRequestURI();
+        request.setAttribute("currentPath", currentPath);
         int discountID = Integer.parseInt(request.getParameter("discountID"));
         Discount discount = discountDAO.getDiscountByID(discountID);
         if (discount != null) {
