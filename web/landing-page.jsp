@@ -73,7 +73,11 @@
         <div class="header_section">
             <div class="container-fluid">
                 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                    <div class="logo"><a href="index.jsp"><img src="images/logo.png"></a></div>
+                    <div class="logo"><a href="#"><img
+                                class="img-fluid"
+                                src="assets/images/logo.png"
+                                alt="Theme-Logo"
+                                /></a></div>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -94,7 +98,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="#contact">Contact Us</a>
                             </li>
-                             <li class="nav-item">
+                            <li class="nav-item">
                                 <a class="nav-link" href="/login">Sign In</a>
                             </li>
                         </ul>
@@ -528,7 +532,9 @@
             ;
             (function (n, t, c) {
                 function i(n) {
-                    return e._h ? e._h.apply(null, n) : e._q.push(n)}var e = {_q: [], _h: null, _v: "2.0", on: function () {
+                    return e._h ? e._h.apply(null, n) : e._q.push(n)
+                }
+                var e = {_q: [], _h: null, _v: "2.0", on: function () {
                         i(["on", c.call(arguments)])
                     }, once: function () {
                         i(["once", c.call(arguments)])

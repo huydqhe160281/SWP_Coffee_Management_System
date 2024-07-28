@@ -113,25 +113,36 @@ public class UpdateProductServlet extends HttpServlet {
         int categoryId = Integer.parseInt(request.getParameter("category"));
 
         Part filePart = request.getPart("image");
-        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-
+        String fileName = null;
         String uploadPath = "D:/Huy_data/FPT/Ky8/SWP392/demo2/web/assets/images";
-        File uploadDir = new File(uploadPath);
-        if (!uploadDir.exists()) {
-            uploadDir.mkdirs();
+
+        if (filePart != null && filePart.getSize() > 0) {
+            fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
+
+            try ( InputStream fileInputStream = filePart.getInputStream();  OutputStream fileOutputStream = new FileOutputStream(new File(uploadPath, fileName))) {
+
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+                    fileOutputStream.write(buffer, 0, bytesRead);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.getWriter().println("Error uploading image: " + e.getMessage());
+                return;
+            }
         }
 
-        try ( InputStream fileInputStream = filePart.getInputStream();  OutputStream fileOutputStream = new FileOutputStream(new File(uploadPath, fileName))) {
+        ProductDAO productDAO = new ProductDAO();
+        Product currentProduct = productDAO.getProductById("" + productId);
 
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-            while ((bytesRead = fileInputStream.read(buffer)) != -1) {
-                fileOutputStream.write(buffer, 0, bytesRead);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.getWriter().println("Error uploading image: " + e.getMessage());
-            return;
+        if (fileName == null) {
+            fileName = currentProduct.getImage();
         }
 
         Category category = new Category(categoryId, null, null);
@@ -150,7 +161,6 @@ public class UpdateProductServlet extends HttpServlet {
             }
         }
 
-        ProductDAO productDAO = new ProductDAO();
         productDAO.updateProduct(product, productSizes);
 
         response.sendRedirect("/product");
