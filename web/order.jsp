@@ -3,8 +3,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Order Page</title>
-        <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+        <title>Order Page</title>       
         <style>
             body {
                 font-family: 'Open Sans', sans-serif;
@@ -133,7 +132,7 @@
             }
         </style>
     </head>
-    <body>
+    <body>      
         <div class="container">
             <div class="main-content">
                 <h3>Categories</h3>
@@ -158,7 +157,7 @@
                     </c:forEach>
                 </div>
             </div>
-            <div class="order-sidebar">
+            <form id="orderForm" class="order-sidebar" method="post" action="order?action=saveOrder">
                 <h3>Order</h3>
                 <table class="order-table">
                     <thead>
@@ -174,10 +173,12 @@
                 <div>Total: <span id="totalAmount">0</span></div>
                 <div>Discount: <span id="discountInfo">None</span></div>
                 <div>New Total: <span id="newTotalAmount">0</span></div>
-                <button class="btn_discount" onclick="showDiscountModal()">Add Discount</button>
-                <button class="btn_payment btn_cash" onclick="checkout('cash')">Payment in Cash</button>
-                <button class="btn_payment btn_vnpay" onclick="checkout('vnpay')">Payment via VNPay Wallet</button>
-            </div>
+                <input type="hidden" id="orderDetails" name="orderDetails">
+                <input type="hidden" id="discountDetails" name="discountDetails">
+                <button type="button" class="btn_discount" onclick="showDiscountModal()">Add Discount</button>
+                <button type="button" class="btn_payment btn_cash" onclick="submitOrderForm()">Payment in Cash</button>
+                <button type="button" class="btn_payment btn_vnpay" onclick="submitOrderForm('vnpay')">Payment via VNPay Wallet</button>
+            </form>
         </div>
 
         <!-- Discount Modal -->
@@ -209,6 +210,7 @@
 
                 const quantityInput = document.createElement('input');
                 quantityInput.type = 'number';
+                quantityInput.name = 'quantity';
                 quantityInput.value = 1;
                 quantityInput.min = 1;
                 quantityInput.oninput = updateTotal;
@@ -314,17 +316,14 @@
                 modal.style.display = 'none';
             }
 
-            function checkout(paymentMethod) {
+            function submitOrderForm() {
                 const orderDetails = getOrderDetailsFromDOM();
                 const discountInfo = document.getElementById('discountInfo').textContent;
 
-                if (paymentMethod === 'cash') {
-                    // Save order and show payment success page
-                    saveOrderToDatabase(orderDetails, discountInfo, 'cash');
-                } else if (paymentMethod === 'vnpay') {
-                    // Redirect to VNPay payment page
-                    redirectToVNPayPage(orderDetails, discountInfo);
-                }
+                document.getElementById('orderDetails').value = JSON.stringify(orderDetails);
+                document.getElementById('discountDetails').value = discountInfo;
+
+                document.getElementById('orderForm').submit();
             }
 
             function getOrderDetailsFromDOM() {
@@ -337,50 +336,6 @@
                     orderList.push({productName, quantity, price});
                 });
                 return orderList;
-            }
-
-            function saveOrderToDatabase(orderDetails, discountInfo, paymentMethod) {
-                const orderData = {
-                    orderDetails: orderDetails,
-                    discountInfo: discountInfo,
-                    paymentMethod: paymentMethod
-                };
-
-                fetch('order?action=saveOrder', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(orderData)
-                })
-                        .then(response => {
-                            if (response.ok) {
-                                window.location.href = 'payment_success.jsp';
-                            } else {
-                                alert('Error processing your order. Please try again.');
-                            }
-                        });
-            }
-
-            function redirectToVNPayPage(orderDetails, discountInfo) {
-                const form = document.createElement('form');
-                form.method = 'POST';
-                form.action = 'vnpay_pay.jsp';
-
-                const orderDetailsInput = document.createElement('input');
-                orderDetailsInput.type = 'hidden';
-                orderDetailsInput.name = 'orderDetails';
-                orderDetailsInput.value = JSON.stringify(orderDetails);
-                form.appendChild(orderDetailsInput);
-
-                const discountInfoInput = document.createElement('input');
-                discountInfoInput.type = 'hidden';
-                discountInfoInput.name = 'discountInfo';
-                discountInfoInput.value = discountInfo;
-                form.appendChild(discountInfoInput);
-
-                document.body.appendChild(form);
-                form.submit();
             }
 
             function saveOrderToCookie() {

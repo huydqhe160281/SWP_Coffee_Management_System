@@ -79,7 +79,7 @@ public class DiscountDAO extends DBContext {
             ps.setString(2, discount.getCode());
             ps.setDate(3, new java.sql.Date(discount.getStartDate().getTime()));
             ps.setDate(4, new java.sql.Date(discount.getEndDate().getTime()));
-            ps.setDouble(5, discount.getMaxDiscount());
+            ps.setString(5, discount.getMaxDiscount());
             ps.setInt(6, discount.getQuantity());
             ps.setBoolean(7, discount.isStatus());
             ps.executeUpdate();
@@ -96,7 +96,7 @@ public class DiscountDAO extends DBContext {
             ps.setInt(2, discount.getValue());
             ps.setDate(3, new java.sql.Date(discount.getStartDate().getTime()));
             ps.setDate(4, new java.sql.Date(discount.getEndDate().getTime()));
-            ps.setDouble(5, discount.getMaxDiscount());
+            ps.setString(5, discount.getMaxDiscount());
             ps.setInt(6, discount.getQuantity());
             ps.setBoolean(7, discount.isStatus());
             ps.setInt(8, discount.getDiscountID());

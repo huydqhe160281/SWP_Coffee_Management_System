@@ -22,6 +22,8 @@ public class CreateNewDiscountServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        String currentPath = request.getRequestURI();
+        request.setAttribute("currentPath", currentPath);
         request.getRequestDispatcher("/createNewDiscount.jsp").forward(request, response);
     } 
 

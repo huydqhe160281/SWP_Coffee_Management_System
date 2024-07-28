@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import model.Account;
 import model.Category;
 import model.Discount;
 import model.Order;
@@ -114,24 +115,23 @@ public class OrderServlet extends HttpServlet {
     }
 
     private void handleSaveOrder(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
-        try {
-            BufferedReader reader = request.getReader();
-            StringBuilder sb = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                sb.append(line);
-            }
-            String jsonData = sb.toString();
-            JsonObject jsonObject = new Gson().fromJson(jsonData, JsonObject.class);
+            throws IOException, ServletException {
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("account") == null) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Unauthorized: No active session.");
+            return;
+        }
 
-            String orderDetailsJson = jsonObject.get("orderDetails").toString();
-            String discountInfo = jsonObject.get("discountInfo").getAsString();
-            String paymentMethod = jsonObject.get("paymentMethod").getAsString();
+        Account account = (Account) session.getAttribute("account");
+        int accountId = account.getAccountID();
+
+        try {
+            String orderDetailsJson = request.getParameter("orderDetails");
+            String discountInfo = request.getParameter("discountDetails");
 
             OrderDetail[] orderDetails = new Gson().fromJson(orderDetailsJson, OrderDetail[].class);
 
-            int accountId = 1; // ID of the user account (update with actual value)
             Order order = new Order();
             order.setAccountID(accountId);
             order.setOrderDate(new Date());
@@ -139,24 +139,30 @@ public class OrderServlet extends HttpServlet {
             order.setCancelled(false);
 
             int orderId = orderDAO.saveOrder(order);
+
+            Discount discount = null;
+            if (!"None".equals(discountInfo)) {
+                String discountCode = discountInfo.split(" ")[1];
+                discount = orderDAO.getDiscountByCode(discountCode);
+            }
+
             for (OrderDetail detail : orderDetails) {
                 detail.setOrderID(orderId);
+                if (discount != null) {
+                    detail.setDiscountID(discount.getDiscountID());
+                } else {
+                    detail.setDiscountID(0); // Or a default value if no Discount
+                }
                 orderDAO.saveOrderDetail(detail);
             }
 
-            if (!"None".equals(discountInfo)) {
-                // Extract discount ID from discountInfo and save it to the order
-                String discountCode = discountInfo.split(" ")[1];
-                Discount discount = orderDAO.getDiscountByCode(discountCode);
-                if (discount != null) {
-                    orderDAO.saveOrderDiscount(orderId, discount.getDiscountID());
-                }
-            }
-
-            response.setStatus(HttpServletResponse.SC_OK);
+            response.sendRedirect("checkout.jsp");
+        } catch (SQLException e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write("Error processing your order: " + e.getMessage());
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().write("Error: " + e.getMessage());
+            response.getWriter().write("Error processing your order: " + e.getMessage());
         }
     }
 

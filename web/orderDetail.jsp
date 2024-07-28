@@ -47,7 +47,6 @@
             color: #333;
             background-color: #f4f4f4;
             margin: 0;
-            padding: 20px;
         }
 
         h1, h2, h3, h4, h5, h6 {
@@ -184,17 +183,17 @@
                                                                     <th>Unit Price</th>
                                                                     <th>Quantity</th>
                                                                     <th>Note</th>
-                                                                    <th>Discount ID</th>
+<!--                                                                    <th>Discount ID</th>-->
                                                                     <th>Discount Value</th>
                                                                 </tr>
                                                                 <c:forEach var="detail" items="${orderDetails}">
                                                                     <tr>
                                                                         <td>${detail.productName}</td>
-                                                                        <td>${detail.unitPrice}</td>
+                                                                        <td>${detail.unitPrice} đ</td>
                                                                         <td>${detail.quantity}</td>
                                                                         <td>${detail.note}</td>
-                                                                        <td>${detail.discountID}</td>
-                                                                        <td>${detail.value}</td>
+<!--                                                                        <td>${detail.discountID}</td>-->
+                                                                        <td>${detail.value} %</td>
                                                                     </tr>
                                                                 </c:forEach>
                                                             </table>

@@ -1,9 +1,3 @@
-<%--
-    Document   : category
-    Created on : May 20, 2024, 8:38:20 PM
-    Author     : ADMIN
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -48,7 +42,7 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            width: 50%;
+            width: 100%;
             margin: auto;
         }
 
@@ -64,11 +58,11 @@
         }
 
         /* Nút gửi với hiệu ứng hover */
-        .form-material input[type="submit"]  {
+        .form-material input[type="submit"] {
             width: 100%;
             padding: 10px;
             color: white;
-            background-color: #5cb85c;
+            background-color: #448aff;
             border: none;
             border-radius: 4px;
             cursor: pointer;
@@ -122,7 +116,7 @@
                                                     <a href="/discount">Discount Management</a>
                                                 </li>
                                                 <li class="breadcrumb-item">
-                                                    <a href="/category_create">Create New Discount</a>
+                                                    <a href="/discount_create">Create New Discount</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -130,7 +124,6 @@
                                 </div>
                             </div>
                             <!-- Page-header end -->
-
 
                             <div class="pcoded-inner-content">
                                 <!-- Main-body start -->
@@ -190,9 +183,7 @@
 
         <script type="text/javascript">
 
-
         </script>
-
 
         <!-- Required Jquery -->
         <script type="text/javascript" src="assets/js/jquery/jquery.min.js"></script>
@@ -210,4 +201,3 @@
         <script type="text/javascript" src="assets/js/script.js"></script>
     </body>
 </html>
-

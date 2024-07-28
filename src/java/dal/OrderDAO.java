@@ -69,7 +69,7 @@ public class OrderDAO extends DBContext {
     }
 
     public int saveOrder(Order order) throws SQLException {
-        String sql = "INSERT INTO Orders (AccountID, OrderDate, Status, Cancelled) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO [Order] (AccountID, OrderDate, Status, Cancelled) VALUES (?, ?, ?, ?)";
         try ( PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, order.getAccountID());
             ps.setDate(2, new java.sql.Date(order.getOrderDate().getTime()));
@@ -86,22 +86,24 @@ public class OrderDAO extends DBContext {
     }
 
     public void saveOrderDetail(OrderDetail detail) throws SQLException {
-        String sql = "INSERT INTO OrderDetails (OrderID, ProductID, ProductName, UnitPrice, Quantity, Note, DiscountID, Value) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO OrderDetail (OrderID, ProductID, UnitPrice, Quantity, Note, DiscountID) VALUES (?, ?, ?, ?, ?, ?)";
         try ( PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, detail.getOrderID());
             ps.setInt(2, detail.getProductID());
-            ps.setString(3, detail.getProductName());
-            ps.setDouble(4, detail.getUnitPrice());
-            ps.setInt(5, detail.getQuantity());
-            ps.setString(6, detail.getNote());
-            ps.setInt(7, detail.getDiscountID());
-            ps.setInt(8, detail.getValue());
+            ps.setString(3, detail.getUnitPrice());
+            ps.setInt(4, detail.getQuantity());
+            ps.setString(5, detail.getNote());
+            if (detail.getDiscountID() != 0) {
+                ps.setInt(6, detail.getDiscountID());
+            } else {
+                ps.setNull(6, java.sql.Types.INTEGER);
+            }
             ps.executeUpdate();
         }
     }
 
     public void saveOrderDiscount(int orderId, int discountId) throws SQLException {
-        String query = "UPDATE Orders SET discountID = ? WHERE orderID = ?";
+        String query = "UPDATE OrderDetail SET DiscountID = ? WHERE OrderID = ?";
         try ( PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, discountId);
             ps.setInt(2, orderId);
@@ -293,7 +295,7 @@ public class OrderDAO extends DBContext {
         try ( PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, orderDetail.getOrderID());
             ps.setInt(2, orderDetail.getProductID());
-            ps.setDouble(3, orderDetail.getUnitPrice());
+            ps.setString(3, orderDetail.getUnitPrice());
             ps.setInt(4, orderDetail.getQuantity());
             ps.setString(5, orderDetail.getNote());
             ps.setInt(6, orderDetail.getDiscountID());

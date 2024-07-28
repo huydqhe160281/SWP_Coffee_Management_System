@@ -47,7 +47,6 @@
             color: #333;
             background-color: #f4f4f4;
             margin: 0;
-            padding: 20px;
         }
 
         h1, h2, h3, h4, h5, h6 {
@@ -126,6 +125,11 @@
         }
         .status-ordered {
             color: green;
+        }
+        .icon-spacing {
+            padding-right: 5px;
+            font-size: 1.6em; /* Tăng kích thước của icon, bạn có thể thay đổi giá trị này để phù hợp */
+            cursor: pointer;
         }
     </style>
     <body>
@@ -223,7 +227,10 @@
                                                                                     </c:otherwise>
                                                                                 </c:choose>
                                                                             </td>
-                                                                            <td><a href="/order_detail?orderId=${order.orderID}" class="btn btn-primary">Details</a></td>
+                                                                            <td>
+                                                                                <i class="fa fa-eye icon-spacing" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="Details"
+                                                                                   onclick="window.location.href = '/order_detail?orderId=${order.orderID}'"></i>
+                                                                            </td>
                                                                         </tr>
                                                                     </c:forEach>
                                                                 </tbody>

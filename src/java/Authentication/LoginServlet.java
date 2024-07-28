@@ -90,7 +90,7 @@ public class LoginServlet extends HttpServlet {
                 if (account.getRoleID() == 1) {
                     response.sendRedirect("index.jsp");
                 } else if (account.getRoleID() == 2) {
-                    response.sendRedirect("category");
+                    response.sendRedirect("order");
                 }
             } else {
                 // Tài khoản bị khóa

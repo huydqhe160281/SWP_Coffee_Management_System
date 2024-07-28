@@ -53,7 +53,7 @@
                                         <div class="col-md-8">
                                             <div class="page-header-title">
                                                 <h5 class="m-b-10">Dashboard</h5>
-                                                <p class="m-b-0">Thống kê</p>
+                                                <p class="m-b-0">Statitical</p>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -115,17 +115,17 @@
                                                         </form>
                                                         <hr>
 
-                                                        <h3>Kết quả thống kê</h3>
+                                                        <h3>Result</h3>
                                                         <c:if test="${not empty param.fromDate and not empty param.toDate}">
                                                             From date: ${param.fromDate} To date: ${param.toDate}
                                                         </c:if>
                                                         <div>
-                                                            <h4>Tổng doanh thu: ${totalRevenue} VND</h4>
+                                                            <h4>Total revenue: ${totalRevenue} VND</h4>
                                                             <table class="table table-bordered">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th>Ngày</th>
-                                                                        <th>Doanh thu</th>
+                                                                        <th>Date</th>
+                                                                        <th>Revenue</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>

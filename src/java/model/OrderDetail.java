@@ -4,6 +4,8 @@
  */
 package model;
 
+import java.text.DecimalFormat;
+
 /**
  *
  * @author Namqd
@@ -32,6 +34,16 @@ public class OrderDetail {
         this.value = value;
     }
 
+    public OrderDetail(int orderID, int productID, double unitPrice, int quantity, String note, int discountID) {
+        this.orderID = orderID;
+        this.productID = productID;
+        this.unitPrice = unitPrice;
+        this.quantity = quantity;
+        this.note = note;
+        this.discountID = discountID;
+    }
+
+    
     public int getOrderID() {
         return orderID;
     }
@@ -56,8 +68,9 @@ public class OrderDetail {
         this.productName = productName;
     }
 
-    public double getUnitPrice() {
-        return unitPrice;
+    public String getUnitPrice() {
+        DecimalFormat df = new DecimalFormat("#.###");
+        return df.format(unitPrice);
     }
 
     public void setUnitPrice(double unitPrice) {
@@ -95,5 +108,11 @@ public class OrderDetail {
     public void setValue(int value) {
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return "OrderDetail{" + "orderID=" + orderID + ", productID=" + productID + ", productName=" + productName + ", unitPrice=" + unitPrice + ", quantity=" + quantity + ", note=" + note + ", discountID=" + discountID + ", value=" + value + '}';
+    }
  
+    
 }

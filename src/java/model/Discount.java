@@ -4,6 +4,7 @@
  */
 package model;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 
 /**
@@ -74,8 +75,9 @@ public class Discount {
         this.EndDate = EndDate;
     }
 
-    public double getMaxDiscount() {
-        return MaxDiscount;
+    public String getMaxDiscount() {
+        DecimalFormat df = new DecimalFormat("#.###");
+        return df.format(MaxDiscount);
     }
 
     public void setMaxDiscount(double MaxDiscount) {

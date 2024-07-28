@@ -1,6 +1,7 @@
 <%@ page import="model.Discount" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -49,13 +50,13 @@
             width: 100%;
             padding: 10px;
             color: white;
-            background-color: #5cb85c;
+            background-color: #007bff;
             border: none;
             border-radius: 4px;
             cursor: pointer;
         }
         .form-material input[type="submit"]:hover {
-            background-color: #45a045;
+            background-color: #0056b3;
         }
         .alert-danger {
             color: white;
@@ -84,8 +85,7 @@
                             <div class="page-header">
                                 <div class="page-block">
                                     <div class="row align-items-center">
-                                        <div```html
-                                            <div class="col-md-4">
+                                        <div class="col-md-4">
                                             <ul class="breadcrumb">
                                                 <li class="breadcrumb-item">
                                                     <a href="index.jsp"> <i class="fa fa-home"></i> </a>
@@ -109,28 +109,30 @@
                                             <div class="card">
                                                 <div class="card-header">
                                                     <h3 class="text-center">Update Discount</h3>
-                                                    <% if (request.getAttribute("error") != null) { %>
-                                                    <div class="alert alert-danger" style="text-align: center;">
-                                                        <%= request.getAttribute("error").toString() %>
-                                                    </div>
-                                                    <% } %>
-                                                    <% 
-                                                        Discount discount = (Discount) request.getAttribute("discount");
-                                                        if (discount != null) { %>
-                                                    <form class="form-material" action="discount_update" method="post">
-                                                        <input type="hidden" name="discountID" value="<%= discount.getDiscountID() %>">
-                                                        Code: <input type="text" name="code" value="<%= discount.getCode() %>" required><br>
-                                                        Value (%): <input type="number" name="value" value="<%= discount.getValue() %>" required><br>
-                                                        Start Date: <input type="date" name="startDate" value="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(discount.getStartDate()) %>" required><br>
-                                                        End Date: <input type="date" name="endDate" value="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(discount.getEndDate()) %>" required><br>
-                                                        Max Discount (VND): <input type="number" name="maxDiscount" value="<%= discount.getMaxDiscount() %>" required><br>
-                                                        Quantity: <input type="number" name="quantity" value="<%= discount.getQuantity() %>" required><br>
-                                                        Status: <input type="text" class="<%= discount.isStatus() ? "status-active" : "status-expired" %>" name="status" value="<%= discount.isStatus() ? "On going" : "Out of date" %>" readonly />
-                                                        <input type="submit" value="Update">
-                                                    </form>
-                                                    <% } else { %>
-                                                    <p>Discount information is not available. Please check the Discount ID.</p>
-                                                    <% } %>
+                                                    <c:if test="${not empty error}">
+                                                        <div class="alert alert-danger" style="text-align: center;">
+                                                            ${error}
+                                                        </div>
+                                                    </c:if>
+
+                                                    <c:choose>
+                                                        <c:when test="${not empty discount}">
+                                                            <form class="form-material" action="discount_update" method="post">
+                                                                <input type="hidden" name="discountID" value="${discount.discountID}">
+                                                                Code: <input type="text" name="code" value="${discount.code}" required><br>
+                                                                Value (%): <input type="number" name="value" value="${discount.value}" required><br>
+                                                                Start Date: <input type="date" name="startDate" value="<fmt:formatDate value='${discount.startDate}' pattern='yyyy-MM-dd'/>" required><br>
+                                                                End Date: <input type="date" name="endDate" value="<fmt:formatDate value='${discount.endDate}' pattern='yyyy-MM-dd'/>" required><br>
+                                                                Max Discount (VND): <input type="number" name="maxDiscount" value="${discount.maxDiscount}" required><br>
+                                                                Quantity: <input type="number" name="quantity" value="${discount.quantity}" required><br>
+                                                                Status: <input type="text" class="${discount.status ? 'status-active' : 'status-expired'}" name="status" value="${discount.status ? 'On going' : 'Out of date'}" readonly />
+                                                                <input type="submit" value="Update">
+                                                            </form>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <p>Discount information is not available. Please check the Discount ID.</p>
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                     <a href="discount" class="btn btn-secondary mt-3" style="float: right;">Back</a>
                                                 </div>
                                             </div>

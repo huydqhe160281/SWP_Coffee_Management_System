@@ -32,6 +32,8 @@ public class StatisticalServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String currentPath = request.getRequestURI();
+        request.setAttribute("currentPath", currentPath);
         String fromDateStr = request.getParameter("fromDate");
         String toDateStr = request.getParameter("toDate");
 
@@ -51,7 +53,7 @@ public class StatisticalServlet extends HttpServlet {
         request.setAttribute("revenueData", revenueData);
         request.setAttribute("totalRevenue", decimalFormat.format(totalRevenue));
 
-        request.getRequestDispatcher("/index.jsp").forward(request, response);
+        request.getRequestDispatcher("index.jsp").forward(request, response);
     }
     private static final DecimalFormat decimalFormat = new DecimalFormat("#,###");
 
