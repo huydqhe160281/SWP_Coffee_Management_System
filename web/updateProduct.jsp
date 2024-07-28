@@ -99,14 +99,17 @@
                                                             <div class="form-group form-default form-static-label">
                                                                 <input type="text" name="productName" class="form-control" value="${product.productName}" required minlength="3" maxlength="50" />
                                                                 <label class="float-label">Product Name</label>
+                                                                <div id="product-name-error" class="text-danger"></div>
                                                             </div>
                                                             <div class="form-group form-default form-static-label">
                                                                 <textarea name="description" class="form-control" required minlength="10" maxlength="500" style="height: 130px;">${product.description}</textarea>
                                                                 <label class="float-label">Description</label>
+                                                                <div id="description-error" class="text-danger"></div>
                                                             </div>
                                                             <div class="form-group form-default form-static-label">
                                                                 <textarea name="recipe" class="form-control" required minlength="10" maxlength="1000" style="height: 130px;">${product.recipe}</textarea>
                                                                 <label class="float-label">Recipe</label>
+                                                                <div id="recipe-error" class="text-danger"></div>
                                                             </div>
                                                             <!-- Dynamic Size and Price Fields -->
                                                             <div class="form-group form-default">
@@ -117,6 +120,7 @@
                                                                                 <input type="hidden" name="sizeId" value="${productSize.size.sizeID}">
                                                                                 <input type="number" name="price_${productSize.size.sizeID}" class="form-control" placeholder="Price for size ${productSize.size.type}" value="${productSize.price}" required>
                                                                                 <label class="float-label">Price of size ${productSize.size.type}</label>
+                                                                                <div id="price_${productSize.size.sizeID}-error" class="text-danger"></div>
                                                                             </div>
                                                                         </c:forEach>
                                                                     </c:when>
@@ -126,6 +130,7 @@
                                                                                 <input type="hidden" name="sizeId_${size.sizeID}" value="${size.sizeID}">
                                                                                 <input type="number" name="price_${size.sizeID}" class="form-control" placeholder="Price for size ${size.type}" required>
                                                                                 <label class="float-label">Price of size ${size.type}</label>
+                                                                                <div id="price_${size.sizeID}-error" class="text-danger"></div>
                                                                             </div>
                                                                         </c:forEach>
                                                                     </c:otherwise>
@@ -191,30 +196,80 @@
         </div>
 
         <script>
-            function previewImage(inputId, previewId) {
-                var input = document.getElementById(inputId);
-                var preview = document.getElementById(previewId);
-                var file = input.files[0];
-                var reader = new FileReader();
 
-                reader.onloadend = function () {
-                    preview.src = reader.result;
-                };
+            function clearErrors() {
+                document.querySelectorAll('.text-danger').forEach(function (errorElement) {
+                    errorElement.textContent = '';
+                });
+            }
+
+            function logError(elementId, message) {
+                document.getElementById(elementId).textContent = message;
+            }
+
+            function validateForm() {
+                clearErrors();
+                const form = document.forms['productForm'];
+                const productName = form['productName'].value.trim();
+                const description = form['description'].value.trim();
+                const recipe = form['recipe'].value.trim();
+                const imageInput = form['image'];
+                const priceInputs = document.querySelectorAll('[name^="price_"]');
+                let isValid = true;
+
+                // Validate product name
+                if (productName.length < 3 || productName.length > 50) {
+                    logError('product-name-error', 'Product name must be between 3 and 50 characters.');
+                    isValid = false;
+                }
+
+                // Validate description
+                if (description.length < 10 || description.length > 500) {
+                    logError('description-error', 'Description must be between 10 and 500 characters.');
+                    isValid = false;
+                }
+
+                // Validate recipe
+                if (recipe.length < 10 || recipe.length > 1000) {
+                    logError('recipe-error', 'Recipe must be between 10 and 1000 characters.');
+                    isValid = false;
+                }
+
+                // Validate prices
+                priceInputs.forEach(input => {
+                    const price = parseFloat(input.value);
+                    if (isNaN(price) || price <= 0) {
+                        logError(input.name + '-error', 'Please enter a valid price for all sizes.');
+                        isValid = false;
+                    }
+                });
+
+                // Validate image file type
+                if (imageInput.files.length > 0) {
+                    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                    const fileType = imageInput.files[0].type;
+                    if (!allowedTypes.includes(fileType)) {
+                        logError('image-error', 'Only JPG, PNG, and GIF files are allowed.');
+                        isValid = false;
+                    }
+                }
+
+                return isValid;
+            }
+
+            function previewImage(inputId, previewId) {
+                const input = document.getElementById(inputId);
+                const preview = document.getElementById(previewId);
+                const file = input.files[0];
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                }
 
                 if (file) {
                     reader.readAsDataURL(file);
-                } else {
-                    preview.src = "";
                 }
-
-                // Update the file name in the label
-                var fileName = file ? file.name : 'Choose file';
-                var label = input.nextElementSibling;
-                label.innerHTML = fileName;
-
-                // Show the input wrapper if file is selected
-                var inputWrapper = document.getElementById(inputId + 'Wrapper');
-                inputWrapper.style.display = file ? 'block' : 'none';
             }
 
             // Handle click on image to trigger file input click
