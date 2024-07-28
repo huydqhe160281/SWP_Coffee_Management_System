@@ -245,18 +245,6 @@
                     isValid = false;
                 }
 
-                // LogoImage validation
-                if (logoImage == "") {
-                    document.getElementById("logoImage-error").innerHTML = "Please enter the logo image URL.";
-                    isValid = false;
-                }
-
-                // FivicoImage validation
-                if (fivicoImage == "") {
-                    document.getElementById("fivicoImage-error").innerHTML = "Please enter the favico URL.";
-                    isValid = false;
-                }
-
                 return isValid;
             }
         </script>

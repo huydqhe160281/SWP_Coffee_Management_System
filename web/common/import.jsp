@@ -52,23 +52,26 @@
     // Call the functions on window load
     window.onload = function () {
         try {
-            var generalLocalStorage = JSON.parse(localStorage.getItem('general'));
-            if (generalLocalStorage) {
-                setGeneralToLocalStorage(generalLocalStorage);
-                updateTitleFromLocalStorage();
+            var generalJson = '${generalJson}';
+            if (generalJson.trim().length > 0) {
+                // Clear existing entry in localStorage
+                localStorage.removeItem('general');
+                // Set new generalJson to localStorage
+                setGeneralToLocalStorage(JSON.parse(generalJson));
             } else {
-                var generalJson = '${generalJson}'; // Get the generalJson from the attribute
-                if (generalJson.trim().length > 0) {
-                    setGeneralToLocalStorage(JSON.parse(generalJson));
-                    updateTitleFromLocalStorage();
+                var generalLocalStorage = JSON.parse(localStorage.getItem('general'));
+                if (generalLocalStorage) {
+                    setGeneralToLocalStorage(generalLocalStorage);
                 } else {
                     console.error('Empty or invalid generalJson:', generalJson);
                 }
             }
+            updateTitleFromLocalStorage();
         } catch (e) {
             console.error('Error parsing or setting generalJson:', e);
         }
     };
 </script>
+
 
 <!-- Head Import End -->

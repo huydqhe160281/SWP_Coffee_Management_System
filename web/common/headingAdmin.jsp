@@ -30,12 +30,11 @@
                 </div>
             </div>
             <a href="index.jsp">
-                <!--                <img
-                                    class="img-fluid"
-                                    src="assets/images/logo.png"
-                                    alt="Theme-Logo"
-                                    />-->
-                Coffee Shop LOGO
+                <img
+                    class="img-fluid"
+                    src="assets/images/logo.png"
+                    alt="Theme-Logo"
+                    />
             </a>
             <a class="mobile-options waves-effect waves-light">
                 <i class="ti-more"></i>
@@ -141,10 +140,10 @@
                         <li class="waves-effect waves-light">
                             <c:if test="${sessionScope.account != null}">
                                 <a href="account_view_detail?accountID=${sessionScope.account.accountID}">
-                                <i class="ti-user"></i> Profile
-                            </a>
+                                    <i class="ti-user"></i> Profile
+                                </a>
                             </c:if>
-                            
+
                         </li>
                         <li class="waves-effect waves-light">
                             <a href="logout">

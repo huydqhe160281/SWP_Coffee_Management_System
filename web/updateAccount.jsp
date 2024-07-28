@@ -150,13 +150,21 @@
                                                             <label class="">Address</label>
                                                             <input type="text" name="address" class="form-control" value="${a.address}" required>
                                                         </div>
-                                                        <div class="form-group form-default">
-                                                            <label class="">Status</label>
-                                                            <select name="status" class="form-control" required>
-                                                                <option value="true" ${a.status ? 'selected' : ''}>Active</option>
-                                                                <option value="false" ${!a.status ? 'selected' : ''}>InActive</option>
-                                                            </select>
-                                                        </div>
+                                                        <%-- Check if the user is an admin --%>
+                                                        <c:choose>
+                                                            <c:when test="${sessionScope.account.username == 'admin'}">
+                                                                <div class="form-group form-default">
+                                                                    <label class="">Status</label>
+                                                                    <select name="status" class="form-control" required>
+                                                                        <option value="true" ${a.status ? 'selected' : ''}>Active</option>
+                                                                        <option value="false" ${!a.status ? 'selected' : ''}>Inactive</option>
+                                                                    </select>
+                                                                </div>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <input type="hidden" name="status" value="${a.status}">
+                                                            </c:otherwise>
+                                                        </c:choose>
                                                             <input type="hidden" name="roleID" class="form-control" value="${a.roleID}" required>
                                                             <input type="hidden" name="campusID" class="form-control" value="${a.campusID}" required>
                                                         <div class="form-group form-default text-center">
